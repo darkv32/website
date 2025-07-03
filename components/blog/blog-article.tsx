@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect } from 'react';
 import { ArrowLeft, Calendar, Clock, Eye, Share2, Twitter, Linkedin, Link as LinkIcon, MessageCircle, Heart, Bookmark } from 'lucide-react';
@@ -25,13 +25,12 @@ export function BlogArticle({ post }: BlogArticleProps) {
   const [readingProgress, setReadingProgress] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [likes, setLikes] = useState(Math.floor(Math.random() * 50) + 10);
+  const [likes, setLikes] = useState(42);
 
   const relatedPosts = getRelatedBlogPosts(post);
 
   useEffect(() => {
     setIsVisible(true);
-
     const handleScroll = () => {
       const article = document.querySelector('.article-content');
       if (article) {
@@ -43,7 +42,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
         setReadingProgress(progress);
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -59,15 +57,12 @@ export function BlogArticle({ post }: BlogArticleProps) {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Reading Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-secondary z-50">
         <div 
           className="h-full bg-primary transition-all duration-300"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
-
-      {/* Article Header */}
       <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="container-width section-padding relative z-10">
@@ -76,7 +71,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
               <ArrowLeft className="h-4 w-4" />
               <span>Back to Blog</span>
             </Link>
-
             <div className="max-w-4xl mx-auto text-center">
               <div className="flex items-center justify-center space-x-4 mb-6">
                 <Badge variant="secondary">{post.category}</Badge>
@@ -95,16 +89,12 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   </div>
                 </div>
               </div>
-
               <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
                 {post.title}
               </h1>
-
               <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
                 {post.excerpt}
               </p>
-
-              {/* Author Info */}
               <div className="flex items-center justify-center space-x-4 mb-8">
                 <Avatar className="h-12 w-12">
                   <AvatarImage src={post.author.avatar} alt={post.author.name} />
@@ -115,8 +105,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   <div className="text-muted-foreground text-sm">{post.author.bio}</div>
                 </div>
               </div>
-
-              {/* Social Actions */}
               <div className="flex items-center justify-center space-x-4">
                 <Button
                   variant={isLiked ? "default" : "outline"}
@@ -140,8 +128,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
           </div>
         </div>
       </section>
-
-      {/* Featured Image */}
       <section className="py-12">
         <div className="container-width section-padding">
           <div className="max-w-4xl mx-auto">
@@ -155,19 +141,14 @@ export function BlogArticle({ post }: BlogArticleProps) {
           </div>
         </div>
       </section>
-
-      {/* Article Content */}
       <section className="py-12">
         <div className="container-width section-padding">
           <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
-            {/* Table of Contents */}
             <div className="lg:col-span-1">
               <div className="sticky top-24">
                 <BlogTableOfContents content={post.content} />
               </div>
             </div>
-
-            {/* Main Content */}
             <div className="lg:col-span-3">
               <article className="article-content prose prose-lg max-w-none">
                 <ReactMarkdown
@@ -175,8 +156,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                     code: (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
                       const { className, children } = props;
                       const match = /language-(\w+)/.exec(className || '');
-            
-                      // if there's a language-* class, render a block highlighter
                       if (match) {
                         return (
                           <SyntaxHighlighter
@@ -188,8 +167,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                           </SyntaxHighlighter>
                         );
                       }
-            
-                      // otherwise fall back to a normal <code> tag
                       return (
                         <code className={className}>
                           {children}
@@ -201,8 +178,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   {post.content}
                 </ReactMarkdown>
               </article>
-
-              {/* Tags */}
               <div className="mt-12 pt-8 border-t">
                 <h3 className="text-lg font-semibold mb-4">Tags</h3>
                 <div className="flex flex-wrap gap-2">
@@ -213,8 +188,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   ))}
                 </div>
               </div>
-
-              {/* Author Bio */}
               <Card className="mt-12">
                 <CardContent className="p-8">
                   <div className="flex items-start space-x-6">
@@ -255,8 +228,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   </div>
                 </CardContent>
               </Card>
-
-              {/* Comments Section */}
               <div className="mt-12">
                 <BlogComments postId={post.id} />
               </div>
@@ -264,8 +235,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
           </div>
         </div>
       </section>
-
-      {/* Related Articles */}
       {relatedPosts.length > 0 && (
         <section className="py-20 bg-secondary/20">
           <div className="container-width section-padding">

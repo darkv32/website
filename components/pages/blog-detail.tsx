@@ -1,11 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState , useMemo } from 'react';
 import { ArrowLeft, Calendar, Clock, ExternalLink, Tag, Search, Filter, Grid, List, BookOpen, TrendingUp, Users, Award } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { BlogSearch } from '@/components/blog/blog-search';
 import { BlogPagination } from '@/components/blog/blog-pagination';
 import { BlogLoading } from '@/components/blog/blog-loading';
@@ -22,8 +21,8 @@ export function BlogDetail() {
   const [isLoading, setIsLoading] = useState(true);
 
   const postsPerPage = 6;
-  const allPosts = getAllBlogPosts();
-  const featuredPosts = getFeaturedBlogPosts();
+  const allPosts = useMemo(() => getAllBlogPosts(), []);
+  const featuredPosts = useMemo(() => getFeaturedBlogPosts(), []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -82,7 +81,7 @@ export function BlogDetail() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none" />
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
             <Link href="/" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
@@ -238,7 +237,7 @@ export function BlogDetail() {
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
                     <div className="absolute top-4 left-4 flex items-center space-x-2">
                       <Badge className="bg-primary">Featured</Badge>
                     </div>
@@ -331,7 +330,7 @@ export function BlogDetail() {
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                   <div className="absolute top-2 left-2 flex items-center space-x-1">
                     <Badge variant="outline" className="bg-background/80 text-xs">
                       {blogCategories.find(cat => cat.slug === post.category)?.name}
