@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PageLayout } from '@/components/ui/page-layout';
 import Link from 'next/link';
 
 export function ProjectsDetail() {
@@ -188,68 +189,51 @@ export function ProjectsDetail() {
   const totalForks = projects.reduce((sum, project) => sum + project.stats.forks, 0);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container-width section-padding relative z-10">
-          <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-            <Link href="/" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back to Home</span>
-            </Link>
-            
-            <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-                Projects Portfolio
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                A comprehensive showcase of my work in data engineering, mobile development, blockchain technology, 
-                and full-stack applications.
-              </p>
-            </div>
-
-            {/* GitHub Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">{projects.length}</div>
-                  <div className="text-muted-foreground">Total Projects</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">{totalStars}</div>
-                  <div className="text-muted-foreground">GitHub Stars</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">{totalForks}</div>
-                  <div className="text-muted-foreground">Forks</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">{featuredProjects.length}</div>
-                  <div className="text-muted-foreground">Featured</div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+    <PageLayout
+      title="Projects Portfolio"
+      description="A comprehensive showcase of my work in data engineering, mobile development, blockchain technology, and full-stack applications."
+      badge="Portfolio"
+      showBackButton
+    >
+      {/* GitHub Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">{projects.length}</div>
+            <div className="text-muted-foreground">Total Projects</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">{totalStars}</div>
+            <div className="text-muted-foreground">GitHub Stars</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">{totalForks}</div>
+            <div className="text-muted-foreground">Forks</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.8s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">{featuredProjects.length}</div>
+            <div className="text-muted-foreground">Featured</div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Category Filter */}
-      <section className="py-12 bg-secondary/20">
-        <div className="container-width section-padding">
+      <div className="page-section-alt">
+        <div className="page-section-content">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Card 
                 key={category.value}
-                className={`cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                className={`card-enhanced cursor-pointer animate-slide-up ${
                   filter === category.value ? 'ring-2 ring-primary bg-primary/5' : ''
                 }`}
+                style={{ animationDelay: `${index * 100}ms` }}
                 onClick={() => setFilter(category.value)}
               >
                 <CardContent className="p-4 text-center">
@@ -269,15 +253,21 @@ export function ProjectsDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Featured Projects */}
-      <section className="py-20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Featured Projects</h2>
+      <div className="page-section">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Featured Projects
+          </h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
             {featuredProjects.map((project, index) => (
-              <Card key={project.id} className="group hover:shadow-2xl transition-all duration-500 overflow-hidden border-0 bg-gradient-to-br from-background to-secondary/20">
+              <Card 
+                key={project.id} 
+                className="card-enhanced group overflow-hidden animate-slide-up" 
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
                 <div className="aspect-video overflow-hidden relative">
                   <img
                     src={project.image}
@@ -326,9 +316,9 @@ export function ProjectsDetail() {
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground text-sm leading-relaxed">{project.longDescription}</p>
                   
-                  <div className="flex flex-wrap gap-1">
+                  <div className="flex flex-wrap gap-2">
                     {project.technologies.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors">
+                      <Badge key={tech} variant="outline" className="badge-enhanced text-xs">
                         {tech}
                       </Badge>
                     ))}
@@ -355,13 +345,15 @@ export function ProjectsDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* All Projects */}
-      <section className="py-20 bg-secondary/20">
-        <div className="container-width section-padding">
+      <div className="page-section-alt">
+        <div className="page-section-content">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h2 className="text-3xl font-bold">All Projects</h2>
+            <h2 className="text-3xl font-bold animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              All Projects
+            </h2>
             
             {/* Controls */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
@@ -371,7 +363,7 @@ export function ProjectsDetail() {
                   placeholder="Search projects..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full sm:w-64"
+                  className="input-enhanced w-full sm:w-64"
                 />
               </div>
 
@@ -403,9 +395,13 @@ export function ProjectsDetail() {
             : 'space-y-6'
           }>
             {filteredProjects.map((project, index) => (
-              <Card key={project.id} className={`group hover:shadow-xl transition-all duration-300 ${
-                viewMode === 'list' ? 'md:flex md:items-center' : ''
-              }`}>
+              <Card 
+                key={project.id} 
+                className={`card-enhanced group animate-slide-up ${
+                  viewMode === 'list' ? 'md:flex md:items-center' : ''
+                }`}
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
                 <div className={`${viewMode === 'list' ? 'md:w-1/3' : ''} aspect-video overflow-hidden relative ${viewMode === 'grid' ? 'rounded-t-lg' : 'md:rounded-l-lg md:rounded-t-none'}`}>
                   <img
                     src={project.image}
@@ -454,12 +450,12 @@ export function ProjectsDetail() {
                     
                     <div className="flex flex-wrap gap-1">
                       {project.technologies.slice(0, 3).map((tech) => (
-                        <Badge key={tech} variant="outline" className="text-xs">
+                        <Badge key={tech} variant="outline" className="badge-enhanced text-xs">
                           {tech}
                         </Badge>
                       ))}
                       {project.technologies.length > 3 && (
-                        <Badge variant="outline" className="text-xs">
+                        <Badge variant="outline" className="badge-enhanced text-xs">
                           +{project.technologies.length - 3}
                         </Badge>
                       )}
@@ -488,7 +484,7 @@ export function ProjectsDetail() {
           </div>
 
           {filteredProjects.length === 0 && (
-            <div className="text-center py-12">
+            <div className="text-center py-12 animate-fade-in">
               <p className="text-muted-foreground mb-4">No projects found matching your criteria.</p>
               <Button 
                 variant="outline" 
@@ -502,19 +498,21 @@ export function ProjectsDetail() {
             </div>
           )}
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 to-secondary/10">
-        <div className="container-width section-padding text-center">
-          <h2 className="text-3xl font-bold mb-6">Interested in Collaboration?</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+      <div className="page-section">
+        <div className="page-section-content text-center">
+          <h2 className="text-3xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Interested in Collaboration?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.5s' }}>
             I&apos;m always open to discussing new projects, creative ideas, and opportunities to 
             create amazing solutions together.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/#contact">
-              <Button size="lg">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+            <Link href="/contact">
+              <Button size="lg" className="btn-primary-enhanced">
                 Start a Project
               </Button>
             </Link>
@@ -526,7 +524,7 @@ export function ProjectsDetail() {
             </Button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </PageLayout>
   );
 }

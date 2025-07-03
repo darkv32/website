@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Code, Database, Globe, Smartphone, Cloud, Palette, Brain, Shield, Award, TrendingUp, Users, Target } from 'lucide-react';
+import { Code, Database, Globe, Smartphone, Cloud, Palette, Brain, Shield, Award, TrendingUp, Users, Target } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { PageLayout } from '@/components/ui/page-layout';
 
 export function SkillsDetail() {
   const [isVisible, setIsVisible] = useState(false);
@@ -205,95 +205,85 @@ export function SkillsDetail() {
     : skillCategories.filter(cat => cat.title.toLowerCase().includes(selectedCategory));
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container-width section-padding relative z-10">
-          <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-            <Link href="/" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back to Home</span>
-            </Link>
-            
-            <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-                Technical Skills & Expertise
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Comprehensive overview of my technical skills, tools, and technologies used to build 
-                scalable data solutions and innovative applications.
-              </p>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">8</div>
-                  <div className="text-muted-foreground">Skill Categories</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">40+</div>
-                  <div className="text-muted-foreground">Technologies</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">5+</div>
-                  <div className="text-muted-foreground">Years Experience</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">30+</div>
-                  <div className="text-muted-foreground">Projects Completed</div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+    <PageLayout
+      title="Technical Skills & Expertise"
+      description="Comprehensive overview of my technical skills, tools, and technologies used to build scalable data solutions and innovative applications."
+      badge="Skills"
+      showBackButton
+    >
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">8</div>
+            <div className="text-muted-foreground">Skill Categories</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">40+</div>
+            <div className="text-muted-foreground">Technologies</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">5+</div>
+            <div className="text-muted-foreground">Years Experience</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.8s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">30+</div>
+            <div className="text-muted-foreground">Projects Completed</div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Professional Highlights */}
-      <section className="py-20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Professional Highlights</h2>
+      <div className="page-section">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Professional Highlights
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {professionalHighlights.map((highlight, index) => {
               const Icon = highlight.icon;
               return (
-                <Card key={highlight.title} className="hover:shadow-xl transition-all duration-300 group">
-                <CardContent className="p-6 text-center">
-                  <div className={`p-4 rounded-full w-fit mx-auto mb-4 ${highlight.color} bg-secondary/50 group-hover:bg-secondary transition-colors`}>
-                    <Icon className="h-8 w-8" />
-                  </div>
-                  <h4 className="font-bold mb-2">{highlight.title}</h4>
-                  <p className="text-muted-foreground text-sm mb-3">{highlight.description}</p>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span>Projects:</span>
-                      <span className="font-medium">{highlight.metrics.projects}</span>
+                <Card 
+                  key={highlight.title} 
+                  className="card-enhanced animate-slide-up" 
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <CardContent className="p-6 text-center group">
+                    <div className={`p-4 rounded-full w-fit mx-auto mb-4 ${highlight.color} bg-secondary/50 group-hover:bg-secondary transition-colors group-hover:scale-110`}>
+                      <Icon className="h-8 w-8" />
                     </div>
-                    <div className="flex justify-between">
-                      <span>Impact:</span>
-                      <span className="font-medium text-primary">{highlight.metrics.impact}</span>
+                    <h4 className="font-bold mb-2 group-hover:text-primary transition-colors">{highlight.title}</h4>
+                    <p className="text-muted-foreground text-sm mb-3">{highlight.description}</p>
+                    <div className="space-y-1 text-xs">
+                      <div className="flex justify-between">
+                        <span>Projects:</span>
+                        <span className="font-medium">{highlight.metrics.projects}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>Impact:</span>
+                        <span className="font-medium text-primary">{highlight.metrics.impact}</span>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Skills Categories */}
-      <section className="py-20 bg-secondary/20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Skill Categories</h2>
+      <div className="page-section-alt">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Skill Categories
+          </h2>
           
           {/* Category Filter */}
           <div className="flex flex-wrap justify-center gap-2 mb-12">
@@ -301,15 +291,18 @@ export function SkillsDetail() {
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('all')}
               size="sm"
+              className="badge-enhanced"
             >
               All Skills
             </Button>
-            {['data', 'mobile', 'web', 'cloud', 'blockchain'].map((category) => (
+            {['data', 'mobile', 'web', 'cloud', 'blockchain'].map((category, index) => (
               <Button
                 key={category}
                 variant={selectedCategory === category ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory(category)}
                 size="sm"
+                className="badge-enhanced"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 {category.charAt(0).toUpperCase() + category.slice(1)}
               </Button>
@@ -320,66 +313,81 @@ export function SkillsDetail() {
             {filteredCategories.map((category, index) => {
               const Icon = category.icon;
               return (
-                <Card key={category.title} className="hover:shadow-xl transition-all duration-300 group">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center space-x-3">
-                    <div className={`p-3 rounded-lg ${category.bgColor} group-hover:scale-110 transition-transform`}>
-                      <Icon className={`h-6 w-6 ${category.color}`} />
-                    </div>
-                    <div>
-                      <span className="text-lg">{category.title}</span>
-                      <p className="text-sm text-muted-foreground font-normal">{category.description}</p>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {category.skills.map((skill) => (
-                    <div key={skill.name} className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{skill.name}</span>
-                        <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                          <span>{skill.experience}</span>
-                          <span>•</span>
-                          <span>{skill.projects} projects</span>
+                <Card 
+                  key={category.title} 
+                  className="card-enhanced animate-slide-up" 
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center space-x-3 group">
+                      <div className={`p-3 rounded-lg ${category.bgColor} group-hover:scale-110 transition-transform`}>
+                        <Icon className={`h-6 w-6 ${category.color}`} />
+                      </div>
+                      <div>
+                        <span className="text-lg group-hover:text-primary transition-colors">{category.title}</span>
+                        <p className="text-sm text-muted-foreground font-normal">{category.description}</p>
+                      </div>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {category.skills.map((skill, skillIndex) => (
+                      <div key={skill.name} className="space-y-3 animate-fade-in" style={{ animationDelay: `${(index * 200) + (skillIndex * 50)}ms` }}>
+                        <div className="flex justify-between items-center">
+                          <span className="font-medium">{skill.name}</span>
+                          <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                            <span>{skill.experience}</span>
+                            <span>•</span>
+                            <span>{skill.projects} projects</span>
+                          </div>
+                        </div>
+                        <div className="space-y-1">
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="text-muted-foreground">Proficiency</span>
+                            <span className="font-medium">{skill.level}%</span>
+                          </div>
+                          <Progress 
+                            value={isVisible ? skill.level : 0} 
+                            className="h-2"
+                          />
                         </div>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex justify-between items-center text-sm">
-                          <span className="text-muted-foreground">Proficiency</span>
-                          <span className="font-medium">{skill.level}%</span>
-                        </div>
-                        <Progress 
-                          value={isVisible ? skill.level : 0} 
-                          className="h-2"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+                    ))}
+                  </CardContent>
+                </Card>
               );
             })}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Technologies by Category */}
-      <section className="py-20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Technologies & Tools</h2>
+      <div className="page-section">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Technologies & Tools
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {Object.entries(technologies).map(([category, techs], index) => (
-              <Card key={category} className="hover:shadow-lg transition-shadow">
+              <Card 
+                key={category} 
+                className="card-enhanced animate-slide-up" 
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
                 <CardHeader>
-                  <CardTitle className="text-lg flex items-center space-x-2">
-                    <TrendingUp className="h-5 w-5 text-primary" />
-                    <span>{category}</span>
+                  <CardTitle className="text-lg flex items-center space-x-2 group">
+                    <TrendingUp className="h-5 w-5 text-primary group-hover:animate-pulse" />
+                    <span className="group-hover:text-primary transition-colors">{category}</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {techs.map((tech) => (
-                      <Badge key={tech} variant="secondary" className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors cursor-pointer">
+                    {techs.map((tech, techIndex) => (
+                      <Badge 
+                        key={tech} 
+                        variant="outline" 
+                        className="badge-enhanced text-xs"
+                        style={{ animationDelay: `${(index * 150) + (techIndex * 20)}ms` }}
+                      >
                         {tech}
                       </Badge>
                     ))}
@@ -389,25 +397,31 @@ export function SkillsDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Certifications */}
-      <section className="py-20 bg-secondary/20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Certifications & Learning</h2>
+      <div className="page-section-alt">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Certifications & Learning
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {certifications.map((cert, index) => (
-              <Card key={cert.name} className="hover:shadow-lg transition-shadow text-center">
-                <CardContent className="p-6">
-                  <div className="p-3 bg-primary/10 rounded-full w-fit mx-auto mb-4">
+              <Card 
+                key={cert.name} 
+                className="card-enhanced text-center animate-slide-up" 
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
+                <CardContent className="p-6 group">
+                  <div className="p-3 bg-primary/10 rounded-full w-fit mx-auto mb-4 group-hover:scale-110 transition-transform">
                     <Award className="h-6 w-6 text-primary" />
                   </div>
-                  <h4 className="font-semibold mb-2">{cert.name}</h4>
+                  <h4 className="font-semibold mb-2 group-hover:text-primary transition-colors">{cert.name}</h4>
                   <p className="text-muted-foreground text-sm mb-2">{cert.issuer}</p>
                   <div className="flex items-center justify-center space-x-2">
                     <Badge 
                       variant={cert.status === 'Completed' ? 'default' : cert.status === 'In Progress' ? 'secondary' : 'outline'}
-                      className="text-xs"
+                      className="badge-enhanced text-xs"
                     >
                       {cert.status}
                     </Badge>
@@ -418,38 +432,40 @@ export function SkillsDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Learning Philosophy */}
-      <section className="py-20">
-        <div className="container-width section-padding">
+      <div className="page-section">
+        <div className="page-section-content">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-8">Learning Philosophy</h2>
+            <h2 className="text-3xl font-bold mb-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              Learning Philosophy
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <Target className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold mb-2">Continuous Learning</h4>
+              <Card className="card-enhanced animate-slide-up" style={{ animationDelay: '0.5s' }}>
+                <CardContent className="p-6 text-center group">
+                  <Target className="h-8 w-8 text-primary mx-auto mb-4 group-hover:animate-pulse" />
+                  <h4 className="font-semibold mb-2 group-hover:text-primary transition-colors">Continuous Learning</h4>
                   <p className="text-muted-foreground text-sm">
                     Staying current with emerging technologies and industry best practices through 
                     hands-on projects and community involvement.
                   </p>
                 </CardContent>
               </Card>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <Users className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold mb-2">Knowledge Sharing</h4>
+              <Card className="card-enhanced animate-slide-up" style={{ animationDelay: '0.7s' }}>
+                <CardContent className="p-6 text-center group">
+                  <Users className="h-8 w-8 text-primary mx-auto mb-4 group-hover:animate-pulse" />
+                  <h4 className="font-semibold mb-2 group-hover:text-primary transition-colors">Knowledge Sharing</h4>
                   <p className="text-muted-foreground text-sm">
                     Contributing to open-source projects and writing technical articles to 
                     share knowledge with the developer community.
                   </p>
                 </CardContent>
               </Card>
-              <Card className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6 text-center">
-                  <Brain className="h-8 w-8 text-primary mx-auto mb-4" />
-                  <h4 className="font-semibold mb-2">Problem Solving</h4>
+              <Card className="card-enhanced animate-slide-up" style={{ animationDelay: '0.9s' }}>
+                <CardContent className="p-6 text-center group">
+                  <Brain className="h-8 w-8 text-primary mx-auto mb-4 group-hover:animate-pulse" />
+                  <h4 className="font-semibold mb-2 group-hover:text-primary transition-colors">Problem Solving</h4>
                   <p className="text-muted-foreground text-sm">
                     Applying diverse technical skills to solve complex engineering challenges 
                     across different domains and industries.
@@ -459,30 +475,28 @@ export function SkillsDetail() {
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 to-secondary/10">
-        <div className="container-width section-padding text-center">
-          <h2 className="text-3xl font-bold mb-6">Let&apos;s Build Something Amazing</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+      <div className="page-section">
+        <div className="page-section-content text-center">
+          <h2 className="text-3xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Let&apos;s Build Something Amazing
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.5s' }}>
             Ready to leverage these skills for your next project? I&apos;m always excited to tackle 
             new challenges and create innovative solutions.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/#contact">
-              <Button size="lg">
-                Discuss a Project
-              </Button>
-            </Link>
-            <Link href="/projects">
-              <Button size="lg" variant="outline">
-                View My Work
-              </Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+            <Button size="lg" className="btn-primary-enhanced">
+              Discuss a Project
+            </Button>
+            <Button size="lg" variant="outline">
+              View My Work
+            </Button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </PageLayout>
   );
 }

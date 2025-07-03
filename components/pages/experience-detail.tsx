@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Briefcase, Calendar, MapPin, Award, Building, Code, Database, Smartphone, ExternalLink, Download } from 'lucide-react';
+import { Briefcase, Calendar, MapPin, Award, Building, Code, Database, Smartphone, ExternalLink, Download } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { PageLayout } from '@/components/ui/page-layout';
 
 export function ExperienceDetail() {
   const [isVisible, setIsVisible] = useState(false);
@@ -190,75 +190,57 @@ export function ExperienceDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
-        <div className="container-width section-padding relative z-10">
-          <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-            <Link href="/" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-              <ArrowLeft className="h-4 w-4" />
-              <span>Back to Home</span>
-            </Link>
-            
-            <div className="text-center mb-16">
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-                Professional Experience
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                My journey through data engineering, software development, and technology innovation across 
-                leading companies and organizations.
-              </p>
-            </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">5+</div>
-                  <div className="text-muted-foreground">Years Experience</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">5</div>
-                  <div className="text-muted-foreground">Companies</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">6</div>
-                  <div className="text-muted-foreground">Organizations</div>
-                </CardContent>
-              </Card>
-              <Card className="text-center hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="text-3xl font-bold text-primary mb-2">4</div>
-                  <div className="text-muted-foreground">Achievements</div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </section>
+    <PageLayout
+      title="Professional Experience"
+      description="My journey through data engineering, software development, and technology innovation across leading companies and organizations."
+      badge="Experience"
+      showBackButton
+    >
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">5+</div>
+            <div className="text-muted-foreground">Years Experience</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">5</div>
+            <div className="text-muted-foreground">Companies</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">6</div>
+            <div className="text-muted-foreground">Organizations</div>
+          </CardContent>
+        </Card>
+        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.8s' }}>
+          <CardContent className="p-6">
+            <div className="text-3xl font-bold text-primary mb-2">4</div>
+            <div className="text-muted-foreground">Achievements</div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Experience Timeline */}
-      <section className="py-20">
-        <div className="container-width section-padding">
+      <div className="page-section">
+        <div className="page-section-content">
           <div className="relative">
             {/* Timeline Line */}
             <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-px top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-primary/50 to-transparent"></div>
 
             {experiences.map((exp, index) => (
-              <div key={index} className={`relative flex items-center mb-16 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+              <div key={index} className={`relative flex items-center mb-16 animate-slide-up ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`} style={{ animationDelay: `${index * 200}ms` }}>
                 {/* Timeline Dot with Icon */}
-                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-16 h-16 bg-background border-4 border-primary rounded-full z-10 flex items-center justify-center shadow-lg">
+                <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-16 h-16 bg-background border-4 border-primary rounded-full z-10 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   <exp.icon className={`h-7 w-7 ${exp.color}`} />
                 </div>
 
                 {/* Content */}
                 <div className={`ml-24 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'}`}>
-                  <Card className="hover:shadow-xl transition-all duration-300 border-l-4 border-l-primary group">
+                  <Card className="card-enhanced border-l-4 border-l-primary group">
                     <CardHeader>
                       <div className="flex items-start justify-between mb-3">
                         <div>
@@ -268,7 +250,7 @@ export function ExperienceDetail() {
                             {exp.companyInfo.industry} • {exp.companyInfo.size} • Founded {exp.companyInfo.founded}
                           </div>
                         </div>
-                        <Badge variant="secondary" className="shrink-0">{exp.type}</Badge>
+                        <Badge variant="secondary" className="badge-enhanced shrink-0">{exp.type}</Badge>
                       </div>
 
                       <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-4">
@@ -297,7 +279,7 @@ export function ExperienceDetail() {
                         </h4>
                         <ul className="space-y-2">
                           {exp.achievements.map((achievement, i) => (
-                            <li key={i} className="flex items-start space-x-2">
+                            <li key={i} className="flex items-start space-x-2 animate-fade-in" style={{ animationDelay: `${(index * 200) + (i * 50)}ms` }}>
                               <div className="w-2 h-2 bg-primary rounded-full mt-2 shrink-0" />
                               <span className="text-muted-foreground text-sm">{achievement}</span>
                             </li>
@@ -309,8 +291,13 @@ export function ExperienceDetail() {
                       <div>
                         <h4 className="font-semibold mb-3">Technologies Used</h4>
                         <div className="flex flex-wrap gap-2">
-                          {exp.technologies.map((tech) => (
-                            <Badge key={tech} variant="outline" className="text-xs hover:bg-primary hover:text-primary-foreground transition-colors">
+                          {exp.technologies.map((tech, techIndex) => (
+                            <Badge 
+                              key={tech} 
+                              variant="outline" 
+                              className="badge-enhanced text-xs"
+                              style={{ animationDelay: `${(index * 200) + (techIndex * 30)}ms` }}
+                            >
                               {tech}
                             </Badge>
                           ))}
@@ -323,21 +310,23 @@ export function ExperienceDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Education Section */}
-      <section className="py-20 bg-secondary/20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Education</h2>
+      <div className="page-section-alt">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Education
+          </h2>
           <div className="max-w-4xl mx-auto">
-            <Card className="hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-primary">
+            <Card className="card-enhanced border-l-4 border-l-primary animate-slide-up" style={{ animationDelay: '0.5s' }}>
               <CardContent className="p-8">
-                <div className="flex items-start space-x-6">
-                  <div className="p-4 bg-primary/10 rounded-xl">
+                <div className="flex items-start space-x-6 group">
+                  <div className="p-4 bg-primary/10 rounded-xl group-hover:scale-110 transition-transform">
                     <Building className="h-10 w-10 text-primary" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-2xl font-bold mb-2">National University of Singapore</h3>
+                    <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">National University of Singapore</h3>
                     <p className="text-primary font-semibold text-lg mb-2">Undergraduate, Computer Science</p>
                     <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-4">
                       <div className="flex items-center space-x-1">
@@ -354,8 +343,13 @@ export function ExperienceDetail() {
                       algorithms, and system design. Active member of NUS Hackers community.
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {["Computer Science", "Software Engineering", "Data Structures", "Algorithms", "System Design"].map((subject) => (
-                        <Badge key={subject} variant="secondary" className="text-xs">
+                      {["Computer Science", "Software Engineering", "Data Structures", "Algorithms", "System Design"].map((subject, index) => (
+                        <Badge 
+                          key={subject} 
+                          variant="outline" 
+                          className="badge-enhanced text-xs"
+                          style={{ animationDelay: `${0.5 + (index * 50)}ms` }}
+                        >
                           {subject}
                         </Badge>
                       ))}
@@ -366,22 +360,33 @@ export function ExperienceDetail() {
             </Card>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Skills Overview */}
-      <section className="py-20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Core Skills</h2>
+      <div className="page-section">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Core Skills
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {Object.entries(skills).map(([category, skillList], index) => (
-              <Card key={category} className="hover:shadow-lg transition-shadow">
+              <Card 
+                key={category} 
+                className="card-enhanced animate-slide-up" 
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
                 <CardHeader>
-                  <CardTitle className="text-lg">{category}</CardTitle>
+                  <CardTitle className="text-lg group-hover:text-primary transition-colors">{category}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-2">
-                    {skillList.map((skill) => (
-                      <Badge key={skill} variant="outline" className="text-xs">
+                    {skillList.map((skill, skillIndex) => (
+                      <Badge 
+                        key={skill} 
+                        variant="outline" 
+                        className="badge-enhanced text-xs"
+                        style={{ animationDelay: `${(index * 150) + (skillIndex * 30)}ms` }}
+                      >
                         {skill}
                       </Badge>
                     ))}
@@ -390,26 +395,30 @@ export function ExperienceDetail() {
               </Card>
             ))}
           </div>
-          <div className="text-center">
-            <Link href="/skills">
-              <Button size="lg">
-                View Complete Skills
-                <ExternalLink className="h-4 w-4 ml-2" />
-              </Button>
-            </Link>
+          <div className="text-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+            <Button size="lg" className="btn-primary-enhanced">
+              View Complete Skills
+              <ExternalLink className="h-4 w-4 ml-2" />
+            </Button>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Organizations */}
-      <section className="py-20 bg-secondary/20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Organizations & Communities</h2>
+      <div className="page-section-alt">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Organizations & Communities
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
             {organizations.map((org, index) => (
-              <Card key={org.name} className="hover:shadow-lg transition-shadow text-center">
-                <CardContent className="p-6">
-                  <h4 className="font-semibold mb-2">{org.name}</h4>
+              <Card 
+                key={org.name} 
+                className="card-enhanced text-center animate-slide-up" 
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <CardContent className="p-6 group">
+                  <h4 className="font-semibold mb-2 group-hover:text-primary transition-colors">{org.name}</h4>
                   <p className="text-muted-foreground text-sm mb-1">{org.role}</p>
                   <p className="text-primary text-xs">{org.period}</p>
                 </CardContent>
@@ -417,22 +426,28 @@ export function ExperienceDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Achievements */}
-      <section className="py-20">
-        <div className="container-width section-padding">
-          <h2 className="text-3xl font-bold text-center mb-12">Achievements & Recognition</h2>
+      <div className="page-section">
+        <div className="page-section-content">
+          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Achievements & Recognition
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {achievements.map((achievement, index) => (
-              <Card key={index} className="hover:shadow-xl transition-shadow duration-300 group">
-                <CardContent className="p-8">
+              <Card 
+                key={index} 
+                className="card-enhanced animate-slide-up" 
+                style={{ animationDelay: `${index * 200}ms` }}
+              >
+                <CardContent className="p-8 group">
                   <div className="flex items-start space-x-4">
-                    <div className="p-3 bg-primary/10 rounded-full group-hover:bg-primary/20 transition-colors">
+                    <div className="p-3 bg-primary/10 rounded-full group-hover:bg-primary/20 transition-colors group-hover:scale-110">
                       <achievement.icon className="h-8 w-8 text-primary" />
                     </div>
                     <div className="flex-1">
-                      <h4 className="font-bold text-lg mb-1">{achievement.title}</h4>
+                      <h4 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">{achievement.title}</h4>
                       <p className="text-muted-foreground text-sm mb-1">{achievement.organization}</p>
                       <p className="text-primary text-sm font-medium mb-3">{achievement.year}</p>
                       <p className="text-muted-foreground text-sm mb-2">{achievement.description}</p>
@@ -444,29 +459,29 @@ export function ExperienceDetail() {
             ))}
           </div>
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary/10 to-secondary/10">
-        <div className="container-width section-padding text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Collaborate?</h2>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+      <div className="page-section">
+        <div className="page-section-content text-center">
+          <h2 className="text-3xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            Ready to Collaborate?
+          </h2>
+          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.5s' }}>
             I&apos;m always interested in discussing new opportunities in data engineering, 
             mobile development, and innovative technology projects.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/#contact">
-              <Button size="lg">
-                Get In Touch
-              </Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
+            <Button size="lg" className="btn-primary-enhanced">
+              Get In Touch
+            </Button>
             <Button size="lg" variant="outline">
               <Download className="h-4 w-4 mr-2" />
               Download Resume
             </Button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </PageLayout>
   );
 }

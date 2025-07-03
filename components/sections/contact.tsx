@@ -105,8 +105,11 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="py-20 bg-secondary/20">
-      <div className="container-width section-padding">
+    <section id="contact" ref={sectionRef} className="relative py-20 bg-secondary/10">
+      {/* Top gradient overlay to blend with blog section */}
+      <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background via-background/80 to-transparent z-10" />
+      
+      <div className="container-width section-padding relative z-20">
         <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
           {/* Section Header */}
           <div className="text-center mb-16">
