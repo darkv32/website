@@ -153,9 +153,9 @@ MIT License - feel free to use this as a template for your own portfolio.
 
 ## 📞 Contact
 
-- **Email**: tang.yetong@gmail.com
-- **LinkedIn**: [linkedin.com/in/tangyetong](https://linkedin.com/in/tangyetong)
-- **GitHub**: [github.com/tangyetong](https://github.com/tangyetong)
+- **Email**: ytyt0792@gmail.com
+- **LinkedIn**: [linkedin.com/in/tangyetong](https://linkedin.com/in/tang-yetong)
+- **GitHub**: [github.com/tangyetong](https://github.com/fivetran-tangyetong)
 
 ---
 

@@ -31,7 +31,7 @@ export function BlogComments({ postId }: BlogCommentsProps) {
           postId,
           author: {
             name: 'Tang Yetong',
-            email: 'tang.yetong@gmail.com',
+            email: 'ytyt0792@gmail.com',
             avatar: '/avatar.jpg'
           },
           content: 'Thanks Alex! I\'m glad you found it useful. Feel free to reach out if you have any questions about the implementation.',

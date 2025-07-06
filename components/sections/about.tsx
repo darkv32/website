@@ -239,10 +239,18 @@ export function About() {
                       ].map((item, index) => (
                         <div 
                           key={item.text}
-                          className={`flex items-center space-x-3 p-3 bg-${item.color}-500/10 rounded-lg hover:bg-${item.color}-500/20 transition-all duration-300 hover:scale-105 animate-slide-in-right`}
+                          className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 animate-slide-in-right ${
+                            item.color === 'green' ? 'bg-green-500/10 hover:bg-green-500/20' :
+                            item.color === 'blue' ? 'bg-blue-500/10 hover:bg-blue-500/20' :
+                            item.color === 'purple' ? 'bg-purple-500/10 hover:bg-purple-500/20' : ''
+                          }`}
                           style={{ animationDelay: `${0.7 + item.delay}s` }}
                         >
-                          <div className={`w-3 h-3 bg-${item.color}-500 rounded-full ${index === 0 ? 'animate-pulse' : ''}`}></div>
+                          <div className={`w-3 h-3 rounded-full ${index === 0 ? 'animate-pulse' : ''} ${
+                            item.color === 'green' ? 'bg-green-500' :
+                            item.color === 'blue' ? 'bg-blue-500' :
+                            item.color === 'purple' ? 'bg-purple-500' : ''
+                          }`}></div>
                           <span className="text-sm font-medium">{item.text}</span>
                         </div>
                       ))}
@@ -251,7 +259,7 @@ export function About() {
                 </Card>
 
                 {/* GitHub Achievements */}
-                <Card className="backdrop-blur-sm border border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/90 hover:scale-[1.02] animate-slide-in-right" style={{ animationDelay: '0.7s' }}>
+                {/* <Card className="backdrop-blur-sm border border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/90 hover:scale-[1.02] animate-slide-in-right" style={{ animationDelay: '0.7s' }}>
                   <CardContent className="p-8">
                     <h4 className="font-bold text-lg mb-4 flex items-center">
                       <TrendingUp className="h-6 w-6 mr-3 text-primary animate-pulse" />
@@ -270,7 +278,7 @@ export function About() {
                       ))}
                     </div>
                   </CardContent>
-                </Card>
+                </Card> */}
               </div>
             </div>
 

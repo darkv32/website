@@ -94,13 +94,6 @@ export function Contact() {
       href: "https://www.linkedin.com/in/tang-yetong/",
       color: "hover:text-blue-600",
       description: "Professional network"
-    },
-    {
-      icon: Globe,
-      name: "Personal Blog",
-      href: "https://darkvoid32.github.io/",
-      color: "hover:text-green-600",
-      description: "Technical articles"
     }
   ];
 

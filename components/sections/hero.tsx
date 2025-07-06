@@ -49,7 +49,7 @@ export function Hero() {
       />
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pt-32">
         {/* Name with Slightly Darker Grey Gradient, fix descender cropping */}
         <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold leading-relaxed overflow-visible bg-clip-text text-transparent bg-gradient-to-r from-gray-400 via-gray-300 to-gray-200 mb-6 pb-2">
           Tang Yetong
@@ -118,7 +118,7 @@ export function Hero() {
       </div>
 
       {/* Bottom Fade-out Overlay - creates smooth transition to about section */}
-      <div className="absolute bottom-0 left-0 w-full h-48 z-10 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-24 z-10 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none" />
     </section>
   );
 }

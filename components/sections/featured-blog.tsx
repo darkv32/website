@@ -37,7 +37,6 @@ export function FeaturedBlog() {
       readTime: "3 min read",
       category: "mobile",
       tags: ["React Native", "BLE", "Expo", "Debugging"],
-      views: 420
     },
     {
       id: 3,
@@ -47,7 +46,6 @@ export function FeaturedBlog() {
       readTime: "5 min read",
       category: "blockchain",
       tags: ["Bitcoin", "Open Source", "BDK-Kotlin", "Android"],
-      views: 850
     },
     {
       id: 5,
@@ -57,28 +55,6 @@ export function FeaturedBlog() {
       readTime: "10 min read",
       category: "career",
       tags: ["GovTech", "Internship", "AWS", "CloudWatch", "React"],
-      views: 950
-    }
-  ];
-
-  const blogStats = [
-    {
-      title: "Technical Expertise",
-      description: "Deep insights into blockchain, mobile development, and software engineering",
-      icon: BookOpen,
-      color: "text-blue-500"
-    },
-    {
-      title: "Community Impact",
-      description: "Sharing knowledge and contributing to developer education",
-      icon: Users,
-      color: "text-green-500"
-    },
-    {
-      title: "Industry Experience",
-      description: "Real-world insights from internships and professional projects",
-      icon: TrendingUp,
-      color: "text-purple-500"
     }
   ];
 
@@ -97,9 +73,6 @@ export function FeaturedBlog() {
     });
   };
 
-  const totalViews = 6500; // Approximate total views across all posts
-  const totalPosts = 11;
-
   return (
     <section id="blog" ref={sectionRef} className="relative py-20 bg-secondary/10">
       {/* Top gradient overlay to blend with skills section */}
@@ -113,41 +86,6 @@ export function FeaturedBlog() {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Insights and tutorials on blockchain development, mobile apps, and software engineering
             </p>
-          </div>
-
-          {/* Blog Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16 max-w-2xl mx-auto">
-            <div className="text-center p-4 bg-background/50 rounded-lg backdrop-blur-sm border">
-              <div className="text-2xl font-bold text-primary">{totalPosts}</div>
-              <div className="text-sm text-muted-foreground">Articles</div>
-            </div>
-            <div className="text-center p-4 bg-background/50 rounded-lg backdrop-blur-sm border">
-              <div className="text-2xl font-bold text-primary">{totalViews.toLocaleString()}</div>
-              <div className="text-sm text-muted-foreground">Total Views</div>
-            </div>
-            <div className="text-center p-4 bg-background/50 rounded-lg backdrop-blur-sm border">
-              <div className="text-2xl font-bold text-primary">4</div>
-              <div className="text-sm text-muted-foreground">Categories</div>
-            </div>
-            <div className="text-center p-4 bg-background/50 rounded-lg backdrop-blur-sm border">
-              <div className="text-2xl font-bold text-primary">2022-2024</div>
-              <div className="text-sm text-muted-foreground">Years Active</div>
-            </div>
-          </div>
-
-          {/* Blog Impact */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            {blogStats.map((stat, index) => (
-              <Card key={stat.title} className={`text-center hover:shadow-lg transition-all duration-300 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 100}ms` }}>
-                <CardContent className="p-6">
-                  <div className={`p-3 rounded-full w-fit mx-auto mb-4 bg-secondary ${stat.color}`}>
-                    <stat.icon className="h-6 w-6" />
-                  </div>
-                  <h4 className="font-semibold mb-2">{stat.title}</h4>
-                  <p className="text-muted-foreground text-sm">{stat.description}</p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
 
           {/* Featured Posts */}
@@ -179,10 +117,6 @@ export function FeaturedBlog() {
                   <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
                   
                   <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <div className="flex items-center space-x-1">
-                      <TrendingUp className="h-3 w-3" />
-                      <span>{post.views} views</span>
-                    </div>
                     <div className="flex items-center space-x-1">
                       <Tag className="h-3 w-3" />
                       <span>{post.tags.length} tags</span>
