@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { GraduationCap, Heart, Target, Users, Code, Database, Smartphone, Award, Sparkles, Zap, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -8,7 +9,10 @@ import { Badge } from '@/components/ui/badge';
 export function About() {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+
+
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -89,11 +93,33 @@ export function About() {
       {/* Enhanced gradient overlay with animation */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10 animate-pulse" />
       
+
+
       {/* Animated background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/2 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
+        
+        {/* Additional floating elements */}
+        <div className="absolute top-1/6 left-1/6 w-32 h-32 bg-cyan-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1.5s' }} />
+        <div className="absolute bottom-1/6 right-1/6 w-40 h-40 bg-pink-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '3s' }} />
+        <div className="absolute top-3/4 right-1/3 w-48 h-48 bg-violet-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '9s', animationDelay: '0.5s' }} />
+      </div>
+
+      {/* Geometric shapes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/5 left-1/10 w-16 h-16 border border-primary/10 rotate-45 animate-pulse" style={{ animationDuration: '6s' }} />
+        <div className="absolute bottom-1/5 right-1/10 w-20 h-20 border border-primary/10 rounded-full animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
+        <div className="absolute top-2/3 left-1/4 w-12 h-12 border border-primary/10 rotate-12 animate-pulse" style={{ animationDuration: '7s', animationDelay: '1s' }} />
+        <div className="absolute bottom-1/3 right-1/4 w-24 h-24 border border-primary/10 rounded-full animate-pulse" style={{ animationDuration: '5s', animationDelay: '3s' }} />
+      </div>
+
+      {/* Gradient lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-0 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
       </div>
 
       {/* Floating particles effect */}
@@ -101,7 +127,7 @@ export function About() {
         {[...Array(6)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float"
+            className="absolute w-2 h-2 bg-primary/10 rounded-full animate-float"
             style={{
               left: `${20 + i * 15}%`,
               top: `${10 + i * 20}%`,
@@ -114,16 +140,43 @@ export function About() {
 
       {/* Mouse-following gradient */}
       <div 
-        className="absolute inset-0 opacity-30 pointer-events-none transition-opacity duration-300"
+        className="absolute inset-0 opacity-20 pointer-events-none transition-opacity duration-300"
         style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(120, 119, 198, 0.1), transparent 40%)`
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(120, 119, 198, 0.05), transparent 40%)`
         }}
+      />
+
+      {/* Interactive floating orbs that respond to card hover */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute w-3 h-3 rounded-full transition-all duration-700 ease-out ${
+              hoveredCard ? 'opacity-40 scale-150' : 'opacity-20 scale-100'
+            }`}
+            style={{
+              left: `${10 + i * 12}%`,
+              top: `${15 + i * 10}%`,
+              background: `radial-gradient(circle, rgba(120, 119, 198, ${hoveredCard ? 0.3 : 0.1}), transparent 70%)`,
+              animationDelay: `${i * 0.3}s`,
+              animationDuration: `${4 + i * 0.5}s`,
+              transform: hoveredCard ? 'scale(1.5)' : 'scale(1)',
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Subtle grid pattern that intensifies on hover */}
+      <div 
+        className={`absolute inset-0 bg-grid-pattern transition-opacity duration-500 ${
+          hoveredCard ? 'opacity-8' : 'opacity-3'
+        } animate-grid-flow`} 
       />
       
       {/* Main background with enhanced gradient transition */}
       <div className="pt-8 pb-24 bg-gradient-to-br from-background via-background to-background relative">
         {/* Animated grid pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 animate-grid-flow" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-3 animate-grid-flow" />
         
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
@@ -154,8 +207,10 @@ export function About() {
                 
                 <div className="space-y-6 text-muted-foreground leading-relaxed">
                   <div 
-                    className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.5s' }}
+                    onMouseEnter={() => setHoveredCard('bio-1')}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
                     <p>
                       I&apos;m currently a <span className="text-primary font-semibold">Data Analyst at Fivetran</span>, 
@@ -165,8 +220,10 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.7s' }}
+                    onMouseEnter={() => setHoveredCard('bio-2')}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
                     <p>
                       With experience at <span className="text-primary font-semibold">GovTech Singapore</span>, 
@@ -177,8 +234,10 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.9s' }}
+                    onMouseEnter={() => setHoveredCard('bio-3')}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
                     <p>
                       I specialize in <span className="text-primary font-semibold">Android development</span> with 
@@ -189,8 +248,10 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '1.1s' }}
+                    onMouseEnter={() => setHoveredCard('bio-4')}
+                    onMouseLeave={() => setHoveredCard(null)}
                   >
                     <p>
                       As an active member of the <span className="text-primary font-semibold">NUS Hackers community</span>, 
@@ -204,7 +265,7 @@ export function About() {
               {/* Enhanced Education & Expertise with hover effects */}
               <div className="space-y-8">
                 {/* Education */}
-                <Card className="backdrop-blur-sm border border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/90 hover:scale-[1.02] animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
+                <Card className="backdrop-blur-sm border border-border/80 hover:border-primary/80 transition-all duration-300 hover:shadow-3xl bg-card/95 hover:scale-[1.05] hover:bg-card/98 animate-slide-in-right shadow-2xl" style={{ animationDelay: '0.3s' }}>
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
                       <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
@@ -225,7 +286,7 @@ export function About() {
                 </Card>
 
                 {/* Current Focus */}
-                <Card className="backdrop-blur-sm border border-border/30 hover:border-primary/50 transition-all duration-300 hover:shadow-xl bg-card/90 hover:scale-[1.02] animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
+                <Card className="backdrop-blur-sm border border-border/80 hover:border-primary/80 transition-all duration-300 hover:shadow-3xl bg-card/95 hover:scale-[1.05] hover:bg-card/98 animate-slide-in-right shadow-2xl" style={{ animationDelay: '0.5s' }}>
                   <CardContent className="p-8">
                     <h4 className="font-bold text-lg mb-6 flex items-center">
                       <Award className="h-6 w-6 mr-3 text-primary animate-pulse" />
@@ -294,7 +355,7 @@ export function About() {
                 {expertise.map((area, index) => (
                   <Card 
                     key={area.title} 
-                    className={`transition-all duration-500 hover:shadow-xl backdrop-blur-sm border border-border/30 hover:border-primary/50 hover:scale-105 bg-card/90 animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+                    className={`transition-all duration-500 hover:shadow-3xl backdrop-blur-sm border border-border/80 hover:border-primary/80 hover:scale-110 hover:bg-card/98 animate-slide-up shadow-2xl ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <CardContent className="p-8 group">
@@ -337,7 +398,7 @@ export function About() {
                 {values.map((value, index) => (
                   <Card 
                     key={value.title} 
-                    className={`transition-all duration-500 hover:shadow-xl backdrop-blur-sm border border-border/30 hover:border-primary/50 hover:scale-105 bg-card/90 animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+                    className={`transition-all duration-500 hover:shadow-3xl backdrop-blur-sm border border-border/80 hover:border-primary/80 hover:scale-110 hover:bg-card/98 animate-slide-up shadow-2xl ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
                     style={{ animationDelay: `${(index + 3) * 200}ms` }}
                   >
                     <CardContent className="p-8 text-center group">

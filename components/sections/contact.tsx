@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+
 import { Mail, Phone, MapPin, Send, Github, Linkedin, Globe, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,8 @@ export function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const { toast } = useToast();
+
+
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -102,6 +105,40 @@ export function Contact() {
       {/* Top gradient overlay to blend with blog section */}
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background via-background/80 to-transparent z-10" />
       
+      {/* Connection-themed background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating connection orbs */}
+        <div className="absolute top-1/6 left-1/6 w-48 h-48 bg-emerald-500/3 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '6s' }} />
+        <div className="absolute bottom-1/6 right-1/6 w-56 h-56 bg-teal-500/3 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
+        <div className="absolute top-2/3 right-1/6 w-40 h-40 bg-green-500/3 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '1s' }} />
+        <div className="absolute bottom-1/3 left-1/6 w-32 h-32 bg-cyan-500/3 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '9s', animationDelay: '3s' }} />
+      </div>
+
+      {/* Connection grid pattern */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-2 animate-grid-flow" />
+
+      {/* Connection lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-emerald-500/12 to-transparent animate-pulse" style={{ animationDuration: '5s' }} />
+        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-teal-500/12 to-transparent animate-pulse" style={{ animationDuration: '7s', animationDelay: '2s' }} />
+        <div className="absolute top-1/2 left-1/4 w-1/2 h-px bg-gradient-to-r from-transparent via-green-500/10 to-transparent animate-pulse" style={{ animationDuration: '9s', animationDelay: '1s' }} />
+        
+        {/* Connection geometric elements */}
+        <div className="absolute top-1/5 right-1/5 w-12 h-12 border border-emerald-500/15 rounded-full animate-pulse" style={{ animationDuration: '6s' }} />
+        <div className="absolute bottom-1/5 left-1/5 w-8 h-8 border border-teal-500/15 rotate-45 animate-pulse" style={{ animationDuration: '8s', animationDelay: '1.5s' }} />
+        <div className="absolute top-3/4 left-1/3 w-16 h-16 border border-green-500/15 rounded-full animate-pulse" style={{ animationDuration: '7s', animationDelay: '2.5s' }} />
+        <div className="absolute top-1/3 right-1/4 w-10 h-10 border border-cyan-500/15 rotate-12 animate-pulse" style={{ animationDuration: '5s', animationDelay: '3s' }} />
+      </div>
+
+      {/* Floating connection symbols */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/6 right-1/4 text-xs text-emerald-500/10 font-mono animate-pulse" style={{ animationDuration: '8s' }}>@</div>
+        <div className="absolute bottom-1/6 left-1/4 text-xs text-teal-500/10 font-mono animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }}>→</div>
+        <div className="absolute top-2/3 right-1/6 text-xs text-green-500/10 font-mono animate-pulse" style={{ animationDuration: '7s', animationDelay: '1s' }}>✉</div>
+      </div>
+      
+
+      
       <div className="container-width section-padding relative z-20">
         <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
           {/* Section Header */}
@@ -115,7 +152,7 @@ export function Contact() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <Card className={`${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
+            <Card className={`hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Send className="h-5 w-5" />
@@ -204,7 +241,7 @@ export function Contact() {
             {/* Contact Info & Social */}
             <div className={`space-y-8 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               {/* Contact Information */}
-              <Card>
+              <Card className="hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50">
                 <CardHeader>
                   <CardTitle>Contact Information</CardTitle>
                 </CardHeader>
@@ -229,7 +266,7 @@ export function Contact() {
               </Card>
 
               {/* Social Links */}
-              <Card>
+              <Card className="hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50">
                 <CardHeader>
                   <CardTitle>Connect with Me</CardTitle>
                 </CardHeader>
@@ -257,7 +294,7 @@ export function Contact() {
               </Card>
 
               {/* Professional Availability */}
-              <Card>
+              {/* <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <Calendar className="h-5 w-5" />
@@ -287,7 +324,7 @@ export function Contact() {
                     mobile development, and full-stack projects.
                   </p>
                 </CardContent>
-              </Card>
+              </Card> */}
             </div>
           </div>
         </div>

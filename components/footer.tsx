@@ -59,9 +59,6 @@ export function Footer() {
           <p className="text-muted-foreground text-sm">
             © {currentYear} Tang Yetong. All rights reserved.
           </p>
-          <p className="text-muted-foreground text-sm mt-2 sm:mt-0">
-            Built with Next.js, TypeScript & Tailwind CSS
-          </p>
         </div>
       </div>
     </footer>
