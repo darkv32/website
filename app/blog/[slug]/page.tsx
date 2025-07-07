@@ -1,7 +1,10 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogArticle } from '@/components/blog/blog-article';
-import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/blog';
+import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data';
+import { generateMetadata as generateSEOMetadata, generateStructuredData } from '@/lib/seo';
+import { StructuredData } from '@/components/seo/structured-data';
+import { BreadcrumbData } from '@/components/seo/structured-data';
 
 interface BlogPostPageProps {
   params: {
@@ -25,34 +28,17 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     };
   }
 
-  return {
+  return generateSEOMetadata({
     title: post.seo.metaTitle || post.title,
     description: post.seo.metaDescription || post.excerpt,
     keywords: post.seo.keywords,
-    authors: [{ name: post.author.name }],
-    openGraph: {
-      title: post.seo.metaTitle || post.title,
-      description: post.seo.metaDescription || post.excerpt,
-      type: 'article',
-      publishedTime: post.publishedAt,
-      modifiedTime: post.updatedAt,
-      authors: [post.author.name],
-      images: [
-        {
-          url: post.seo.ogImage || post.featuredImage,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: post.seo.metaTitle || post.title,
-      description: post.seo.metaDescription || post.excerpt,
-      images: [post.seo.ogImage || post.featuredImage],
-    },
-  };
+    image: post.seo.ogImage || post.featuredImage,
+    url: `/blog/${post.slug}`,
+    type: 'article',
+    publishedTime: post.publishedAt,
+    modifiedTime: post.updatedAt,
+    author: post.author.name,
+  });
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
@@ -62,5 +48,18 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  return <BlogArticle post={post} />;
+  const articleData = generateStructuredData('article', post);
+  const breadcrumbItems = [
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+    { name: post.title, url: `/blog/${post.slug}` },
+  ];
+
+  return (
+    <>
+      <BlogArticle post={post} />
+      <StructuredData data={articleData} />
+      <BreadcrumbData items={breadcrumbItems} />
+    </>
+  );
 }

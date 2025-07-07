@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://tangyetong.dev/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
+
+# Disallow admin or private areas (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important files
+Allow: /favicon.ico
+Allow: /manifest.json
+Allow: /apple-touch-icon.png 

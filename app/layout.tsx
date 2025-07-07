@@ -1,10 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
+import { StructuredData } from '@/components/seo/structured-data';
+import { generateMetadata, generateStructuredData, generateOrganizationData } from '@/lib/seo';
+import { PerformanceOptimizer } from '@/components/seo/performance-optimizer';
+import { SITE_CONFIG } from '@/lib/config';
 
 const inter = Inter({ 
   subsets: ['latin'],
@@ -12,11 +18,8 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: 'Tang Yetong - Data Analyst at Fivetran | Technical Blog & Portfolio',
-    template: '%s | Tang Yetong'
-  },
+export const metadata: Metadata = generateMetadata({
+  title: 'Tang Yetong - Data Analyst at Fivetran | Technical Blog & Portfolio',
   description: 'Data Analyst at Fivetran with expertise in data engineering, Android development, and blockchain technology. Technical blog covering Bitcoin development, mobile apps, and software engineering insights.',
   keywords: [
     'Tang Yetong', 'Data Analyst', 'Fivetran', 'Data Engineering',
@@ -24,66 +27,18 @@ export const metadata: Metadata = {
     'Python', 'Kotlin', 'SQL', 'Mobile Development', 'Bitcoin',
     'BDK-Kotlin', 'Technical Blog', 'Software Engineering'
   ],
-  authors: [{ name: 'Tang Yetong' }],
-  creator: 'Tang Yetong',
-  publisher: 'Tang Yetong',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://tangyetong.dev'),
-  alternates: {
-    canonical: '/',
-  },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://tangyetong.dev',
-    title: 'Tang Yetong - Data Engineering & Mobile Development Expert',
-    description: 'Professional portfolio and technical blog showcasing data engineering, mobile development, and blockchain expertise.',
-    siteName: 'Tang Yetong Portfolio',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Tang Yetong - Data Analyst & Developer',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Tang Yetong - Data Analyst at Fivetran | Technical Blog',
-    description: 'Data engineering expert sharing insights on blockchain development, mobile apps, and software engineering.',
-    creator: '@tangyetong',
-    images: ['/og-image.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
-  other: {
-    'theme-color': '#6366f1',
-    'color-scheme': 'light dark',
-  },
-};
+  type: 'website',
+});
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const websiteData = generateStructuredData('website', {});
+  const personData = generateStructuredData('person', {});
+  const organizationData = generateOrganizationData();
+
   return (
     <html lang="en" suppressHydrationWarning className={inter.variable}>
       <head>
@@ -92,6 +47,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
+        <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml" />
+        <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+        <meta name="theme-color" content="#6366f1" />
+        <meta name="color-scheme" content="light dark" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
@@ -109,6 +68,21 @@ export default function RootLayout({
           </div>
           <Toaster />
         </ThemeProvider>
+        
+        {/* Structured Data */}
+        <StructuredData data={websiteData} />
+        <StructuredData data={personData} />
+        <StructuredData data={organizationData} />
+        
+        {/* Performance Optimizer */}
+        <PerformanceOptimizer 
+          preloadImages={[...SITE_CONFIG.performance.preloadImages]}
+          preloadFonts={[...SITE_CONFIG.performance.preloadFonts]}
+        />
+        
+        {/* Vercel Speed Insights and Analytics */}
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

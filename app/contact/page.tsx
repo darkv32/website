@@ -4,15 +4,53 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { PageLayout } from '@/components/ui/page-layout';
+import { generateMetadata } from '@/lib/seo';
+import { StructuredData } from '@/components/seo/structured-data';
+import { BreadcrumbData } from '@/components/seo/structured-data';
+import { SITE_CONFIG, getFullUrl } from '@/lib/config';
+
+export const metadata = generateMetadata({
+  title: 'Contact Tang Yetong - Get In Touch',
+  description: 'Get in touch with Tang Yetong for collaboration opportunities, technical discussions, or questions about data engineering, mobile development, and blockchain technology.',
+  keywords: [
+    'Contact Tang Yetong', 'Get In Touch', 'Collaboration', 'Data Engineering',
+    'Mobile Development', 'Blockchain', 'Technical Discussion', 'Singapore',
+    'Fivetran', 'Professional Contact', 'Tech Consultation'
+  ],
+  url: '/contact',
+});
 
 export default function ContactPage() {
+  const contactData = {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    name: 'Contact Tang Yetong',
+    description: 'Contact information and form for Tang Yetong',
+    url: getFullUrl('/contact'),
+    mainEntity: {
+      '@type': 'Person',
+      name: 'Tang Yetong',
+      email: 'ytyt0792@gmail.com',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Singapore',
+      },
+    },
+  };
+
+  const breadcrumbItems = [
+    { name: 'Home', url: '/' },
+    { name: 'Contact', url: '/contact' },
+  ];
+
   return (
-    <PageLayout
-      title="Contact"
-      description="Interested in data engineering, mobile development, or collaboration opportunities? I'd love to hear from you."
-      badge="Get In Touch"
-      showBackButton
-    >
+    <>
+      <PageLayout
+        title="Contact"
+        description="Interested in data engineering, mobile development, or collaboration opportunities? I'd love to hear from you."
+        badge="Get In Touch"
+        showBackButton
+      >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Floating Orbs */}
@@ -159,6 +197,11 @@ export default function ContactPage() {
           </Card>
         </div>
       </div>
-    </PageLayout>
+      </PageLayout>
+      
+      {/* Structured Data */}
+      <StructuredData data={contactData} />
+      <BreadcrumbData items={breadcrumbItems} />
+    </>
   );
 } 

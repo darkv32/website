@@ -145,6 +145,7 @@ export interface BlogPost {
     metaTitle?: string;
     metaDescription?: string;
     keywords?: string[];
+    ogImage?: string;
   };
 }
 
