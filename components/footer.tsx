@@ -32,7 +32,7 @@ export function Footer() {
               />
               <h3 className="text-lg font-semibold">Tang Yetong</h3>
             </div>
-            <p className="text-muted-foreground mb-4 max-w-md">
+            <p className="text-muted-foreground mb-4 max-w-md transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
               Full Stack Developer passionate about creating exceptional digital experiences. 
               Based in Singapore, building the future one line of code at a time.
             </p>

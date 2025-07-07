@@ -262,20 +262,39 @@ export function About() {
               {/* Enhanced Education & Expertise with hover effects */}
               <div className="space-y-8">
                 {/* Education */}
-                <Card className="card-enhanced-light card-about-light animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
+                <Card className="card-enhanced-light card-about-light animate-slide-in-right border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.04]" style={{ animationDelay: '0.3s' }}>
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
                       <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
                         <GraduationCap className="h-8 w-8 text-primary" />
                       </div>
-                      <div>
-                        <h4 className="font-bold text-lg mb-3">Education</h4>
-                        <div className="space-y-3 text-muted-foreground">
-                          <div className="p-4 bg-secondary/20 rounded-lg hover:bg-secondary/30 transition-colors duration-300">
-                            <p className="font-semibold text-foreground">National University of Singapore</p>
-                            <p className="text-sm">Undergraduate, Computer Science</p>
-                            <p className="text-sm text-primary">Jan 2022 - Aug 2026</p>
+                      <div className="flex-1">
+                        <div className="flex items-center mb-2">
+                          <h4 className="font-bold text-xl mr-3">National University of Singapore</h4>
+                          <Badge variant="secondary" className="bg-primary/10 text-primary font-semibold text-xs px-3 py-1 ml-2">Computer Science</Badge>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-3">
+                          <div className="flex items-center space-x-1">
+                            <span className="font-medium">Undergraduate</span>
                           </div>
+                          <div className="flex items-center space-x-1">
+                            <GraduationCap className="h-4 w-4 text-primary" />
+                            <span>Jan 2022 - Aug 2026</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Zap className="h-4 w-4 text-primary" />
+                            <span>Singapore</span>
+                          </div>
+                        </div>
+                        <p className="text-muted-foreground leading-relaxed mb-3 text-sm">
+                          Pursuing Computer Science degree with focus on software engineering, data structures, algorithms, and system design. Active member of NUS Hackers community.
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {["Software Engineering", "Data Structures", "Algorithms", "System Design", "NUS Hackers"].map((subject) => (
+                            <Badge key={subject} variant="outline" className="badge-enhanced text-xs">
+                              {subject}
+                            </Badge>
+                          ))}
                         </div>
                       </div>
                     </div>
