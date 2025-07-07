@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { BlogSearch } from '@/components/blog/blog-search';
 import { BlogPagination } from '@/components/blog/blog-pagination';
 import { BlogLoading } from '@/components/blog/blog-loading';
-import { getAllBlogPosts, getFeaturedBlogPosts, blogCategories, BlogPost, formatDate, formatReadTime } from '@/lib/blog';
+import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, BlogPost, formatDate, formatReadTime } from '@/lib/data';
 import { PageLayout } from '@/components/ui/page-layout';
 import Link from 'next/link';
 
@@ -24,12 +24,14 @@ export function BlogDetail() {
   const postsPerPage = 6;
   const allPosts = useMemo(() => getAllBlogPosts(), []);
   const featuredPosts = useMemo(() => getFeaturedBlogPosts(), []);
+  const blogCategories = useMemo(() => getBlogCategories(), []);
 
   useEffect(() => {
     setIsVisible(true);
     setIsLoading(false);
   }, []);
 
+  // Handle data loading
   useEffect(() => {
     let posts = searchResults.length > 0 ? searchResults : allPosts;
     
@@ -38,8 +40,11 @@ export function BlogDetail() {
     }
     
     setFilteredPosts(posts);
-    setCurrentPage(1);
   }, [selectedCategory, searchResults, allPosts]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedCategory]);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const currentPosts = filteredPosts.slice(
@@ -128,7 +133,6 @@ export function BlogDetail() {
                       {post.title}
                     </CardTitle>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{post.views.toLocaleString()} views</span>
                       <Badge variant="outline" className="text-xs">{post.category}</Badge>
                     </div>
                   </CardHeader>
@@ -182,7 +186,7 @@ export function BlogDetail() {
                   className="px-3 py-2 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary input-enhanced"
                 >
                   <option value="all">All Categories</option>
-                  {blogCategories.map((category) => (
+                  {blogCategories.map((category: any) => (
                     <option key={category.slug} value={category.slug}>
                       {category.name} ({category.postCount})
                     </option>
@@ -222,7 +226,7 @@ export function BlogDetail() {
             >
               All ({allPosts.length})
             </Button>
-            {blogCategories.map((category, index) => (
+            {blogCategories.map((category: any, index: any) => (
               <Button
                 key={category.slug}
                 variant={selectedCategory === category.slug ? 'default' : 'outline'}
@@ -280,7 +284,6 @@ export function BlogDetail() {
                       {post.title}
                     </CardTitle>
                     <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span>{post.views.toLocaleString()} views</span>
                       <Badge variant="outline" className="text-xs">{post.category}</Badge>
                     </div>
                   </CardHeader>

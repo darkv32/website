@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { BlogPost, searchBlogPosts, formatDate } from '@/lib/blog';
+import { BlogPost, searchBlogPosts, formatDate } from '@/lib/data';
 import Link from 'next/link';
 
 interface BlogSearchProps {

@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 import { Download, ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { getHeroData } from '@/lib/data';
 
 export function Hero() {
   // Parallax scroll for subtle tilt
@@ -12,18 +13,7 @@ export function Hero() {
   const y1 = useTransform(scrollY, [0, 300], [0, -50]);
   const y2 = useTransform(scrollY, [0, 300], [0, 50]);
 
-  const roles = [
-    'Data Analyst @ Fivetran',
-    'Full Stack Developer',
-    'Android Engineer',
-    'Blockchain Developer',
-  ];
-
-  const socialLinks = [
-    { href: 'https://github.com/fivetran-tangyetong', icon: Github, label: 'GitHub' },
-    { href: 'https://linkedin.com/in/tang-yetong',    icon: Linkedin, label: 'LinkedIn' },
-    { href: 'mailto:ytyt0792@gmail.com',               icon: Mail,     label: 'Email' },
-  ];
+  const { roles, description, socialLinks } = getHeroData();
 
   useEffect(() => window.scrollTo(0, 0), []);
 
@@ -88,8 +78,7 @@ export function Hero() {
 
         {/* Description */}
         <p className="max-w-2xl text-lg sm:text-xl text-gray-700 dark:text-gray-200 mb-10">
-          Data Analyst at <span className="font-semibold text-gray-900 dark:text-white">Fivetran</span> passionate about
-          building scalable pipelines, mobile apps, and full-stack solutions.
+          {description}
         </p>
 
         {/* CTAs */}
@@ -103,19 +92,22 @@ export function Hero() {
             Download Resume
           </Button>
           <div className="flex space-x-3 justify-center">
-            {socialLinks.map(({ href, icon: Icon, label }) => (
-              <Button
-                key={label}
-                variant="outline"
-                size="lg"
-                className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors"
-                asChild
-              >
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  <Icon className="h-6 w-6" />
-                </a>
-              </Button>
-            ))}
+            {socialLinks.map(({ href, icon, label }) => {
+              const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
+              return (
+                <Button
+                  key={label}
+                  variant="outline"
+                  size="lg"
+                  className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors"
+                  asChild
+                >
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    <IconComponent className="h-6 w-6" />
+                  </a>
+                </Button>
+              );
+            })}
           </div>
         </div>
 

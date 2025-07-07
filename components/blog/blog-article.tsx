@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BlogPost, getRelatedBlogPosts, formatDate, formatReadTime } from '@/lib/blog';
+import { BlogPost, getRelatedBlogPosts, formatDate, formatReadTime } from '@/lib/data';
 import { BlogTableOfContents } from './blog-table-of-contents';
 import Link from 'next/link';
 import ReactMarkdown, { type ExtraProps } from 'react-markdown';
