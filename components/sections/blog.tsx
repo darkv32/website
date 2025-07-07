@@ -409,7 +409,7 @@ export function Blog() {
                   <p className="text-muted-foreground mb-6">
                     Visit my personal blog for the complete articles and more technical insights.
                   </p>
-                  <Button asChild>
+                  <Button className="btn-cta-secondary" asChild>
                     <a href="https://darkvoid32.github.io/" target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="h-4 w-4 mr-2" />
                       Visit My Blog

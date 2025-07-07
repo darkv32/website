@@ -219,7 +219,7 @@ export function Contact() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="btn-primary-enhanced-light btn-contact-light w-full"
+                    className="btn-cta-primary w-full"
                     size="lg"
                   >
                     {isSubmitting ? (

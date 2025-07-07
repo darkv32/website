@@ -168,11 +168,11 @@
 
   /* Enhanced Light Mode Card Components */
   .card-enhanced-light {
-    @apply backdrop-blur-sm border-2 border-border/60 hover:border-primary/70 transition-all duration-300 hover:shadow-2xl bg-card/95 hover:scale-[1.02] shadow-lg;
+    @apply backdrop-blur-sm border-4 border-border/80 hover:border-primary/90 transition-all duration-300 hover:shadow-2xl bg-card/95 hover:scale-[1.02] shadow-lg;
   }
 
   .card-section-light {
-    @apply border-2 border-border/40 bg-card/90 rounded-xl p-6 backdrop-blur-sm;
+    @apply border border-border/40 bg-card/90 rounded-xl p-6 backdrop-blur-sm;
   }
 
   .card-divider-light {
@@ -244,7 +244,7 @@
   }
 
   .card-group-light {
-    @apply space-y-6 p-6 border-2 border-border/30 rounded-xl bg-card/80 shadow-lg;
+    @apply space-y-6 p-6 border-2 border-border/50 rounded-xl bg-card/80 shadow-lg;
   }
 
   /* Enhanced Light Mode Spacing and Separation */
@@ -278,7 +278,7 @@
   }
 
   .border-accent-light {
-    @apply border-2 border-border/50;
+    @apply border-4 border-border/70;
   }
 
   /* Enhanced Light Mode Background Patterns */
@@ -313,19 +313,19 @@
 
   /* Page-Specific Card Styling */
   .card-about-light {
-    @apply border-2 border-blue-200/60 bg-card/95 shadow-lg;
+    @apply border-2 border-blue-300/80 bg-card/95 shadow-lg;
   }
 
   .card-experience-light {
-    @apply border-2 border-green-200/60 bg-card/95 shadow-lg;
+    @apply border-4 border-green-300/80 bg-card/95 shadow-lg;
   }
 
   .card-blog-light {
-    @apply border-2 border-purple-200/60 bg-card/95 shadow-lg;
+    @apply border-4 border-purple-300/80 bg-card/95 shadow-lg;
   }
 
   .card-contact-light {
-    @apply border-2 border-orange-200/60 bg-card/95 shadow-lg;
+    @apply border-4 border-orange-300/80 bg-card/95 shadow-lg;
   }
 
   /* Page-Specific Button Styling */
@@ -343,6 +343,23 @@
 
   .btn-contact-light {
     @apply bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg;
+  }
+
+  /* Enhanced CTA Button Styling */
+  .btn-cta-light {
+    @apply bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/40;
+  }
+
+  .btn-cta-dark {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/30;
+  }
+
+  .btn-cta-primary {
+    @apply bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-emerald-500/30;
+  }
+
+  .btn-cta-secondary {
+    @apply bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-amber-500/30;
   }
 
   /* Page-Specific Section Headers */

@@ -204,7 +204,7 @@ export function About() {
                 
                 <div className="space-y-6 text-muted-foreground leading-relaxed">
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.5s' }}
                     onMouseEnter={() => setHoveredCard('bio-1')}
                     onMouseLeave={() => setHoveredCard(null)}
@@ -217,7 +217,7 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.7s' }}
                     onMouseEnter={() => setHoveredCard('bio-2')}
                     onMouseLeave={() => setHoveredCard(null)}
@@ -231,7 +231,7 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '0.9s' }}
                     onMouseEnter={() => setHoveredCard('bio-3')}
                     onMouseLeave={() => setHoveredCard(null)}
@@ -245,7 +245,7 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border border-border/80 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                     style={{ animationDelay: '1.1s' }}
                     onMouseEnter={() => setHoveredCard('bio-4')}
                     onMouseLeave={() => setHoveredCard(null)}

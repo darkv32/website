@@ -453,7 +453,7 @@ const ExperienceDetailComponent = () => {
           <div className="text-center">
             <Button 
               size="lg" 
-              className="btn-primary-enhanced-light btn-experience-light"
+              className="btn-cta-primary"
               onClick={() => window.open('/resume.pdf', '_blank')}
             >
               <Download className="h-4 w-4 mr-2" />
