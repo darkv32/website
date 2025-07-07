@@ -216,10 +216,10 @@ export function FeaturedBlog() {
                     )}
                   </div>
                   
-                  <Button size="sm" variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
+                  <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
                     <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Read More
+                      <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
+                      <span className="btn-text">Read More</span>
                     </a>
                   </Button>
                 </CardContent>
@@ -253,9 +253,9 @@ export function FeaturedBlog() {
             </p>
             <div className="cta-container">
               <Link href="/blog">
-                <Button size="lg" className="cta-button-primary">
-                  View All Articles
-                  <ExternalLink className="h-4 w-4 ml-2" />
+                <Button size="lg" className="cta-button-primary btn-read-article">
+                  <span className="btn-text">View All Articles</span>
+                  <ExternalLink className="h-4 w-4 ml-2 btn-icon" />
                 </Button>
               </Link>
             </div>

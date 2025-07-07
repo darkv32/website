@@ -152,10 +152,10 @@ export function BlogDetail() {
                       )}
                     </div>
                     
-                    <Button size="sm" className="w-full" asChild>
+                    <Button size="sm" className="w-full btn-read-article" asChild>
                       <Link href={`/blog/${post.slug}`}>
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        Read Article
+                        <BookOpen className="h-4 w-4 mr-2 btn-icon" />
+                        <span className="btn-text">Read Article</span>
                       </Link>
                     </Button>
                   </CardContent>
@@ -303,10 +303,10 @@ export function BlogDetail() {
                       )}
                     </div>
                     
-                    <Button size="sm" variant="outline" className="w-full" asChild>
+                    <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
                       <Link href={`/blog/${post.slug}`}>
-                        <BookOpen className="h-4 w-4 mr-2" />
-                        Read Article
+                        <BookOpen className="h-4 w-4 mr-2 btn-icon" />
+                        <span className="btn-text">Read Article</span>
                       </Link>
                     </Button>
                   </CardContent>

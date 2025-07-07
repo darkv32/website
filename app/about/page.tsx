@@ -83,7 +83,7 @@ export default function AboutPage() {
             
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               <div 
-                className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
+                className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                 style={{ animationDelay: '0.5s' }}
               >
                 <p>
@@ -94,7 +94,7 @@ export default function AboutPage() {
               </div>
               
               <div 
-                className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
+                className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                 style={{ animationDelay: '0.7s' }}
               >
                 <p>
@@ -106,7 +106,7 @@ export default function AboutPage() {
               </div>
               
               <div 
-                className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
+                className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                 style={{ animationDelay: '0.9s' }}
               >
                 <p>
@@ -118,7 +118,7 @@ export default function AboutPage() {
               </div>
               
               <div 
-                className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
+                className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
                 style={{ animationDelay: '1.1s' }}
               >
                 <p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
           {/* Enhanced Education & Expertise */}
           <div className="space-y-8">
             {/* Education */}
-            <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.3s' }}>
+            <Card className="card-enhanced-light card-about-light animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
               <CardContent className="p-8">
                 <div className="flex items-start space-x-4">
                   <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
@@ -154,7 +154,7 @@ export default function AboutPage() {
             </Card>
 
             {/* Current Focus */}
-            <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.5s' }}>
+            <Card className="card-enhanced-light card-about-light animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
               <CardContent className="p-8">
                 <h4 className="font-bold text-lg mb-6 flex items-center">
                   <Award className="h-6 w-6 mr-3 text-primary animate-pulse" />
@@ -168,10 +168,18 @@ export default function AboutPage() {
                   ].map((item, index) => (
                     <div 
                       key={item.text}
-                      className={`flex items-center space-x-3 p-3 bg-${item.color}-500/10 rounded-lg hover:bg-${item.color}-500/20 transition-all duration-300 hover:scale-105 animate-slide-in-right`}
+                      className={`flex items-center space-x-3 p-3 rounded-lg transition-all duration-300 hover:scale-105 animate-slide-in-right ${
+                        item.color === 'green' ? 'bg-green-500/10 hover:bg-green-500/20' :
+                        item.color === 'blue' ? 'bg-blue-500/10 hover:bg-blue-500/20' :
+                        item.color === 'purple' ? 'bg-purple-500/10 hover:bg-purple-500/20' : ''
+                      }`}
                       style={{ animationDelay: `${0.7 + item.delay}s` }}
                     >
-                      <div className={`w-3 h-3 bg-${item.color}-500 rounded-full ${index === 0 ? 'animate-pulse' : ''}`}></div>
+                      <div className={`w-3 h-3 rounded-full ${index === 0 ? 'animate-pulse' : ''} ${
+                        item.color === 'green' ? 'bg-green-500' :
+                        item.color === 'blue' ? 'bg-blue-500' :
+                        item.color === 'purple' ? 'bg-purple-500' : ''
+                      }`}></div>
                       <span className="text-sm font-medium">{item.text}</span>
                     </div>
                   ))}
@@ -218,7 +226,7 @@ export default function AboutPage() {
             ].map((area, index) => (
               <Card 
                 key={area.title} 
-                className="card-enhanced animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
+                className="card-enhanced-light card-about-light animate-slide-up" 
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <CardContent className="p-8">
@@ -256,7 +264,7 @@ export default function AboutPage() {
             {values.map((value, index) => (
               <Card 
                 key={value.title} 
-                className="card-enhanced animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
+                className="card-enhanced-light card-about-light animate-slide-up" 
                 style={{ animationDelay: `${index * 200}ms` }}
               >
                 <CardContent className="p-8 text-center">

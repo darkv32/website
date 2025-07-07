@@ -134,10 +134,10 @@ export function Blog() {
                       )}
                     </div>
                     
-                    <Button size="sm" variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
+                    <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
                       <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4 mr-2" />
-                        Read More
+                        <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
+                        <span className="btn-text">Read More</span>
                       </a>
                     </Button>
                   </CardContent>
@@ -251,10 +251,10 @@ export function Blog() {
                         )}
                       </div>
                       
-                      <Button size="sm" variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
+                      <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
                         <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          Read More
+                          <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
+                          <span className="btn-text">Read More</span>
                         </a>
                       </Button>
                     </CardContent>
@@ -287,10 +287,10 @@ export function Blog() {
                   <p className="text-muted-foreground mb-6">
                     Visit my personal blog for the complete articles and more technical insights.
                   </p>
-                  <Button className="btn-cta-secondary cta-button-primary" asChild>
+                  <Button className="btn-cta-secondary cta-button-primary btn-read-article" asChild>
                     <a href="https://darkvoid32.github.io/" target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Visit My Blog
+                      <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
+                      <span className="btn-text">Visit My Blog</span>
                     </a>
                   </Button>
                 </CardContent>
