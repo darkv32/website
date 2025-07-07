@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Calendar, Clock, Eye, Share2, Twitter, Linkedin, Link as LinkIcon, MessageCircle, Heart, Bookmark } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Separator } from '@/components/ui/separator';
 import { BlogPost, getRelatedBlogPosts, formatDate, formatReadTime } from '@/lib/blog';
-import { BlogComments } from './blog-comments';
-import { BlogSocialShare } from './blog-social-share';
 import { BlogTableOfContents } from './blog-table-of-contents';
 import Link from 'next/link';
 import ReactMarkdown, { type ExtraProps } from 'react-markdown';
@@ -23,9 +20,6 @@ interface BlogArticleProps {
 export function BlogArticle({ post }: BlogArticleProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
-  const [likes, setLikes] = useState(42);
 
   const relatedPosts = getRelatedBlogPosts(post);
 
@@ -46,15 +40,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikes(prev => isLiked ? prev - 1 : prev + 1);
-  };
-
-  const handleBookmark = () => {
-    setIsBookmarked(!isBookmarked);
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <div className="fixed top-0 left-0 right-0 h-1 bg-secondary z-50">
@@ -63,7 +48,7 @@ export function BlogArticle({ post }: BlogArticleProps) {
           style={{ width: `${readingProgress}%` }}
         />
       </div>
-      <section className="relative py-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
+      <section className="relative pt-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
         <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
@@ -83,10 +68,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                     <Clock className="h-4 w-4" />
                     <span>{formatReadTime(post.readTime)}</span>
                   </div>
-                  <div className="flex items-center space-x-1">
-                    <Eye className="h-4 w-4" />
-                    <span>{post.views} views</span>
-                  </div>
                 </div>
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
@@ -105,30 +86,12 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   <div className="text-muted-foreground text-sm">{post.author.bio}</div>
                 </div>
               </div>
-              <div className="flex items-center justify-center space-x-4">
-                <Button
-                  variant={isLiked ? "default" : "outline"}
-                  size="sm"
-                  onClick={handleLike}
-                  className="space-x-2"
-                >
-                  <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
-                  <span>{likes}</span>
-                </Button>
-                <Button
-                  variant={isBookmarked ? "default" : "outline"}
-                  size="sm"
-                  onClick={handleBookmark}
-                >
-                  <Bookmark className={`h-4 w-4 ${isBookmarked ? 'fill-current' : ''}`} />
-                </Button>
-                <BlogSocialShare post={post} />
-              </div>
+
             </div>
           </div>
         </div>
       </section>
-      <section className="py-12">
+      {/* <section className="py-12">
         <div className="container-width section-padding">
           <div className="max-w-4xl mx-auto">
             <div className="aspect-video overflow-hidden rounded-xl shadow-2xl">
@@ -140,8 +103,8 @@ export function BlogArticle({ post }: BlogArticleProps) {
             </div>
           </div>
         </div>
-      </section>
-      <section className="py-12">
+      </section> */}
+      <section className="py-4">
         <div className="container-width section-padding">
           <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
             <div className="lg:col-span-1">
@@ -228,9 +191,7 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   </div>
                 </CardContent>
               </Card>
-              <div className="mt-12">
-                <BlogComments postId={post.id} />
-              </div>
+
             </div>
           </div>
         </div>
@@ -267,7 +228,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
                       </p>
                       <div className="flex items-center justify-between text-xs text-muted-foreground">
                         <span>{formatDate(relatedPost.publishedAt)}</span>
-                        <span>{relatedPost.views} views</span>
                       </div>
                     </CardContent>
                   </Card>
