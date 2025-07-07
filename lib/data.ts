@@ -176,8 +176,23 @@ export const getBlogData = (): BlogData => {
 // Get all blog posts
 export const getAllBlogPosts = (): BlogPost[] => {
   const { posts } = getBlogData();
+  const { site } = getSiteData();
+  
   return posts
     .filter(post => post.status === 'published')
+    .map(post => ({
+      ...post,
+      author: {
+        name: site.author.name,
+        avatar: site.author.avatar,
+        bio: site.author.bio,
+        social: {
+          twitter: site.author.social.twitter,
+          linkedin: site.author.social.linkedin,
+          github: site.author.social.github,
+        }
+      }
+    }))
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 };
 
@@ -189,7 +204,24 @@ export const getFeaturedBlogPosts = (): BlogPost[] => {
 // Get blog post by slug
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined => {
   const { posts } = getBlogData();
-  return posts.find(post => post.slug === slug && post.status === 'published');
+  const { site } = getSiteData();
+  
+  const post = posts.find(post => post.slug === slug && post.status === 'published');
+  if (!post) return undefined;
+  
+  return {
+    ...post,
+    author: {
+      name: site.author.name,
+      avatar: site.author.avatar,
+      bio: site.author.bio,
+      social: {
+        twitter: site.author.social.twitter,
+        linkedin: site.author.social.linkedin,
+        github: site.author.social.github,
+      }
+    }
+  };
 };
 
 // Get blog categories
