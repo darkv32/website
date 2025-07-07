@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { ArrowLeft, Sparkles } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -16,7 +16,7 @@ interface PageLayoutProps {
   className?: string;
 }
 
-export function PageLayout({
+const PageLayoutComponent = ({
   children,
   title,
   description,
@@ -25,10 +25,15 @@ export function PageLayout({
   backText = 'Back to Home',
   badge,
   className = ''
-}: PageLayoutProps) {
+}: PageLayoutProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Optimize mouse move handler with useCallback
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,40 +53,53 @@ export function PageLayout({
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  }, [handleMouseMove]);
 
   return (
     <div className={`min-h-screen bg-background relative overflow-hidden ${className}`}>
       {/* Enhanced gradient overlay with animation */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10 animate-pulse" />
+      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10" />
       
-      {/* Animated background elements */}
+      {/* Enhanced animated background elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
         <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
+        <div className="absolute top-1/3 left-1/3 w-48 h-48 bg-green-500/4 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '3s' }} />
+        <div className="absolute bottom-1/3 right-1/3 w-56 h-56 bg-orange-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '4s' }} />
       </div>
 
-      {/* Floating particles effect */}
+      {/* Enhanced floating particles effect */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float"
+            className="absolute w-1 h-1 bg-primary/15 rounded-full animate-float"
             style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + i * 20}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: `${3 + i}s`
+              left: `${15 + i * 8}%`,
+              top: `${8 + i * 12}%`,
+              animationDelay: `${i * 0.4}s`,
+              animationDuration: `${2 + i * 1.5}s`
             }}
           />
         ))}
+      </div>
+
+      {/* Additional geometric shapes */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/6 w-8 h-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-md rotate-45 transition-transform duration-3000 hover:scale-110"></div>
+        <div className="absolute bottom-1/4 right-1/6 w-6 h-6 bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-full transition-transform duration-3000 hover:scale-110"></div>
+        <div className="absolute top-3/4 left-1/3 w-4 h-4 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-sm rotate-12 transition-transform duration-3000 hover:scale-110"></div>
+        <div className="absolute bottom-3/4 right-1/4 w-5 h-5 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg transition-transform duration-3000 hover:scale-110"></div>
+      </div>
+
+      {/* Subtle gradient lines */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/3 left-0 w-0.5 h-24 bg-gradient-to-b from-transparent via-blue-500/15 to-transparent animate-pulse-slow"></div>
+        <div className="absolute bottom-1/3 right-0 w-0.5 h-24 bg-gradient-to-b from-transparent via-purple-500/15 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-transparent via-green-500/15 to-transparent animate-pulse-slow" style={{ animationDelay: '4s' }}></div>
       </div>
 
       {/* Mouse-following gradient */}
@@ -92,47 +110,27 @@ export function PageLayout({
         }}
       />
       
-      {/* Main background with enhanced gradient transition */}
-      <div className="pt-8 pb-24 bg-gradient-to-br from-background via-background to-background relative">
-        {/* Animated grid pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 animate-grid-flow" />
+      {/* Main background */}
+      <div className="pt-8 bg-gradient-to-br from-background via-background to-background relative">
+        {/* Simplified grid pattern */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
         
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-            {/* Enhanced Page Header */}
-            <div className="text-center mb-20">
-              {showBackButton && (
-                <Link 
-                  href={backHref} 
-                  className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8 animate-slide-in-left"
-                  style={{ animationDelay: '0.2s' }}
-                >
-                  <ArrowLeft className="h-4 w-4" />
-                  <span>{backText}</span>
-                </Link>
-              )}
-              
-              <div className="inline-flex items-center space-x-2 mb-4 animate-bounce" style={{ animationDuration: '2s' }}>
-                <Sparkles className="h-6 w-6 text-primary animate-spin" style={{ animationDuration: '3s' }} />
-                {badge && (
-                  <Badge variant="outline" className="text-sm backdrop-blur-sm border border-border/50">
-                    {badge}
-                  </Badge>
+            {/* Page Header */}
+            <div className="mb-16">
+              <div className="flex flex-col items-center">
+                <div className="inline-flex items-center space-x-2 mb-3 pt-16" />
+                <h1 className="text-4xl sm:text-5xl font-bold text-gradient-primary text-center leading-tight pb-2">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in text-center" style={{ animationDelay: '0.5s' }}>
+                    {description}
+                  </p>
                 )}
-                <Sparkles className="h-6 w-6 text-primary animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
               </div>
-              
-              <h1 className="text-4xl sm:text-5xl font-bold mb-6 text-gradient-primary animate-gradient-x">
-                {title}
-              </h1>
-              
-              {description && (
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.5s' }}>
-                  {description}
-                </p>
-              )}
             </div>
-
             {/* Page Content */}
             <div ref={sectionRef}>
               {children}
@@ -140,36 +138,9 @@ export function PageLayout({
           </div>
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
-        }
-        
-        @keyframes grid-flow {
-          0% { background-position: 0 0; }
-          100% { background-position: 50px 50px; }
-        }
-        
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
-        }
-        
-        .animate-grid-flow {
-          animation: grid-flow 20s linear infinite;
-        }
-        
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 3s ease infinite;
-        }
-      `}</style>
     </div>
   );
-} 
+};
+
+// Export with React.memo for performance optimization
+export const PageLayout = React.memo(PageLayoutComponent); 

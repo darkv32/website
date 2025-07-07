@@ -32,7 +32,24 @@ export default function AboutPage() {
       badge="About Me"
       showBackButton
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Orbs */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-green-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-40 left-20 w-28 h-28 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-20 right-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-60 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg rotate-45 animate-float" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute bottom-60 right-1/3 w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full animate-float" style={{ animationDelay: '5s' }}></div>
+        
+        {/* Gradient Lines */}
+        <div className="absolute top-1/3 left-0 w-1 h-32 bg-gradient-to-b from-transparent via-blue-500/20 to-transparent animate-pulse-slow"></div>
+        <div className="absolute bottom-1/3 right-0 w-1 h-32 bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20 relative z-10">
         {/* Enhanced Biography */}
         <div className="space-y-6">
           <div className="flex items-center space-x-3 mb-8 animate-slide-in-left" style={{ animationDelay: '0.3s' }}>
@@ -44,7 +61,7 @@ export default function AboutPage() {
           
           <div className="space-y-6 text-muted-foreground leading-relaxed">
             <div 
-              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
               style={{ animationDelay: '0.5s' }}
             >
               <p>
@@ -55,7 +72,7 @@ export default function AboutPage() {
             </div>
             
             <div 
-              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
               style={{ animationDelay: '0.7s' }}
             >
               <p>
@@ -67,7 +84,7 @@ export default function AboutPage() {
             </div>
             
             <div 
-              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
               style={{ animationDelay: '0.9s' }}
             >
               <p>
@@ -79,7 +96,7 @@ export default function AboutPage() {
             </div>
             
             <div 
-              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/30 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/30 animate-slide-in-left"
+              className="p-6 bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 animate-slide-in-left group"
               style={{ animationDelay: '1.1s' }}
             >
               <p>
@@ -94,7 +111,7 @@ export default function AboutPage() {
         {/* Enhanced Education & Expertise */}
         <div className="space-y-8">
           {/* Education */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
+          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.3s' }}>
             <CardContent className="p-8">
               <div className="flex items-start space-x-4">
                 <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
@@ -115,7 +132,7 @@ export default function AboutPage() {
           </Card>
 
           {/* Current Focus */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
+          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.5s' }}>
             <CardContent className="p-8">
               <h4 className="font-bold text-lg mb-6 flex items-center">
                 <Award className="h-6 w-6 mr-3 text-primary animate-pulse" />
@@ -139,33 +156,11 @@ export default function AboutPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* GitHub Achievements */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.7s' }}>
-            <CardContent className="p-8">
-              <h4 className="font-bold text-lg mb-4 flex items-center">
-                <TrendingUp className="h-6 w-6 mr-3 text-primary animate-pulse" />
-                GitHub Achievements
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {['Arctic Code Vault', 'Pair Extraordinaire', 'YOLO', 'Quickdraw', 'Pull Shark'].map((achievement, index) => (
-                  <Badge 
-                    key={achievement} 
-                    variant="secondary" 
-                    className="badge-enhanced text-xs animate-fade-in"
-                    style={{ animationDelay: `${0.9 + index * 0.1}s` }}
-                  >
-                    {achievement}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
       {/* Enhanced Expertise Areas */}
-      <div className="mb-16">
+      <div className="mb-16 relative z-10">
         <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
           <h3 className="text-3xl font-bold mb-4">Areas of Expertise</h3>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -201,7 +196,7 @@ export default function AboutPage() {
           ].map((area, index) => (
             <Card 
               key={area.title} 
-              className="card-enhanced animate-slide-up" 
+              className="card-enhanced animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
               style={{ animationDelay: `${index * 200}ms` }}
             >
               <CardContent className="p-8 group">
@@ -233,7 +228,7 @@ export default function AboutPage() {
       </div>
 
       {/* Enhanced Core Values */}
-      <div>
+      <div className="relative z-10 pb-16">
         <div className="text-center mb-12 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <h3 className="text-3xl font-bold mb-4">Core Values</h3>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -244,7 +239,7 @@ export default function AboutPage() {
           {values.map((value, index) => (
             <Card 
               key={value.title} 
-              className="card-enhanced animate-slide-up" 
+              className="card-enhanced animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
               style={{ animationDelay: `${(index + 3) * 200}ms` }}
             >
               <CardContent className="p-8 text-center group">

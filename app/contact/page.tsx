@@ -13,9 +13,31 @@ export default function ContactPage() {
       badge="Get In Touch"
       showBackButton
     >
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Orbs */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-green-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-40 left-20 w-28 h-28 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-20 right-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-60 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg rotate-45 animate-float" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute bottom-60 right-1/3 w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full animate-float" style={{ animationDelay: '5s' }}></div>
+        
+        {/* Gradient Lines */}
+        <div className="absolute top-1/3 left-0 w-1 h-32 bg-gradient-to-b from-transparent via-blue-500/20 to-transparent animate-pulse-slow"></div>
+        <div className="absolute bottom-1/3 right-0 w-1 h-32 bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Floating Text Elements */}
+        <div className="absolute top-1/4 right-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '1s' }}>Hello</div>
+        <div className="absolute bottom-1/4 left-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '3s' }}>Connect</div>
+        <div className="absolute top-1/2 left-1/2 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '5s' }}>Message</div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
         {/* Contact Form */}
-        <Card className="card-enhanced animate-slide-in-left" style={{ animationDelay: '0.3s' }}>
+        <Card className="card-enhanced animate-slide-in-left hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.3s' }}>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Send className="h-5 w-5 text-primary" />
@@ -81,7 +103,7 @@ export default function ContactPage() {
         {/* Contact Information */}
         <div className="space-y-8">
           {/* Personal Info */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
+          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.5s' }}>
             <CardContent className="p-8">
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
@@ -101,7 +123,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Social Links */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.7s' }}>
+          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.7s' }}>
             <CardContent className="p-8">
               <h4 className="font-bold text-lg mb-6">Connect With Me</h4>
               <div className="space-y-4">
@@ -137,7 +159,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Response Time */}
-          <Card className="card-enhanced animate-slide-in-right" style={{ animationDelay: '0.9s' }}>
+          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.9s' }}>
             <CardContent className="p-8 text-center">
               <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
                 <Clock className="h-8 w-8 text-primary" />

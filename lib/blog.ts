@@ -136,7 +136,7 @@ The server should appear on the development build on your phone and then you can
     tags: ['React Native', 'BLE', 'Expo', 'Debugging'],
     readTime: 3,
     views: 420,
-    featured: true,
+    featured: false,
     status: 'published',
     seo: {
       metaTitle: 'Fix React Native BLE createClient Error - Tang Yetong',

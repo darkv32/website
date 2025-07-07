@@ -53,27 +53,6 @@ export function BlogDetail() {
 
   const totalViews = allPosts.reduce((sum, post) => sum + post.views, 0);
 
-  const blogStats = [
-    {
-      title: "Technical Expertise",
-      description: "Deep dive into blockchain development, mobile apps, and software engineering",
-      icon: BookOpen,
-      color: "text-blue-500"
-    },
-    {
-      title: "Community Impact",
-      description: "Sharing knowledge and contributing to developer education",
-      icon: Users,
-      color: "text-green-500"
-    },
-    {
-      title: "Industry Recognition",
-      description: "Featured in Summer of Bitcoin and open-source communities",
-      icon: Award,
-      color: "text-purple-500"
-    }
-  ];
-
   if (isLoading) {
     return <BlogLoading />;
   }
@@ -85,64 +64,108 @@ export function BlogDetail() {
       badge="Blog"
       showBackButton
     >
-      {/* Blog Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.2s' }}>
-          <CardContent className="p-6">
-            <div className="text-3xl font-bold text-primary mb-2">{allPosts.length}</div>
-            <div className="text-muted-foreground">Total Articles</div>
-          </CardContent>
-        </Card>
-        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.4s' }}>
-          <CardContent className="p-6">
-            <div className="text-3xl font-bold text-primary mb-2">{totalViews.toLocaleString()}</div>
-            <div className="text-muted-foreground">Total Views</div>
-          </CardContent>
-        </Card>
-        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.6s' }}>
-          <CardContent className="p-6">
-            <div className="text-3xl font-bold text-primary mb-2">{featuredPosts.length}</div>
-            <div className="text-muted-foreground">Featured Posts</div>
-          </CardContent>
-        </Card>
-        <Card className="card-enhanced text-center animate-slide-up" style={{ animationDelay: '0.8s' }}>
-          <CardContent className="p-6">
-            <div className="text-3xl font-bold text-primary mb-2">{Math.round(allPosts.reduce((sum, post) => sum + post.readTime, 0) / allPosts.length)}</div>
-            <div className="text-muted-foreground">Avg Read Time</div>
-          </CardContent>
-        </Card>
+      {/* Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating Orbs */}
+        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0s' }}></div>
+        <div className="absolute top-40 right-20 w-24 h-24 bg-green-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-40 left-20 w-28 h-28 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-20 right-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
+        
+        {/* Geometric Shapes */}
+        <div className="absolute top-60 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg rotate-45 animate-float" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute bottom-60 right-1/3 w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full animate-float" style={{ animationDelay: '5s' }}></div>
+        
+        {/* Gradient Lines */}
+        <div className="absolute top-1/3 left-0 w-1 h-32 bg-gradient-to-b from-transparent via-blue-500/20 to-transparent animate-pulse-slow"></div>
+        <div className="absolute bottom-1/3 right-0 w-1 h-32 bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
+        
+        {/* Floating Text Elements */}
+        <div className="absolute top-1/4 right-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '1s' }}>Blog</div>
+        <div className="absolute bottom-1/4 left-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '3s' }}>Insights</div>
+        <div className="absolute top-1/2 left-1/2 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '5s' }}>Knowledge</div>
       </div>
 
-      {/* Blog Impact */}
-      <div className="page-section">
-        <div className="page-section-content">
-          <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-            Blog Impact & Focus
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {blogStats.map((stat, index) => (
-              <Card 
-                key={stat.title} 
-                className="card-enhanced text-center animate-slide-up" 
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <CardContent className="p-8 group">
-                  <div className={`p-4 rounded-full w-fit mx-auto mb-4 ${stat.color} bg-secondary/50 group-hover:bg-secondary transition-colors group-hover:scale-110`}>
-                    <stat.icon className="h-8 w-8" />
-                  </div>
-                  <h4 className="font-bold text-lg mb-3 group-hover:text-primary transition-colors">{stat.title}</h4>
-                  <p className="text-muted-foreground">{stat.description}</p>
-                </CardContent>
-              </Card>
-            ))}
+      {/* Featured Posts */}
+      {featuredPosts.length > 0 && (
+        <div className="page-section relative z-10" style={{ marginTop: '-6rem' }}>
+          <div className="page-section-content">
+            <h2 className="text-3xl font-bold text-center mb-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+              Featured Articles
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+              {featuredPosts.map((post, index) => (
+                <Card 
+                  key={post.slug} 
+                  className="card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
+                  style={{ animationDelay: `${index * 200}ms` }}
+                >
+                <div className="aspect-video overflow-hidden relative">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute top-4 left-4">
+                        <Badge className="bg-primary">Featured</Badge>
+                      </div>
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <div className="flex items-center space-x-4 text-white text-sm">
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="h-4 w-4" />
+                            <span>{formatDate(post.publishedAt)}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="h-4 w-4" />
+                            <span>{formatReadTime(post.readTime)}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <CardHeader>
+                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
+                      {post.title}
+                    </CardTitle>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{post.views.toLocaleString()} views</span>
+                      <Badge variant="outline" className="text-xs">{post.category}</Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
+                    
+                    <div className="flex flex-wrap gap-2">
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <Badge key={tag} variant="outline" className="badge-enhanced text-xs">
+                          {tag}
+                        </Badge>
+                      ))}
+                      {post.tags.length > 3 && (
+                        <Badge variant="outline" className="badge-enhanced text-xs">
+                          +{post.tags.length - 3}
+                        </Badge>
+                      )}
+                    </div>
+                    
+                    <Button size="sm" className="w-full" asChild>
+                      <Link href={`/blog/${post.slug}`}>
+                        <BookOpen className="h-4 w-4 mr-2" />
+                        Read Article
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Search and Filters */}
-      <div className="page-section-alt">
+      <div className="page-section-alt relative z-10" style={{ marginTop: '-6rem' }}>
         <div className="page-section-content">
-          <div className="flex flex-col lg:flex-row gap-6 items-start lg:items-center justify-between mb-8">
+          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
             {/* Search */}
             <div className="w-full lg:w-96">
               <BlogSearch onSearchResults={handleSearchResults} />
@@ -190,7 +213,7 @@ export function BlogDetail() {
           </div>
 
           {/* Category Pills */}
-          <div className="flex flex-wrap gap-2 mb-8">
+          <div className="flex flex-wrap gap-2 mb-6 pt-4">
             <Button
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               size="sm"
@@ -206,7 +229,7 @@ export function BlogDetail() {
                 size="sm"
                 onClick={() => setSelectedCategory(category.slug)}
                 className="badge-enhanced"
-                style={{ animationDelay: `${index * 50}ms` }}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
                 {category.name} ({category.postCount})
               </Button>
@@ -215,118 +238,18 @@ export function BlogDetail() {
         </div>
       </div>
 
-      {/* Featured Posts */}
-      {searchResults.length === 0 && selectedCategory === 'all' && (
-        <div className="page-section">
-          <div className="page-section-content">
-            <h2 className="text-3xl font-bold text-center mb-12 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              Featured Articles
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 mb-16">
-              {featuredPosts.slice(0, 3).map((post, index) => (
-                <Card 
-                  key={post.id} 
-                  className="card-enhanced group overflow-hidden animate-slide-up" 
-                  style={{ animationDelay: `${index * 200}ms` }}
-                >
-                  <div className="aspect-video overflow-hidden relative">
-                    <img
-                      src={post.featuredImage}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-                    <div className="absolute top-4 left-4 flex items-center space-x-2">
-                      <Badge className="bg-primary">Featured</Badge>
-                    </div>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <div className="flex items-center space-x-4 text-white text-sm">
-                        <div className="flex items-center space-x-1">
-                          <TrendingUp className="h-4 w-4" />
-                          <span>{post.views} views</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Tag className="h-4 w-4" />
-                          <span>{post.tags.length} tags</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors leading-tight">
-                      <Link href={`/blog/${post.slug}`}>
-                        {post.title}
-                      </Link>
-                    </CardTitle>
-                    <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDate(post.publishedAt)}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{formatReadTime(post.readTime)}</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground text-sm line-clamp-3 leading-relaxed">{post.excerpt}</p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.slice(0, 3).map((tag, tagIndex) => (
-                        <Badge 
-                          key={tag} 
-                          variant="outline" 
-                          className="badge-enhanced text-xs"
-                          style={{ animationDelay: `${(index * 200) + (tagIndex * 50)}ms` }}
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                      {post.tags.length > 3 && (
-                        <Badge variant="outline" className="badge-enhanced text-xs">
-                          +{post.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button size="sm" variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
-                      <Link href={`/blog/${post.slug}`}>
-                        Read Full Article
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* All Posts */}
-      <div className="page-section-alt">
+      <div className="page-section relative z-10" style={{ marginTop: '-10rem' }}>
         <div className="page-section-content">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-            <h2 className="text-3xl font-bold animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              {searchResults.length > 0 ? 'Search Results' : 
-               selectedCategory !== 'all' ? `${blogCategories.find(cat => cat.slug === selectedCategory)?.name} Articles` : 
-               'All Articles'}
-            </h2>
-            
-            <div className="text-muted-foreground text-sm animate-fade-in" style={{ animationDelay: '0.5s' }}>
-              Showing {currentPosts.length} of {filteredPosts.length} articles
-            </div>
-          </div>
-
           {/* Posts Grid/List */}
           <div className={viewMode === 'grid' 
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12' 
-            : 'space-y-6 mb-12'
+            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' 
+            : 'space-y-6'
           }>
             {currentPosts.map((post, index) => (
               <Card 
-                key={post.id} 
-                className={`card-enhanced group animate-slide-up ${
+                key={post.slug} 
+                className={`card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 ${
                   viewMode === 'list' ? 'md:flex md:items-center' : ''
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
@@ -335,38 +258,11 @@ export function BlogDetail() {
                   <img
                     src={post.featuredImage}
                     alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-                  <div className="absolute top-2 left-2 flex items-center space-x-1">
-                    <Badge variant="outline" className="bg-background/80 text-xs">
-                      {blogCategories.find(cat => cat.slug === post.category)?.name}
-                    </Badge>
-                    {post.featured && (
-                      <Badge className="bg-primary text-xs">Featured</Badge>
-                    )}
-                  </div>
-                  <div className="absolute bottom-2 left-2 right-2">
-                    <div className="flex items-center space-x-3 text-white text-xs">
-                      <div className="flex items-center space-x-1">
-                        <TrendingUp className="h-3 w-3" />
-                        <span>{post.views}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Tag className="h-3 w-3" />
-                        <span>{post.tags.length}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
-                  <CardHeader className={viewMode === 'list' ? 'p-0 pb-4' : ''}>
-                    <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                      <Link href={`/blog/${post.slug}`}>
-                        {post.title}
-                      </Link>
-                    </CardTitle>
-                    <div className="flex items-center space-x-4 text-muted-foreground text-sm">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <div className="flex items-center space-x-4 text-white text-sm">
                       <div className="flex items-center space-x-1">
                         <Calendar className="h-4 w-4" />
                         <span>{formatDate(post.publishedAt)}</span>
@@ -376,18 +272,24 @@ export function BlogDetail() {
                         <span>{formatReadTime(post.readTime)}</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+                <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
+                  <CardHeader className={viewMode === 'list' ? 'p-0 pb-4' : ''}>
+                    <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
+                      {post.title}
+                    </CardTitle>
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{post.views.toLocaleString()} views</span>
+                      <Badge variant="outline" className="text-xs">{post.category}</Badge>
+                    </div>
                   </CardHeader>
                   <CardContent className={`space-y-3 ${viewMode === 'list' ? 'p-0' : ''}`}>
-                    <p className="text-muted-foreground text-sm line-clamp-2">{post.excerpt}</p>
+                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
                     
                     <div className="flex flex-wrap gap-2">
-                      {post.tags.slice(0, 3).map((tag, tagIndex) => (
-                        <Badge 
-                          key={tag} 
-                          variant="outline" 
-                          className="badge-enhanced text-xs"
-                          style={{ animationDelay: `${(index * 100) + (tagIndex * 30)}ms` }}
-                        >
+                      {post.tags.slice(0, 3).map((tag) => (
+                        <Badge key={tag} variant="outline" className="badge-enhanced text-xs">
                           {tag}
                         </Badge>
                       ))}
@@ -398,8 +300,9 @@ export function BlogDetail() {
                       )}
                     </div>
                     
-                    <Button size="sm" variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-colors" asChild>
+                    <Button size="sm" variant="outline" className="w-full" asChild>
                       <Link href={`/blog/${post.slug}`}>
+                        <BookOpen className="h-4 w-4 mr-2" />
                         Read Article
                       </Link>
                     </Button>
@@ -411,8 +314,8 @@ export function BlogDetail() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center animate-fade-in" style={{ animationDelay: '0.7s' }}>
-              <BlogPagination
+            <div className="mt-12">
+              <BlogPagination 
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={setCurrentPage}
@@ -426,44 +329,14 @@ export function BlogDetail() {
               <Button 
                 variant="outline" 
                 onClick={() => {
-                  setSelectedCategory('all');
                   setSearchResults([]);
+                  setSelectedCategory('all');
                 }}
               >
                 Clear Filters
               </Button>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Newsletter/Subscribe Section */}
-      <div className="page-section">
-        <div className="page-section-content">
-          <Card className="max-w-4xl mx-auto card-enhanced animate-slide-up" style={{ animationDelay: '0.3s' }}>
-            <CardContent className="p-12 text-center">
-              <h2 className="text-3xl font-bold mb-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-                Stay Updated
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: '0.7s' }}>
-                Follow my technical journey and get notified about new articles on blockchain development, 
-                mobile apps, and software engineering insights.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in" style={{ animationDelay: '0.9s' }}>
-                <Button size="lg" className="btn-primary-enhanced" asChild>
-                  <a href="https://darkvoid32.github.io/" target="_blank" rel="noopener noreferrer">
-                    <ExternalLink className="h-4 w-4 mr-2" />
-                    Visit My Blog
-                  </a>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <a href="https://github.com/fivetran-tangyetong" target="_blank" rel="noopener noreferrer">
-                    Follow on GitHub
-                  </a>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </div>
     </PageLayout>
