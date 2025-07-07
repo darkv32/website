@@ -170,7 +170,7 @@ export function FeaturedExperience() {
             {featuredExperiences.map((exp, index) => (
               <Card 
                 key={index} 
-                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 border-l-4 border-l-primary hover:border-l-primary/80 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
+                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 border-l-4 border-l-primary border-2 border-primary/40 shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
                 style={{ animationDelay: `${index * 200}ms` }}
                 onMouseEnter={() => setHoveredCard(`exp-${index}`)}
                 onMouseLeave={() => setHoveredCard(null)}

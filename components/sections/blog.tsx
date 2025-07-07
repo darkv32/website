@@ -96,7 +96,7 @@ export function Blog() {
             <h3 className="text-2xl font-semibold mb-8 text-center">Featured Posts</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.slice(0, 3).map((post, index) => (
-                <Card key={post.id} className={`group hover:shadow-xl transition-all duration-300 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 200}ms` }}>
+                <Card key={post.id} className={`group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 200}ms` }}>
                   <CardHeader>
                     <div className="flex items-center justify-between mb-2">
                       <Badge className="bg-primary/10 text-primary">Featured</Badge>
@@ -134,7 +134,7 @@ export function Blog() {
                       )}
                     </div>
                     
-                    <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
+                    <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
                       <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
                         <span className="btn-text">Read More</span>
@@ -208,9 +208,7 @@ export function Blog() {
               : 'space-y-6'
             }>
               {filteredPosts.map((post, index) => (
-                <Card key={post.id} className={`card-enhanced-light card-blog-light group ${
-                  viewMode === 'list' ? 'md:flex md:items-center' : ''
-                } ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 100}ms` }}>
+                <Card key={post.id} className={`group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 100}ms` }}>
                   <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
                     <CardHeader className={viewMode === 'list' ? 'p-0 pb-4' : ''}>
                       <div className="flex items-center justify-between mb-2">
@@ -251,7 +249,7 @@ export function Blog() {
                         )}
                       </div>
                       
-                      <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
+                      <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
                         <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
                           <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
                           <span className="btn-text">Read More</span>

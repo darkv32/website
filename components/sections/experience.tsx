@@ -170,7 +170,7 @@ export function Experience() {
 
                   {/* Content */}
                   <div className={`ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <Card className="hover:shadow-lg transition-shadow duration-300 border-l-4 border-l-primary">
+                    <Card className="hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-primary border-2 border-primary/40 shadow-lg">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-3">
                           <div>
@@ -226,7 +226,7 @@ export function Experience() {
           <div className="mb-16">
             <h3 className="text-2xl font-semibold text-center mb-8">Education</h3>
             <div className="max-w-2xl mx-auto">
-              <Card className="hover:shadow-lg transition-shadow duration-300">
+              <Card className="hover:shadow-lg transition-shadow duration-300 border-2 border-primary/40 shadow-lg">
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     <div className="p-3 bg-primary/10 rounded-lg">
@@ -278,7 +278,7 @@ export function Experience() {
             <h3 className="text-2xl font-semibold text-center mb-8">Achievements & Recognition</h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {achievements.map((achievement, index) => (
-                <Card key={index} className={`transition-all duration-500 hover:shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 200}ms` }}>
+                <Card key={index} className={`transition-all duration-500 hover:shadow-lg border-2 border-primary/40 shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 200}ms` }}>
                   <CardContent className="p-6 text-center">
                     <div className="p-3 bg-primary/10 rounded-full w-fit mx-auto mb-4">
                       <achievement.icon className="h-8 w-8 text-primary" />

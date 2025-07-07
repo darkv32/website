@@ -187,7 +187,7 @@ const TimelineItem = React.memo(({ exp, index }: { exp: any; index: number }) =>
 
       {/* Content */}
       <div className={`ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-        <Card className="card-enhanced border-l-4 border-l-primary group hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90">
+        <Card className="card-enhanced border-l-4 border-l-primary group hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 border-2 border-primary/40 shadow-lg">
           <CardHeader className="pb-4">
             <div className="flex items-start justify-between mb-2">
               <div>

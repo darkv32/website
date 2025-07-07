@@ -167,7 +167,7 @@ export function FeaturedBlog() {
             {featuredPosts.map((post, index) => (
               <Card 
                 key={post.id} 
-                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50 ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
+                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 border-2 border-primary/40 shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
                 style={{ animationDelay: `${index * 200}ms` }}
                 onMouseEnter={() => setHoveredCard(`blog-${index}`)}
                 onMouseLeave={() => setHoveredCard(null)}

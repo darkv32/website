@@ -69,7 +69,7 @@ export default function ContactPage() {
         {/* Contact Information */}
         <div className="space-y-8">
           {/* Personal Info */}
-          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.5s' }}>
+          <Card className="card-enhanced border-2 border-primary/30 animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.5s' }}>
             <CardContent className="p-8">
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
@@ -89,7 +89,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Social Links */}
-          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.7s' }}>
+          <Card className="card-enhanced border-2 border-primary/30 animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.7s' }}>
             <CardContent className="p-8">
               <h4 className="font-bold text-lg mb-6">Connect With Me</h4>
               <div className="space-y-4">
@@ -116,7 +116,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Response Time */}
-          <Card className="card-enhanced animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.9s' }}>
+          <Card className="card-enhanced border-2 border-primary/30 animate-slide-in-right hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.9s' }}>
             <CardContent className="p-8 text-center">
               <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
                 <Clock className="h-8 w-8 text-primary" />

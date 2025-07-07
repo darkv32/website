@@ -151,7 +151,7 @@ export function BlogArticle({ post }: BlogArticleProps) {
                   ))}
                 </div>
               </div>
-              <Card className="mt-12">
+              <Card className="mt-12 border-2 border-primary/30 shadow-md">
                 <CardContent className="p-8">
                   <div className="flex items-start space-x-6">
                     <Avatar className="h-20 w-20">
@@ -203,7 +203,7 @@ export function BlogArticle({ post }: BlogArticleProps) {
               <h2 className="text-3xl font-bold text-center mb-12">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {relatedPosts.map((relatedPost) => (
-                  <Card key={relatedPost.id} className="group hover:shadow-xl transition-all duration-300">
+                  <Card key={relatedPost.id} className="group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md">
                     <div className="aspect-video overflow-hidden rounded-t-lg">
                       <img
                         src={relatedPost.featuredImage}

@@ -69,7 +69,7 @@ export function BlogSearch({ onSearchResults }: BlogSearchProps) {
 
       {/* Search Results Dropdown */}
       {showResults && (
-        <Card className="absolute top-full left-0 right-0 mt-2 z-50 max-h-96 overflow-y-auto">
+        <Card className="absolute top-full left-0 right-0 mt-2 z-50 max-h-96 overflow-y-auto border-2 border-primary/30 shadow-md">
           <CardContent className="p-4">
             {isSearching ? (
               <div className="text-center py-4">

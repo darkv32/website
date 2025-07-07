@@ -102,7 +102,7 @@ export function BlogDetail() {
               {featuredPosts.map((post, index) => (
                 <Card 
                   key={post.slug} 
-                  className="card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
+                  className="card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/70 hover:bg-card/90 border-2 border-primary/30 shadow-md"
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
                 <div className="aspect-video overflow-hidden relative">
@@ -253,7 +253,7 @@ export function BlogDetail() {
             {currentPosts.map((post, index) => (
               <Card 
                 key={post.slug} 
-                className={`card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90 ${
+                className={`card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/70 hover:bg-card/90 border-2 border-primary/30 shadow-md ${
                   viewMode === 'list' ? 'md:flex md:items-center' : ''
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
@@ -303,7 +303,7 @@ export function BlogDetail() {
                       )}
                     </div>
                     
-                    <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
+                    <Button size="sm" className="w-full btn-read-article" asChild>
                       <Link href={`/blog/${post.slug}`}>
                         <BookOpen className="h-4 w-4 mr-2 btn-icon" />
                         <span className="btn-text">Read Article</span>

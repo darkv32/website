@@ -126,7 +126,7 @@ export function Contact() {
             {/* Contact Info & Social */}
             <div className={`space-y-8 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               {/* Contact Information */}
-              <Card className="card-enhanced-light card-contact-light">
+              <Card className="card-enhanced-light card-contact-light shadow-md">
                 <CardHeader>
                   <CardTitle>Contact Information</CardTitle>
                 </CardHeader>
@@ -151,7 +151,7 @@ export function Contact() {
               </Card>
 
               {/* Social Links */}
-              <Card className="card-enhanced-light card-contact-light">
+              <Card className="card-enhanced-light card-contact-light shadow-md">
                 <CardHeader>
                   <CardTitle>Connect with Me</CardTitle>
                 </CardHeader>
