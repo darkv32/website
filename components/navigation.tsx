@@ -77,8 +77,24 @@ export function Navigation() {
     >
       <div className="container-width section-padding">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
+          {/* Mobile menu button - Left side */}
+          <div className="md:hidden">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="w-10 h-10 p-2"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </Button>
+          </div>
+
+          {/* Logo - Center on mobile, left on desktop */}
+          <div className="flex-shrink-0 md:flex-shrink-0">
             <Link
               href="/"
               className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
@@ -130,71 +146,107 @@ export function Navigation() {
             </div>
           </div>
 
-          {/* Theme Toggle & Mobile Menu */}
-          <div className="flex items-center space-x-2">
+          {/* Theme Toggle - Right side */}
+          <div className="flex items-center">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="w-9 h-9"
+              className="w-10 h-10 p-2 relative"
             >
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Toggle theme</span>
             </Button>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="w-9 h-9"
-              >
-                {isMobileMenuOpen ? (
-                  <X className="h-5 w-5" />
-                ) : (
-                  <Menu className="h-5 w-5" />
-                )}
-              </Button>
-            </div>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Left Side Drawer */}
         {isMobileMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-background/95 backdrop-blur-sm border-t border-border/40">
-              {navigation.map((item) => {
-                const isActive = isHomePage && item.href.startsWith('/#') 
-                  ? activeSection === item.href.slice(2)
-                  : false;
-                
-                return (
+          <>
+            {/* Backdrop */}
+            <div 
+              className="md:hidden fixed inset-0 bg-black/50 z-40"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+            {/* Side Drawer */}
+            <div className="md:hidden fixed top-0 left-0 h-full w-64 bg-background/95 backdrop-blur-md shadow-xl border-r border-border/40 z-50 transform transition-transform duration-300 ease-in-out">
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="flex items-center justify-between p-4 border-b border-border/40">
                   <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => {
-                      if (item.href.startsWith('/#')) {
-                        e.preventDefault();
-                        handleNavClick(item.href);
-                      } else {
-                        setIsMobileMenuOpen(false);
-                      }
-                    }}
-                    className={cn(
-                      'block px-3 py-2 rounded-md text-base font-medium transition-colors',
-                      isActive
-                        ? 'text-primary bg-primary/10'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                    )}
+                    href="/"
+                    className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item.name}
+                    <Image
+                      src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                      alt="Tang Yetong Logo"
+                      width={24}
+                      height={24}
+                      className="h-6 w-auto bg-transparent"
+                      style={{ paddingBottom: '3px' }}
+                    />
+                    <span className="text-lg font-bold text-primary">Tang Yetong</span>
                   </Link>
-                );
-              })}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="w-8 h-8"
+                  >
+                    <X className="h-4 w-4" />
+                  </Button>
+                </div>
+                
+                {/* Navigation Links */}
+                <div className="flex-1 p-4 space-y-3">
+                  {navigation.map((item) => {
+                    const isActive = isHomePage && item.href.startsWith('/#') 
+                      ? activeSection === item.href.slice(2)
+                      : false;
+                    
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={(e) => {
+                          if (item.href.startsWith('/#')) {
+                            e.preventDefault();
+                            handleNavClick(item.href);
+                          } else {
+                            setIsMobileMenuOpen(false);
+                          }
+                        }}
+                        className={cn(
+                          'block px-4 py-4 rounded-lg text-base font-medium transition-colors min-h-[48px] flex items-center',
+                          isActive
+                            ? 'text-primary bg-primary/10 border-l-4 border-primary'
+                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                        )}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
+                </div>
+                
+                {/* Footer with Theme Toggle */}
+                <div className="p-4 border-t border-border/40">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    className="w-full relative"
+                  >
+                    <Sun className="absolute h-4 w-4 left-3 mr-2 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                    <Moon className="absolute h-4 w-4 left-3 top-1/2 -translate-y-1/2 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                    <span>Toggle Theme</span>
+                  </Button>
+                </div>
+              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </nav>

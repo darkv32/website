@@ -59,12 +59,12 @@ export function Hero() {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pt-32">
         {/* Name with Theme-aware Gradient */}
-        <h1 className="text-5xl sm:text-6xl lg:text-8xl font-extrabold leading-relaxed overflow-visible bg-clip-text text-transparent bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200 mb-6 pb-2">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight sm:leading-relaxed overflow-visible bg-clip-text text-transparent bg-gradient-to-r from-gray-800 via-gray-700 to-gray-600 dark:from-gray-400 dark:via-gray-300 dark:to-gray-200 mb-4 sm:mb-6 pb-2">
           Tang Yetong
         </h1>
 
         {/* Dynamic Role */}
-        <div className="text-xl sm:text-2xl lg:text-3xl text-gray-800 dark:text-white mb-8 h-10 bg-transparent">
+        <div className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-gray-800 dark:text-white mb-6 sm:mb-8 h-8 sm:h-10 bg-transparent">
           <Typewriter
             words={roles}
             loop={0}
@@ -77,21 +77,21 @@ export function Hero() {
         </div>
 
         {/* Description */}
-        <p className="max-w-2xl text-lg sm:text-xl text-gray-700 dark:text-gray-200 mb-10">
+        <p className="max-w-2xl text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8 sm:mb-10 px-4 sm:px-0">
           {description}
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-12">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-12 w-full max-w-md sm:max-w-none">
           <Button
             size="lg"
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-emerald-500 dark:to-teal-600 dark:hover:from-emerald-600 dark:hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/40 dark:border-emerald-400/50 px-8 py-3 text-lg font-semibold dark:shadow-emerald-500/25 dark:hover:shadow-emerald-500/40"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-emerald-500 dark:to-teal-600 dark:hover:from-emerald-600 dark:hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/40 dark:border-emerald-400/50 px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold dark:shadow-emerald-500/25 dark:hover:shadow-emerald-500/40"
             onClick={() => window.open('/resume.pdf', '_blank')}
           >
-            <Download className="mr-2 h-5 w-5" />
+            <Download className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
             Download Resume
           </Button>
-          <div className="flex space-x-3 justify-center">
+          <div className="flex space-x-2 sm:space-x-3 justify-center">
             {socialLinks.map(({ href, icon, label }) => {
               const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
               return (
@@ -99,11 +99,11 @@ export function Hero() {
                   key={label}
                   variant="outline"
                   size="lg"
-                  className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors"
+                  className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors p-3 sm:p-4"
                   asChild
                 >
                   <a href={href} target="_blank" rel="noopener noreferrer">
-                    <IconComponent className="h-6 w-6" />
+                    <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
                   </a>
                 </Button>
               );
