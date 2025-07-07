@@ -60,7 +60,7 @@ const PageLayoutComponent = ({
   return (
     <div className={`min-h-screen bg-background relative overflow-hidden ${className}`}>
       {/* Enhanced gradient overlay with animation */}
-      <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10" />
+      {/* <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10" /> */}
       
       {/* Enhanced animated background elements */}
       <div className="absolute inset-0">
