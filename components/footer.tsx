@@ -1,7 +1,12 @@
+'use client';
+
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 export function Footer() {
+  const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -10,7 +15,17 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand & Bio */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-lg font-semibold mb-3">Tang Yetong</h3>
+            <div className="flex items-center space-x-2 mb-3">
+              <Image
+                src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                alt="Tang Yetong Logo"
+                width={28}
+                height={28}
+                className="h-8 w-auto bg-transparent"
+                style={{ paddingBottom: '5px' }}
+              />
+              <h3 className="text-lg font-semibold">Tang Yetong</h3>
+            </div>
             <p className="text-muted-foreground mb-4 max-w-md">
               Full Stack Developer passionate about creating exceptional digital experiences. 
               Based in Singapore, building the future one line of code at a time.

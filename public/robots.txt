@@ -13,6 +13,7 @@ Disallow: /_next/
 Disallow: /admin/
 
 # Allow important files
-Allow: /favicon.ico
+Allow: /logo-white.png
+Allow: /logo-black.png
 Allow: /manifest.json
 Allow: /apple-touch-icon.png 

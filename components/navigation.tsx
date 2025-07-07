@@ -6,6 +6,7 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getSiteMetadata } from '@/lib/data';
 
 export function Navigation() {
@@ -80,9 +81,17 @@ export function Navigation() {
           <div className="flex-shrink-0">
             <Link
               href="/"
-              className="text-xl font-bold text-primary hover:text-primary/80 transition-colors"
+              className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
             >
-              Tang Yetong
+              <Image
+                src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                alt="Tang Yetong Logo"
+                width={28}
+                height={28}
+                className="h-8 w-auto bg-transparent"
+                style={{ paddingBottom: '5px' }}
+              />
+              <span className="text-xl font-bold text-primary">Tang Yetong</span>
             </Link>
           </div>
 

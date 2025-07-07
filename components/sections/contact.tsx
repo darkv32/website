@@ -2,19 +2,13 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Mail, Phone, MapPin, Send, Github, Linkedin, Globe, Calendar, Clock } from 'lucide-react';
+import { Mail, Phone, MapPin, Github, Linkedin, Globe, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { useToast } from '@/hooks/use-toast';
 
 export function Contact() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const { toast } = useToast();
 
 
 
@@ -35,29 +29,7 @@ export function Contact() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
 
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
-      subject: formData.get('subject'),
-      message: formData.get('message')
-    };
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 2000));
-
-    toast({
-      title: "Message sent successfully!",
-      description: "Thank you for reaching out. I'll get back to you within 24 hours.",
-    });
-
-    setIsSubmitting(false);
-    (e.target as HTMLFormElement).reset();
-  };
 
   const contactInfo = [
     {
@@ -150,94 +122,7 @@ export function Contact() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Contact Form */}
-            <Card className={`card-enhanced-light card-contact-light ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Send className="h-5 w-5" />
-                  <span>Send a Message</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
-                        Name *
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        required
-                        placeholder="Your full name"
-                        className="input-enhanced-light w-full"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium mb-2">
-                        Email *
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="your.email@example.com"
-                        className="input-enhanced-light w-full"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                      Subject *
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      required
-                      placeholder="What&apos;s this about?"
-                      className="input-enhanced-light w-full"
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-2">
-                      Message *
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      required
-                      placeholder="Tell me about your project, opportunity, or question..."
-                      rows={5}
-                      className="textarea-enhanced-light w-full resize-none"
-                    />
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="btn-cta-primary w-full"
-                    size="lg"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center space-x-2">
-                        <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full animate-spin" />
-                        <span>Sending...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center space-x-2">
-                        <Send className="h-4 w-4" />
-                        <span>Send Message</span>
-                      </div>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
+          <div className="max-w-2xl mx-auto">
             {/* Contact Info & Social */}
             <div className={`space-y-8 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               {/* Contact Information */}

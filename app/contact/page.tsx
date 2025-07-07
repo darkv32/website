@@ -1,8 +1,5 @@
-import { Mail, MapPin, Clock, Send, Github, Linkedin, Globe } from 'lucide-react';
+import { Mail, MapPin, Clock, Github, Linkedin, Globe } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { PageLayout } from '@/components/ui/page-layout';
 import { generateMetadata } from '@/lib/seo';
 import { StructuredData } from '@/components/seo/structured-data';
@@ -68,71 +65,7 @@ export default function ContactPage() {
         <div className="absolute bottom-1/3 right-0 w-1 h-32 bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10 pb-16">
-        {/* Contact Form */}
-        <Card className="card-enhanced animate-slide-in-left hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.3s' }}>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Send className="h-5 w-5 text-primary" />
-              <span>Send a Message</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">Name *</label>
-                  <Input 
-                    id="name" 
-                    name="name" 
-                    required 
-                    placeholder="Your full name" 
-                    className="input-enhanced" 
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">Email *</label>
-                  <Input 
-                    id="email" 
-                    name="email" 
-                    type="email" 
-                    required 
-                    placeholder="your.email@example.com" 
-                    className="input-enhanced" 
-                  />
-                </div>
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-sm font-medium mb-2">Subject *</label>
-                <Input 
-                  id="subject" 
-                  name="subject" 
-                  required 
-                  placeholder="What's this about?" 
-                  className="input-enhanced" 
-                />
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-sm font-medium mb-2">Message *</label>
-                <Textarea 
-                  id="message" 
-                  name="message" 
-                  required 
-                  placeholder="Tell me about your project, opportunity, or question..." 
-                  rows={5} 
-                  className="textarea-enhanced" 
-                />
-              </div>
-              <Button type="submit" className="btn-primary-enhanced w-full" size="lg">
-                <div className="flex items-center space-x-2">
-                  <Send className="h-4 w-4" />
-                  <span>Send Message</span>
-                </div>
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-
+      <div className="max-w-2xl mx-auto relative z-10 pb-16">
         {/* Contact Information */}
         <div className="space-y-8">
           {/* Personal Info */}
