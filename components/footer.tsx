@@ -1,13 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 
 export function Footer() {
+  const [mounted, setMounted] = useState(false);
   const { theme } = useTheme();
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <footer className="bg-secondary/30 border-t-2 border-gray-300 dark:border-border/50">
@@ -17,7 +23,7 @@ export function Footer() {
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-3">
               <Image
-                src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                src={!mounted || theme === 'light' ? '/logo-black.png' : '/logo-white.png'}
                 alt="Tang Yetong Logo"
                 width={28}
                 height={28}

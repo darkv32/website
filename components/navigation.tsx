@@ -13,8 +13,13 @@ export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const { navigation } = getSiteMetadata();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,7 +105,7 @@ export function Navigation() {
               className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
             >
               <Image
-                src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                src={!mounted || theme === 'light' ? '/logo-black.png' : '/logo-white.png'}
                 alt="Tang Yetong Logo"
                 width={28}
                 height={28}
@@ -151,7 +156,7 @@ export function Navigation() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              onClick={() => setTheme(mounted && theme === 'dark' ? 'light' : 'dark')}
               className="w-10 h-10 p-2 relative"
             >
               <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -180,7 +185,7 @@ export function Navigation() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <Image
-                      src={theme === 'dark' ? '/logo-white.png' : (theme === 'light' ? '/logo-black.png' : '/logo-white.png')}
+                      src={!mounted || theme === 'light' ? '/logo-black.png' : '/logo-white.png'}
                       alt="Tang Yetong Logo"
                       width={24}
                       height={24}
