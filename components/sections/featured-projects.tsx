@@ -176,12 +176,12 @@ export function FeaturedProjects() {
           </div>
 
           {/* CTA */}
-          <div className="text-center">
+          <div className="cta-container-center">
             <p className="text-muted-foreground mb-6">
               Explore my complete portfolio including mobile apps, blockchain projects, and more
             </p>
             <Link href="/projects">
-              <Button size="lg">
+              <Button size="lg" className="cta-button-primary">
                 View All Projects
                 <ExternalLink className="h-4 w-4 ml-2" />
               </Button>

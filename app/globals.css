@@ -362,6 +362,23 @@
     @apply bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-amber-500/30;
   }
 
+  /* CTA Container Positioning */
+  .cta-container {
+    @apply flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-2xl mx-auto;
+  }
+
+  .cta-container-center {
+    @apply text-center flex flex-col items-center justify-center;
+  }
+
+  .cta-button-primary {
+    @apply w-full sm:w-auto px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold;
+  }
+
+  .cta-button-secondary {
+    @apply w-full sm:w-auto flex-1 sm:flex-none;
+  }
+
   /* Page-Specific Section Headers */
   .section-header-about-light {
     @apply text-blue-800 dark:text-white;

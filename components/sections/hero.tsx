@@ -82,16 +82,16 @@ export function Hero() {
         </p>
 
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-10 sm:mb-12 w-full max-w-md sm:max-w-none">
+        <div className="cta-container mb-10 sm:mb-12">
           <Button
             size="lg"
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-emerald-500 dark:to-teal-600 dark:hover:from-emerald-600 dark:hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/40 dark:border-emerald-400/50 px-6 sm:px-8 py-3 text-base sm:text-lg font-semibold dark:shadow-emerald-500/25 dark:hover:shadow-emerald-500/40"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 dark:from-emerald-500 dark:to-teal-600 dark:hover:from-emerald-600 dark:hover:to-teal-700 text-white shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 border-2 border-blue-500/40 dark:border-emerald-400/50 dark:shadow-emerald-500/25 dark:hover:shadow-emerald-500/40 cta-button-primary"
             onClick={() => window.open('/resume.pdf', '_blank')}
           >
             <Download className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
             Download Resume
           </Button>
-          <div className="flex space-x-2 sm:space-x-3 justify-center">
+          <div className="flex space-x-2 sm:space-x-3 justify-center w-full sm:w-auto">
             {socialLinks.map(({ href, icon, label }) => {
               const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
               return (
@@ -99,7 +99,7 @@ export function Hero() {
                   key={label}
                   variant="outline"
                   size="lg"
-                  className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors p-3 sm:p-4"
+                  className="text-gray-800 border-gray-800 hover:bg-gray-800/10 dark:text-white dark:border-white dark:hover:bg-white/20 transform hover:scale-110 transition-colors p-3 sm:p-4 cta-button-secondary"
                   asChild
                 >
                   <a href={href} target="_blank" rel="noopener noreferrer">

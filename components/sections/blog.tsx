@@ -280,14 +280,14 @@ export function Blog() {
             )}
 
             {/* Blog CTA */}
-            <div className="mt-16 text-center">
+            <div className="mt-16 cta-container-center">
               <Card className="card-enhanced-light card-blog-light max-w-2xl mx-auto">
                 <CardContent className="p-8">
                   <h4 className="text-xl font-semibold mb-4">Want to read more?</h4>
                   <p className="text-muted-foreground mb-6">
                     Visit my personal blog for the complete articles and more technical insights.
                   </p>
-                  <Button className="btn-cta-secondary" asChild>
+                  <Button className="btn-cta-secondary cta-button-primary" asChild>
                     <a href="https://darkvoid32.github.io/" target="_blank" rel="noopener noreferrer">
                       <ExternalLink className="h-4 w-4 mr-2" />
                       Visit My Blog

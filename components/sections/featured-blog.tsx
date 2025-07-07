@@ -247,13 +247,13 @@ export function FeaturedBlog() {
           </div>
 
           {/* CTA */}
-          <div className="text-center">
+          <div className="cta-container-center">
             <p className="text-muted-foreground mb-6">
               Explore all technical articles, tutorials, and insights from my development journey
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="cta-container">
               <Link href="/blog">
-                <Button size="lg">
+                <Button size="lg" className="cta-button-primary">
                   View All Articles
                   <ExternalLink className="h-4 w-4 ml-2" />
                 </Button>
