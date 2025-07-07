@@ -12,8 +12,6 @@ export function About() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-
-
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -89,11 +87,9 @@ export function About() {
   ];
 
   return (
-    <section id="about" ref={sectionRef} className="relative overflow-hidden">
+    <section id="about" ref={sectionRef} className="relative overflow-hidden page-about-light">
       {/* Enhanced gradient overlay with animation */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10 animate-pulse" />
-      
-
 
       {/* Animated background elements */}
       <div className="absolute inset-0">
@@ -187,17 +183,18 @@ export function About() {
                 <Badge variant="outline" className="text-sm backdrop-blur-sm border border-border/50">About Me</Badge>
                 <Sparkles className="h-6 w-6 text-primary animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
               </div>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent animate-gradient-x">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent dark:from-white dark:via-gray-200 dark:to-white from-gray-800 via-gray-700 to-gray-800 animate-gradient-x">
                 About Me
               </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.5s' }}>
-                Data Analyst at Fivetran with a passion for building scalable solutions and driving innovation through technology
+              <p className="text-xl text-muted-foreground dark:text-muted-foreground text-gray-700 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.5s' }}>
+                <span className="dark:hidden">Passionate Data Analyst at Fivetran, crafting innovative solutions and driving technological advancement through scalable engineering and collaborative problem-solving.</span>
+                <span className="hidden dark:inline">Data Analyst at Fivetran with a passion for building scalable solutions and driving innovation through technology</span>
               </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mb-20">
               {/* Enhanced Biography with staggered animations */}
-              <div className="space-y-6">
+              <div className="space-y-6 card-section-light card-about-light">
                 <div className="flex items-center space-x-3 mb-8 animate-slide-in-left" style={{ animationDelay: '0.3s' }}>
                   <div className="p-3 bg-primary/10 rounded-full animate-pulse">
                     <Zap className="h-6 w-6 text-primary" />
@@ -265,7 +262,7 @@ export function About() {
               {/* Enhanced Education & Expertise with hover effects */}
               <div className="space-y-8">
                 {/* Education */}
-                <Card className="backdrop-blur-sm border border-border/80 hover:border-primary/80 transition-all duration-300 hover:shadow-3xl bg-card/95 hover:scale-[1.05] hover:bg-card/98 animate-slide-in-right shadow-2xl" style={{ animationDelay: '0.3s' }}>
+                <Card className="card-enhanced-light card-about-light animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
                       <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
@@ -286,7 +283,7 @@ export function About() {
                 </Card>
 
                 {/* Current Focus */}
-                <Card className="backdrop-blur-sm border border-border/80 hover:border-primary/80 transition-all duration-300 hover:shadow-3xl bg-card/95 hover:scale-[1.05] hover:bg-card/98 animate-slide-in-right shadow-2xl" style={{ animationDelay: '0.5s' }}>
+                <Card className="card-enhanced-light card-about-light animate-slide-in-right" style={{ animationDelay: '0.5s' }}>
                   <CardContent className="p-8">
                     <h4 className="font-bold text-lg mb-6 flex items-center">
                       <Award className="h-6 w-6 mr-3 text-primary animate-pulse" />
@@ -355,7 +352,7 @@ export function About() {
                 {expertise.map((area, index) => (
                   <Card 
                     key={area.title} 
-                    className={`transition-all duration-500 hover:shadow-3xl backdrop-blur-sm border border-border/80 hover:border-primary/80 hover:scale-110 hover:bg-card/98 animate-slide-up shadow-2xl ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+                    className={`card-enhanced-light card-about-light animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <CardContent className="p-8 group">
@@ -398,7 +395,7 @@ export function About() {
                 {values.map((value, index) => (
                   <Card 
                     key={value.title} 
-                    className={`transition-all duration-500 hover:shadow-3xl backdrop-blur-sm border border-border/80 hover:border-primary/80 hover:scale-110 hover:bg-card/98 animate-slide-up shadow-2xl ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
+                    className={`card-enhanced-light card-about-light animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
                     style={{ animationDelay: `${(index + 3) * 200}ms` }}
                   >
                     <CardContent className="p-8 text-center group">

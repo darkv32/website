@@ -166,6 +166,19 @@
     @apply backdrop-blur-sm border border-border/30 bg-card/80;
   }
 
+  /* Enhanced Light Mode Card Components */
+  .card-enhanced-light {
+    @apply backdrop-blur-sm border-2 border-border/60 hover:border-primary/70 transition-all duration-300 hover:shadow-2xl bg-card/95 hover:scale-[1.02] shadow-lg;
+  }
+
+  .card-section-light {
+    @apply border-2 border-border/40 bg-card/90 rounded-xl p-6 backdrop-blur-sm;
+  }
+
+  .card-divider-light {
+    @apply border-t-2 border-border/50 my-6;
+  }
+
   /* Enhanced Button Components */
   .btn-primary-enhanced {
     @apply bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary text-primary-foreground transform hover:scale-105 transition-all duration-300;
@@ -173,6 +186,15 @@
 
   .btn-secondary-enhanced {
     @apply bg-secondary/50 hover:bg-secondary border border-border/50 hover:border-primary/50 transition-all duration-300;
+  }
+
+  /* Enhanced Light Mode Button Components */
+  .btn-primary-enhanced-light {
+    @apply bg-gradient-to-r from-primary to-primary/90 hover:from-primary hover:to-primary/80 text-primary-foreground transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border-2 border-primary/20;
+  }
+
+  .btn-secondary-enhanced-light {
+    @apply bg-secondary/80 hover:bg-secondary border-2 border-border/60 hover:border-primary/60 transition-all duration-300 shadow-md hover:shadow-lg;
   }
 
   /* Enhanced Text Components */
@@ -189,6 +211,11 @@
     @apply backdrop-blur-sm border border-border/50 hover:scale-105 transition-transform duration-200;
   }
 
+  /* Enhanced Light Mode Badge Components */
+  .badge-enhanced-light {
+    @apply backdrop-blur-sm border-2 border-border/60 hover:scale-105 transition-transform duration-200 shadow-sm bg-background/90;
+  }
+
   /* Enhanced Form Components */
   .input-enhanced {
     @apply bg-background/50 backdrop-blur-sm border border-border/50 focus:border-primary/50 transition-all duration-300;
@@ -196,6 +223,143 @@
 
   .textarea-enhanced {
     @apply bg-background/50 backdrop-blur-sm border border-border/50 focus:border-primary/50 transition-all duration-300 resize-none;
+  }
+
+  /* Enhanced Light Mode Form Components */
+  .input-enhanced-light {
+    @apply bg-background/80 backdrop-blur-sm border-2 border-border/60 focus:border-primary/70 transition-all duration-300 shadow-sm;
+  }
+
+  .textarea-enhanced-light {
+    @apply bg-background/80 backdrop-blur-sm border-2 border-border/60 focus:border-primary/70 transition-all duration-300 resize-none shadow-sm;
+  }
+
+  /* Enhanced Light Mode Layout Components */
+  .section-separator-light {
+    @apply border-b-2 border-border/40 pb-8 mb-8;
+  }
+
+  .component-spacer-light {
+    @apply space-y-8;
+  }
+
+  .card-group-light {
+    @apply space-y-6 p-6 border-2 border-border/30 rounded-xl bg-card/80 shadow-lg;
+  }
+
+  /* Enhanced Light Mode Spacing and Separation */
+  .section-padding-light {
+    @apply py-12 px-6;
+  }
+
+  .card-margin-light {
+    @apply mb-8;
+  }
+
+  .divider-light {
+    @apply border-t border-border/60 my-8;
+  }
+
+  .content-separator-light {
+    @apply border-l-4 border-primary/30 pl-6 ml-4;
+  }
+
+  /* Enhanced Light Mode Visual Hierarchy */
+  .text-emphasis-light {
+    @apply font-semibold text-foreground;
+  }
+
+  .text-subtle-light {
+    @apply text-muted-foreground/80;
+  }
+
+  .bg-accent-light {
+    @apply bg-secondary/40;
+  }
+
+  .border-accent-light {
+    @apply border-2 border-border/50;
+  }
+
+  /* Enhanced Light Mode Background Patterns */
+  .bg-grid-pattern-light {
+    background-image: 
+      linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+
+  .bg-dots-pattern-light {
+    background-image: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Page-Specific Light Mode Styling */
+  .page-about-light {
+    @apply bg-gradient-to-br from-blue-50/30 via-background to-indigo-50/20;
+  }
+
+  .page-experience-light {
+    @apply bg-gradient-to-br from-green-50/30 via-background to-emerald-50/20;
+  }
+
+  .page-blog-light {
+    @apply bg-gradient-to-br from-purple-50/30 via-background to-violet-50/20;
+  }
+
+  .page-contact-light {
+    @apply bg-gradient-to-br from-orange-50/30 via-background to-amber-50/20;
+  }
+
+  /* Page-Specific Card Styling */
+  .card-about-light {
+    @apply border-2 border-blue-200/60 bg-card/95 shadow-lg;
+  }
+
+  .card-experience-light {
+    @apply border-2 border-green-200/60 bg-card/95 shadow-lg;
+  }
+
+  .card-blog-light {
+    @apply border-2 border-purple-200/60 bg-card/95 shadow-lg;
+  }
+
+  .card-contact-light {
+    @apply border-2 border-orange-200/60 bg-card/95 shadow-lg;
+  }
+
+  /* Page-Specific Button Styling */
+  .btn-about-light {
+    @apply bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white shadow-lg;
+  }
+
+  .btn-experience-light {
+    @apply bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white shadow-lg;
+  }
+
+  .btn-blog-light {
+    @apply bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg;
+  }
+
+  .btn-contact-light {
+    @apply bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white shadow-lg;
+  }
+
+  /* Page-Specific Section Headers */
+  .section-header-about-light {
+    @apply text-blue-800 dark:text-white;
+  }
+
+  .section-header-experience-light {
+    @apply text-green-800 dark:text-white;
+  }
+
+  .section-header-blog-light {
+    @apply text-purple-800 dark:text-white;
+  }
+
+  .section-header-contact-light {
+    @apply text-orange-800 dark:text-white;
   }
 
   /* Prose styles for blog content */

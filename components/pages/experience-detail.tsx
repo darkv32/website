@@ -277,6 +277,7 @@ const ExperienceDetailComponent = () => {
       description="My journey through data engineering, software development, and technology innovation across leading companies and organizations."
       badge="Experience"
       showBackButton
+      className="page-experience-light"
     >
       {/* Enhanced Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -327,13 +328,13 @@ const ExperienceDetailComponent = () => {
 
       {/* Quick Stats - More compact */}
       <div className="grid grid-cols-2 md:grid-cols-2 gap-4 relative z-10">
-        <Card className="card-enhanced text-center hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90">
+        <Card className="card-enhanced-light card-experience-light text-center">
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-primary mb-1">5+</div>
             <div className="text-sm text-muted-foreground">Years Experience</div>
           </CardContent>
         </Card>
-        <Card className="card-enhanced text-center hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90">
+        <Card className="card-enhanced-light card-experience-light text-center">
           <CardContent className="p-4">
             <div className="text-2xl font-bold text-primary mb-1">5</div>
             <div className="text-sm text-muted-foreground">Companies</div>
@@ -369,7 +370,7 @@ const ExperienceDetailComponent = () => {
             Education
           </h2>
           <div className="max-w-3xl mx-auto">
-            <Card className="card-enhanced border-l-4 border-l-primary hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90">
+            <Card className="card-enhanced-light card-experience-light border-l-4 border-l-primary">
               <CardContent className="p-6">
                 <div className="flex items-start space-x-4 group">
                   <div className="p-3 bg-primary/10 rounded-xl group-hover:scale-110 transition-transform">
@@ -428,7 +429,7 @@ const ExperienceDetailComponent = () => {
             {skillsEntries.map(([category, skillList], index) => (
               <Card 
                 key={category} 
-                className="card-enhanced hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" 
+                className="card-enhanced-light card-experience-light" 
               >
                 <CardHeader className="pb-3">
                   <CardTitle className="text-base group-hover:text-primary transition-colors">{category}</CardTitle>
@@ -452,7 +453,7 @@ const ExperienceDetailComponent = () => {
           <div className="text-center">
             <Button 
               size="lg" 
-              className="btn-primary-enhanced"
+              className="btn-primary-enhanced-light btn-experience-light"
               onClick={() => window.open('/resume.pdf', '_blank')}
             >
               <Download className="h-4 w-4 mr-2" />

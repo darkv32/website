@@ -182,7 +182,7 @@ export function Blog() {
   };
 
   return (
-    <section id="blog" ref={sectionRef} className="py-20">
+    <section id="blog" ref={sectionRef} className="py-20 page-blog-light">
       <div className="container-width section-padding">
         <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
           {/* Section Header */}
@@ -330,7 +330,7 @@ export function Blog() {
               : 'space-y-6'
             }>
               {filteredPosts.map((post, index) => (
-                <Card key={post.id} className={`group hover:shadow-lg transition-all duration-300 ${
+                <Card key={post.id} className={`card-enhanced-light card-blog-light group ${
                   viewMode === 'list' ? 'md:flex md:items-center' : ''
                 } ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 100}ms` }}>
                   <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
@@ -403,7 +403,7 @@ export function Blog() {
 
             {/* Blog CTA */}
             <div className="mt-16 text-center">
-              <Card className="max-w-2xl mx-auto">
+              <Card className="card-enhanced-light card-blog-light max-w-2xl mx-auto">
                 <CardContent className="p-8">
                   <h4 className="text-xl font-semibold mb-4">Want to read more?</h4>
                   <p className="text-muted-foreground mb-6">

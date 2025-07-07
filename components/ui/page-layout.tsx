@@ -112,8 +112,8 @@ const PageLayoutComponent = ({
       
       {/* Main background */}
       <div className="pt-8 bg-gradient-to-br from-background via-background to-background relative">
-        {/* Simplified grid pattern */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        {/* Enhanced grid pattern for light mode */}
+        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:bg-grid-pattern bg-grid-pattern-light" />
         
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>

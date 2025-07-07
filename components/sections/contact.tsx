@@ -101,7 +101,7 @@ export function Contact() {
   ];
 
   return (
-    <section id="contact" ref={sectionRef} className="relative py-20 bg-secondary/10">
+    <section id="contact" ref={sectionRef} className="relative py-20 bg-secondary/10 page-contact-light">
       {/* Top gradient overlay to blend with blog section */}
       <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-b from-background via-background/80 to-transparent z-10" />
       
@@ -152,7 +152,7 @@ export function Contact() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <Card className={`hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50 ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
+            <Card className={`card-enhanced-light card-contact-light ${isVisible ? 'animate-slide-in-left' : 'opacity-0'}`}>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
                   <Send className="h-5 w-5" />
@@ -171,7 +171,7 @@ export function Contact() {
                         name="name"
                         required
                         placeholder="Your full name"
-                        className="w-full"
+                        className="input-enhanced-light w-full"
                       />
                     </div>
                     <div>
@@ -184,7 +184,7 @@ export function Contact() {
                         type="email"
                         required
                         placeholder="your.email@example.com"
-                        className="w-full"
+                        className="input-enhanced-light w-full"
                       />
                     </div>
                   </div>
@@ -198,7 +198,7 @@ export function Contact() {
                       name="subject"
                       required
                       placeholder="What&apos;s this about?"
-                      className="w-full"
+                      className="input-enhanced-light w-full"
                     />
                   </div>
 
@@ -212,14 +212,14 @@ export function Contact() {
                       required
                       placeholder="Tell me about your project, opportunity, or question..."
                       rows={5}
-                      className="w-full resize-none"
+                      className="textarea-enhanced-light w-full resize-none"
                     />
                   </div>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full"
+                    className="btn-primary-enhanced-light btn-contact-light w-full"
                     size="lg"
                   >
                     {isSubmitting ? (
@@ -241,7 +241,7 @@ export function Contact() {
             {/* Contact Info & Social */}
             <div className={`space-y-8 ${isVisible ? 'animate-slide-in-right' : 'opacity-0'}`}>
               {/* Contact Information */}
-              <Card className="hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50">
+              <Card className="card-enhanced-light card-contact-light">
                 <CardHeader>
                   <CardTitle>Contact Information</CardTitle>
                 </CardHeader>
@@ -266,7 +266,7 @@ export function Contact() {
               </Card>
 
               {/* Social Links */}
-              <Card className="hover:shadow-3xl hover:scale-105 transition-all duration-300 hover:border-primary/50">
+              <Card className="card-enhanced-light card-contact-light">
                 <CardHeader>
                   <CardTitle>Connect with Me</CardTitle>
                 </CardHeader>
