@@ -92,7 +92,7 @@ export function Hero() {
         </div>
 
         {/* Description */}
-        <p className="max-w-2xl text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8 sm:mb-10 px-4 sm:px-0">
+        <p className="max-w-2xl text-base sm:text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8 sm:mb-10 px-4 sm:px-0 transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
           {description}
         </p>
 

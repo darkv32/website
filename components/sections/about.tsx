@@ -87,7 +87,7 @@ export function About() {
   ];
 
   return (
-    <section id="about" ref={sectionRef} className="relative overflow-hidden page-about-light">
+    <section id="about" ref={sectionRef} className="relative page-about-light">
       {/* Enhanced gradient overlay with animation */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10 animate-pulse" />
 
@@ -204,12 +204,12 @@ export function About() {
                 
                 <div className="space-y-6 text-muted-foreground leading-relaxed">
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
                     style={{ animationDelay: '0.5s' }}
                     onMouseEnter={() => setHoveredCard('bio-1')}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <p>
+                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
                       I&apos;m currently a <span className="text-primary font-semibold">Data Analyst at Fivetran</span>, 
                       where I work on optimizing data pipelines and building analytics solutions for enterprise clients. 
                       My journey in technology spans across data engineering, mobile development, and full-stack web applications.
@@ -217,12 +217,12 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
                     style={{ animationDelay: '0.7s' }}
                     onMouseEnter={() => setHoveredCard('bio-2')}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <p>
+                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
                       With experience at <span className="text-primary font-semibold">GovTech Singapore</span>, 
                       I&apos;ve contributed to government digital transformation initiatives, building citizen-facing applications 
                       and implementing cloud solutions on AWS. My work has directly impacted how citizens interact with 
@@ -231,12 +231,12 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
                     style={{ animationDelay: '0.9s' }}
                     onMouseEnter={() => setHoveredCard('bio-3')}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <p>
+                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
                       I specialize in <span className="text-primary font-semibold">Android development</span> with 
                       Bluetooth Low Energy integration, having built enterprise solutions for the hospitality industry 
                       at RFCOM Technologies. I&apos;m also passionate about blockchain technology, contributing to Bitcoin 
@@ -245,12 +245,12 @@ export function About() {
                   </div>
                   
                   <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.05] hover:border-primary/70 hover:bg-card/98 animate-slide-in-left"
+                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
                     style={{ animationDelay: '1.1s' }}
                     onMouseEnter={() => setHoveredCard('bio-4')}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
-                    <p>
+                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
                       As an active member of the <span className="text-primary font-semibold">NUS Hackers community</span>, 
                       I contribute to open-source projects and help foster Singapore&apos;s vibrant tech ecosystem. 
                       I believe in continuous learning and sharing knowledge with fellow developers.
@@ -262,7 +262,7 @@ export function About() {
               {/* Enhanced Education & Expertise with hover effects */}
               <div className="space-y-8">
                 {/* Education */}
-                <Card className="card-enhanced-light card-about-light animate-slide-in-right border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-[1.04]" style={{ animationDelay: '0.3s' }}>
+                <Card className="card-enhanced-light card-about-light animate-slide-in-right border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105" style={{ animationDelay: '0.3s' }}>
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
                       <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
