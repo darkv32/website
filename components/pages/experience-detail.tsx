@@ -364,13 +364,6 @@ const ExperienceDetailComponent = () => {
 
       {/* Education Section - More compact */}
       <div className="page-section-alt relative z-10">
-        {/* Section-specific background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-1/3 left-1/6 w-24 h-24 bg-indigo-500/6 rounded-full blur-lg animate-float" style={{ animationDelay: '1s', animationDuration: '15s' }}></div>
-          <div className="absolute bottom-1/3 right-1/6 w-18 h-18 bg-orange-500/6 rounded-full blur-lg animate-float" style={{ animationDelay: '5s', animationDuration: '17s' }}></div>
-          <div className="absolute top-2/3 left-2/3 w-14 h-14 bg-pink-500/6 rounded-full blur-lg animate-float" style={{ animationDelay: '3s', animationDuration: '19s' }}></div>
-        </div>
-        
         <div className="page-section-content">
           <h2 className="text-2xl font-bold text-center mb-8">
             Education
@@ -457,7 +450,11 @@ const ExperienceDetailComponent = () => {
             ))}
           </div>
           <div className="text-center">
-            <Button size="lg" className="btn-primary-enhanced">
+            <Button 
+              size="lg" 
+              className="btn-primary-enhanced"
+              onClick={() => window.open('/resume.pdf', '_blank')}
+            >
               <Download className="h-4 w-4 mr-2" />
               Download Resume
             </Button>

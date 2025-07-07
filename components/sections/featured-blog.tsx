@@ -260,12 +260,6 @@ export function FeaturedBlog() {
                   <ExternalLink className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
-              <Button size="lg" variant="outline" asChild>
-                <a href="https://darkvoid32.github.io/" target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="h-4 w-4 mr-2" />
-                  Visit My Blog
-                </a>
-              </Button>
             </div>
           </div>
         </div>

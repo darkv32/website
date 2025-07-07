@@ -35,7 +35,7 @@ export default function ContactPage() {
         <div className="absolute top-1/2 left-1/2 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '5s' }}>Message</div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10 pb-16">
         {/* Contact Form */}
         <Card className="card-enhanced animate-slide-in-left hover:shadow-2xl hover:scale-[1.02] hover:border-primary/50 hover:bg-card/90" style={{ animationDelay: '0.3s' }}>
           <CardHeader>
@@ -108,7 +108,7 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
                   <Mail className="h-6 w-6 text-primary" />
-                  <span className="font-semibold">tangyetong@gmail.com</span>
+                  <span className="font-semibold">ytyt0792@gmail.com</span>
                 </div>
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
                   <MapPin className="h-6 w-6 text-primary" />
@@ -144,15 +144,6 @@ export default function ContactPage() {
                 >
                   <Linkedin className="h-6 w-6 text-primary group-hover:animate-pulse" />
                   <span className="font-semibold group-hover:text-primary transition-colors">LinkedIn</span>
-                </a>
-                <a 
-                  href="https://darkvoid32.github.io/" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-all duration-300 hover:scale-105 group"
-                >
-                  <Globe className="h-6 w-6 text-primary group-hover:animate-pulse" />
-                  <span className="font-semibold group-hover:text-primary transition-colors">Personal Blog</span>
                 </a>
               </div>
             </CardContent>

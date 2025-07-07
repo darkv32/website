@@ -121,7 +121,7 @@ const PageLayoutComponent = ({
             <div className="mb-16">
               <div className="flex flex-col items-center">
                 <div className="inline-flex items-center space-x-2 mb-3 pt-16" />
-                <h1 className="text-4xl sm:text-5xl font-bold text-gradient-primary text-center leading-tight pb-2">
+                <h1 className="text-4xl sm:text-5xl font-bold text-gradient-primary text-center leading-tight pb-2 drop-shadow-2xl filter brightness-110">
                   {title}
                 </h1>
                 {description && (
