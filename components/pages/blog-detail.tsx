@@ -12,6 +12,7 @@ import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, BlogPost, for
 import { PageLayout } from '@/components/ui/page-layout';
 import Link from 'next/link';
 import { BlogPostCard } from '@/components/blog/blog-post-card';
+import { BlogArticle } from '@/components/blog/blog-article';
 
 export function BlogDetail() {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,6 +22,7 @@ export function BlogDetail() {
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [searchResults, setSearchResults] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const postsPerPage = 6;
   const allPosts = useMemo(() => getAllBlogPosts(), []);
@@ -59,6 +61,12 @@ export function BlogDetail() {
     setSearchResults(results);
   };
 
+  const handleTagClick = (tag: string) => {
+    setSearchTerm(tag);
+    setSearchResults(allPosts.filter(post => post.tags.includes(tag)));
+    setSelectedCategory('all');
+  };
+
   const totalViews = allPosts.reduce((sum, post) => sum + post.views, 0);
 
   if (isLoading) {
@@ -71,6 +79,7 @@ export function BlogDetail() {
       description="Insights, tutorials, and experiences in blockchain development, mobile applications, and software engineering from my journey in tech."
       badge="Blog"
       showBackButton
+      className="overflow-visible"
     >
       {/* Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -108,6 +117,7 @@ export function BlogDetail() {
                   post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
                   categories={blogCategoriesWithValues}
                   animationDelay={`${index * 200}ms`}
+                  onTagClick={handleTagClick}
                 />
               ))}
             </div>
@@ -120,10 +130,9 @@ export function BlogDetail() {
         <div className="page-section-content">
           <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
             {/* Search */}
-            <div className="w-full lg:w-96">
-              <BlogSearch onSearchResults={handleSearchResults} />
+            <div className="w-full lg:w-96 relative z-20">
+              <BlogSearch onSearchResults={handleSearchResults} onCategoryClick={setSelectedCategory} query={searchTerm} setQuery={setSearchTerm} />
             </div>
-
             {/* Controls */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full lg:w-auto">
               {/* Category Filter */}
@@ -142,7 +151,6 @@ export function BlogDetail() {
                   ))}
                 </select>
               </div>
-
               {/* View Mode */}
               <div className="flex rounded-md border border-border overflow-hidden">
                 <Button
@@ -165,34 +173,50 @@ export function BlogDetail() {
             </div>
           </div>
 
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-2 mb-6 pt-4">
-            <Button
-              variant={selectedCategory === 'all' ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => setSelectedCategory('all')}
-              className="badge-enhanced"
-            >
-              All ({allPosts.length})
-            </Button>
-            {blogCategories.map((category: any, index: any) => (
-              <Button
-                key={category.slug}
-                variant={selectedCategory === category.slug ? 'default' : 'outline'}
-                size="sm"
-                onClick={() => setSelectedCategory(category.slug)}
-                className="badge-enhanced"
-                style={{ animationDelay: `${index * 100}ms` }}
+          {/* Category Pills - Moved here under search bar */}
+          <div className="mt-4 border-t border-border/50">
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  console.log('All button clicked');
+                  setSelectedCategory('all');
+                }}
+                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 border hover:bg-accent hover:text-accent-foreground ${
+                  selectedCategory === 'all' 
+                    ? 'bg-primary text-primary-foreground border-primary shadow-sm' 
+                    : 'bg-background text-foreground border-border hover:border-border/80'
+                }`}
+                style={{ pointerEvents: 'auto' }}
               >
-                {category.name} ({category.postCount})
-              </Button>
-            ))}
+                All ({allPosts.length})
+              </button>
+              {blogCategories.map((category: any, index: any) => (
+                <button
+                  key={category.slug}
+                  onClick={() => {
+                    setSelectedCategory(category.slug);
+                  }}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 border hover:bg-accent hover:text-accent-foreground ${
+                    selectedCategory === category.slug 
+                      ? 'bg-primary text-primary-foreground border-primary shadow-sm' 
+                      : 'bg-background text-foreground border-border hover:border-border/80'
+                  }`}
+                  style={{ 
+                    pointerEvents: 'auto', 
+                    animationDelay: `${index * 100}ms`,
+                    animation: 'fadeInUp 0.5s ease-out forwards'
+                  }}
+                >
+                  {category.name} ({category.postCount})
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* All Posts */}
-      <div className="page-section relative z-10" style={{ marginTop: '-10rem' }}>
+      <div className="relative z-10" style={{ marginTop: '-2rem', paddingBottom: '2rem' }}>
         <div className="page-section-content">
           {/* Posts Grid/List */}
           <div className={viewMode === 'grid' 
@@ -200,67 +224,16 @@ export function BlogDetail() {
             : 'space-y-6'
           }>
             {currentPosts.map((post, index) => (
-              <Card 
-                key={post.slug} 
-                className={`card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/70 hover:bg-card/90 border-2 border-primary/30 shadow-md ${
-                  viewMode === 'list' ? 'md:flex md:items-center' : ''
-                }`}
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                <div className={`${viewMode === 'list' ? 'md:w-1/3' : ''} aspect-video overflow-hidden relative ${viewMode === 'grid' ? 'rounded-t-lg' : 'md:rounded-l-lg md:rounded-t-none'}`}>
-                  <img
-                    src={post.featuredImage}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <div className="flex items-center space-x-4 text-white text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDate(post.publishedAt)}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{formatReadTime(post.readTime)}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
-                  <CardHeader className={viewMode === 'list' ? 'p-0 pb-4' : ''}>
-                    <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </CardTitle>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <Badge variant="outline" className="text-xs">{post.category}</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className={`space-y-3 ${viewMode === 'list' ? 'p-0' : ''}`}>
-                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="outline" className="badge-enhanced text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {post.tags.length > 3 && (
-                        <Badge variant="outline" className="badge-enhanced text-xs">
-                          +{post.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button size="sm" className="w-full btn-read-article" asChild>
-                      <Link href={`/blog/${post.slug}`}>
-                        <BookOpen className="h-4 w-4 mr-2 btn-icon" />
-                        <span className="btn-text">Read Article</span>
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </div>
-              </Card>
+              <BlogPostCard
+                key={String(post.slug || post.id)}
+                post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
+                categories={blogCategoriesWithValues}
+                animationDelay={`${index * 100}ms`}
+                viewMode={viewMode}
+                showImage={true}
+                showButton={true}
+                onTagClick={handleTagClick}
+              />
             ))}
           </div>
 

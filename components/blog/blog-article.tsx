@@ -12,6 +12,7 @@ import Link from 'next/link';
 import ReactMarkdown, { type ExtraProps } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { BlogPostCard } from '@/components/blog/blog-post-card';
 
 interface BlogArticleProps {
   post: BlogPost;
@@ -202,35 +203,14 @@ export function BlogArticle({ post }: BlogArticleProps) {
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-12">Related Articles</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {relatedPosts.map((relatedPost) => (
-                  <Card key={relatedPost.id} className="group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md">
-                    <div className="aspect-video overflow-hidden rounded-t-lg">
-                      <img
-                        src={relatedPost.featuredImage}
-                        alt={relatedPost.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <CardHeader>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline">{relatedPost.category}</Badge>
-                        <span className="text-xs text-muted-foreground">{formatReadTime(relatedPost.readTime)}</span>
-                      </div>
-                      <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                        <Link href={`/blog/${relatedPost.slug}`}>
-                          {relatedPost.title}
-                        </Link>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground text-sm line-clamp-3 mb-4">
-                        {relatedPost.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <span>{formatDate(relatedPost.publishedAt)}</span>
-                      </div>
-                    </CardContent>
-                  </Card>
+                {relatedPosts.map((relatedPost, index) => (
+                  <BlogPostCard
+                    key={String(relatedPost.id)}
+                    post={{ ...relatedPost, id: String(relatedPost.id), readTime: String(relatedPost.readTime ?? '') }}
+                    animationDelay={`${index * 100}ms`}
+                    showImage={true}
+                    showButton={true}
+                  />
                 ))}
               </div>
             </div>

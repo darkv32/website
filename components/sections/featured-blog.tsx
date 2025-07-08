@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { BlogPostCard } from '@/components/blog/blog-post-card';
+import { getFeaturedBlogPosts, getBlogCategories } from '@/lib/data';
 
 export function FeaturedBlog() {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,42 +42,9 @@ export function FeaturedBlog() {
     return () => observer.disconnect();
   }, []);
 
-  const featuredPosts = [
-    {
-      id: 2,
-      title: "Render Error: Cannot read property 'createClient' of null",
-      excerpt: "Troubleshooting React Native BLE library issues and finding solutions for Expo Go compatibility problems.",
-      date: "2023-11-05",
-      readTime: "3 min read",
-      category: "mobile",
-      tags: ["React Native", "BLE", "Expo", "Debugging"],
-    },
-    {
-      id: 3,
-      title: "How to contribute to Padawan Wallet",
-      excerpt: "A comprehensive guide to contributing to the Padawan Wallet project and understanding the BDK-Kotlin ecosystem.",
-      date: "2022-08-30",
-      readTime: "5 min read",
-      category: "blockchain",
-      tags: ["Bitcoin", "Open Source", "BDK-Kotlin", "Android"],
-    },
-    {
-      id: 5,
-      title: "Everything about my Internship at GovTech 2022 Summer",
-      excerpt: "Complete breakdown of my 3-month internship experience at GovTech Singapore, including projects and learnings.",
-      date: "2022-08-02",
-      readTime: "10 min read",
-      category: "career",
-      tags: ["GovTech", "Internship", "AWS", "CloudWatch", "React"],
-    }
-  ];
-
-  const categories = [
-    { value: 'blockchain', label: 'Blockchain', count: 7 },
-    { value: 'mobile', label: 'Mobile Development', count: 1 },
-    { value: 'career', label: 'Career', count: 1 },
-    { value: 'academic', label: 'Academic', count: 1 }
-  ];
+  // Use real featured posts and categories
+  const featuredPosts = getFeaturedBlogPosts();
+  const categories = getBlogCategories().map(cat => ({ value: cat.slug, label: cat.name, count: cat.postCount }));
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -171,6 +139,8 @@ export function FeaturedBlog() {
                 post={{ ...post, id: String(post.id), readTime: String(post.readTime ?? '') }}
                 categories={categories}
                 animationDelay={`${index * 200}ms`}
+                showImage={true}
+                showButton={true}
               />
             ))}
           </div>

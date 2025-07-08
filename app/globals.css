@@ -253,7 +253,7 @@
 
   /* Enhanced Badge Components */
   .badge-enhanced {
-    @apply backdrop-blur-sm border border-border/50 hover:scale-105 transition-transform duration-200;
+    @apply border border-border/50 hover:scale-105 transition-transform duration-200;
   }
 
   /* Enhanced Light Mode Badge Components */
