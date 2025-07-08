@@ -9,8 +9,6 @@ import { AboutCard } from '@/components/blog/about-card';
 
 export function About() {
   const [isVisible, setIsVisible] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -28,15 +26,6 @@ export function About() {
     }
 
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   const values = [
@@ -92,83 +81,15 @@ export function About() {
       {/* Enhanced gradient overlay with animation */}
       <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10 animate-pulse" />
 
-      {/* Animated background elements */}
+      {/* Simple background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/2 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
-        
-        {/* Additional floating elements */}
-        <div className="absolute top-1/6 left-1/6 w-32 h-32 bg-cyan-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1.5s' }} />
-        <div className="absolute bottom-1/6 right-1/6 w-40 h-40 bg-pink-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '3s' }} />
-        <div className="absolute top-3/4 right-1/3 w-48 h-48 bg-violet-500/2 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '9s', animationDelay: '0.5s' }} />
+        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/3 rounded-full blur-3xl" />
       </div>
 
-      {/* Geometric shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/5 left-1/10 w-16 h-16 border border-primary/10 rotate-45 animate-pulse" style={{ animationDuration: '6s' }} />
-        <div className="absolute bottom-1/5 right-1/10 w-20 h-20 border border-primary/10 rounded-full animate-pulse" style={{ animationDuration: '8s', animationDelay: '2s' }} />
-        <div className="absolute top-2/3 left-1/4 w-12 h-12 border border-primary/10 rotate-12 animate-pulse" style={{ animationDuration: '7s', animationDelay: '1s' }} />
-        <div className="absolute bottom-1/3 right-1/4 w-24 h-24 border border-primary/10 rounded-full animate-pulse" style={{ animationDuration: '5s', animationDelay: '3s' }} />
-      </div>
-
-      {/* Gradient lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-0 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
-      </div>
-
-      {/* Floating particles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 bg-primary/10 rounded-full animate-float"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${10 + i * 20}%`,
-              animationDelay: `${i * 0.5}s`,
-              animationDuration: `${3 + i}s`
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Mouse-following gradient */}
-      <div 
-        className="absolute inset-0 opacity-20 pointer-events-none transition-opacity duration-300"
-        style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(120, 119, 198, 0.05), transparent 40%)`
-        }}
-      />
-
-      {/* Interactive floating orbs that respond to card hover */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={i}
-            className={`absolute w-3 h-3 rounded-full transition-all duration-700 ease-out ${
-              hoveredCard ? 'opacity-40 scale-150' : 'opacity-20 scale-100'
-            }`}
-            style={{
-              left: `${10 + i * 12}%`,
-              top: `${15 + i * 10}%`,
-              background: `radial-gradient(circle, rgba(120, 119, 198, ${hoveredCard ? 0.3 : 0.1}), transparent 70%)`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${4 + i * 0.5}s`,
-              transform: hoveredCard ? 'scale(1.5)' : 'scale(1)',
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Subtle grid pattern that intensifies on hover */}
-      <div 
-        className={`absolute inset-0 bg-grid-pattern transition-opacity duration-500 ${
-          hoveredCard ? 'opacity-8' : 'opacity-3'
-        } animate-grid-flow`} 
-      />
+      {/* Subtle grid pattern */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-3" />
       
       {/* Main background with enhanced gradient transition */}
       <div className="pt-8 pb-24 bg-gradient-to-br from-background via-background to-background relative">
@@ -177,17 +98,17 @@ export function About() {
         
         <div className="container-width section-padding relative z-10">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
-            {/* Enhanced Section Header with floating animation */}
+            {/* Section Header */}
             <div className="text-center mb-20">
-              <div className="inline-flex items-center space-x-2 mb-4 animate-bounce" style={{ animationDuration: '2s' }}>
-                <Sparkles className="h-6 w-6 text-primary animate-spin" style={{ animationDuration: '3s' }} />
+              <div className="inline-flex items-center space-x-2 mb-4">
+                <Sparkles className="h-6 w-6 text-primary" />
                 <Badge variant="outline" className="text-sm backdrop-blur-sm border border-border/50">About Me</Badge>
-                <Sparkles className="h-6 w-6 text-primary animate-spin" style={{ animationDuration: '3s', animationDirection: 'reverse' }} />
+                <Sparkles className="h-6 w-6 text-primary" />
               </div>
-              <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent dark:from-white dark:via-gray-200 dark:to-white from-gray-800 via-gray-700 to-gray-800 animate-gradient-x">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-white via-gray-200 to-white bg-clip-text text-transparent dark:from-white dark:via-gray-200 dark:to-white from-gray-800 via-gray-700 to-gray-800">
                 About Me
               </h2>
-              <p className="text-xl text-muted-foreground dark:text-muted-foreground text-gray-700 max-w-3xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.5s' }}>
+              <p className="text-xl text-muted-foreground dark:text-muted-foreground text-gray-700 max-w-3xl mx-auto leading-relaxed">
                 <span className="dark:hidden">Passionate Data Analyst at Fivetran, crafting innovative solutions and driving technological advancement through scalable engineering and collaborative problem-solving.</span>
                 <span className="hidden dark:inline">Data Analyst at Fivetran with a passion for building scalable solutions and driving innovation through technology</span>
               </p>
@@ -204,55 +125,35 @@ export function About() {
                 </div>
                 
                 <div className="space-y-6 text-muted-foreground leading-relaxed">
-                  <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
-                    style={{ animationDelay: '0.5s' }}
-                    onMouseEnter={() => setHoveredCard('bio-1')}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
-                      I&apos;m currently a <span className="text-primary font-semibold">Data Analyst at Fivetran</span>, 
+                  <div className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 hover:bg-gradient-to-br hover:from-primary/10 hover:via-background hover:to-secondary/20 hover:border-l-primary/80 cursor-pointer group">
+                    <p className="group-hover:text-foreground transition-colors duration-300">
+                      I&apos;m currently a <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">Data Analyst at Fivetran</span>, 
                       where I work on optimizing data pipelines and building analytics solutions for enterprise clients. 
                       My journey in technology spans across data engineering, mobile development, and full-stack web applications.
                     </p>
                   </div>
                   
-                  <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
-                    style={{ animationDelay: '0.7s' }}
-                    onMouseEnter={() => setHoveredCard('bio-2')}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
-                      With experience at <span className="text-primary font-semibold">GovTech Singapore</span>, 
+                  <div className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 hover:bg-gradient-to-br hover:from-primary/10 hover:via-background hover:to-secondary/20 hover:border-l-primary/80 cursor-pointer group">
+                    <p className="group-hover:text-foreground transition-colors duration-300">
+                      With experience at <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">GovTech Singapore</span>, 
                       I&apos;ve contributed to government digital transformation initiatives, building citizen-facing applications 
                       and implementing cloud solutions on AWS. My work has directly impacted how citizens interact with 
                       government services.
                     </p>
                   </div>
                   
-                  <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
-                    style={{ animationDelay: '0.9s' }}
-                    onMouseEnter={() => setHoveredCard('bio-3')}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
-                      I specialize in <span className="text-primary font-semibold">Android development</span> with 
+                  <div className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 hover:bg-gradient-to-br hover:from-primary/10 hover:via-background hover:to-secondary/20 hover:border-l-primary/80 cursor-pointer group">
+                    <p className="group-hover:text-foreground transition-colors duration-300">
+                      I specialize in <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">Android development</span> with 
                       Bluetooth Low Energy integration, having built enterprise solutions for the hospitality industry 
                       at RFCOM Technologies. I&apos;m also passionate about blockchain technology, contributing to Bitcoin 
                       development projects and cryptocurrency wallet applications.
                     </p>
                   </div>
                   
-                  <div 
-                    className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 hover:border-primary/70 hover:bg-card/98 animate-slide-in-left border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10"
-                    style={{ animationDelay: '1.1s' }}
-                    onMouseEnter={() => setHoveredCard('bio-4')}
-                    onMouseLeave={() => setHoveredCard(null)}
-                  >
-                    <p className="transition-colors duration-300 dark:hover:text-primary/80 dark:hover:drop-shadow-lg">
-                      As an active member of the <span className="text-primary font-semibold">NUS Hackers community</span>, 
+                  <div className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 hover:bg-gradient-to-br hover:from-primary/10 hover:via-background hover:to-secondary/20 hover:border-l-primary/80 cursor-pointer group">
+                    <p className="group-hover:text-foreground transition-colors duration-300">
+                      As an active member of the <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">NUS Hackers community</span>, 
                       I contribute to open-source projects and help foster Singapore&apos;s vibrant tech ecosystem. 
                       I believe in continuous learning and sharing knowledge with fellow developers.
                     </p>
@@ -263,10 +164,10 @@ export function About() {
               {/* Enhanced Education & Expertise with hover effects */}
               <div className="space-y-8">
                 {/* Education */}
-                <Card className="card-enhanced-light card-about-light animate-slide-in-right border-l-4 border-l-primary hover:border-l-primary/80 bg-gradient-to-br from-primary/5 via-background to-secondary/10 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105" style={{ animationDelay: '0.3s' }}>
+                <Card className="card-enhanced-light card-about-light border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 shadow-lg hover:shadow-xl transition-all duration-300">
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
-                      <div className="p-3 bg-primary/10 rounded-xl animate-pulse">
+                      <div className="p-3 bg-primary/10 rounded-xl">
                         <GraduationCap className="h-8 w-8 text-primary" />
                       </div>
                       <div className="flex-1">

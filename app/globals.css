@@ -110,15 +110,6 @@
     animation: float 6s ease-in-out infinite;
   }
 
-  .animate-gradient-x {
-    background-size: 200% 200%;
-    animation: gradient-x 3s ease infinite;
-  }
-
-  .animate-grid-flow {
-    animation: grid-flow 20s linear infinite;
-  }
-
   /* Enhanced Background Patterns */
   .bg-grid-pattern {
     background-image: 
@@ -352,10 +343,6 @@
     @apply bg-gradient-to-br from-purple-50/30 via-background to-violet-50/20;
   }
 
-  .page-contact-light {
-    @apply bg-gradient-to-br from-orange-50/30 via-background to-amber-50/20;
-  }
-
   /* Page-Specific Card Styling */
   .card-about-light {
     @apply border-2 border-blue-300/80 bg-card/95 shadow-lg;
@@ -546,23 +533,7 @@
   }
 }
 
-@keyframes gradient-x {
-  0%, 100% { 
-    background-position: 0% 50%; 
-  }
-  50% { 
-    background-position: 100% 50%; 
-  }
-}
 
-@keyframes grid-flow {
-  0% { 
-    background-position: 0 0; 
-  }
-  100% { 
-    background-position: 50px 50px; 
-  }
-}
 
 /* Enhanced Scrollbar */
 html {

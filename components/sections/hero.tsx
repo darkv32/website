@@ -12,8 +12,7 @@ const Github = dynamic(() => import('lucide-react').then(mod => ({ default: mod.
 const Linkedin = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Linkedin })), { ssr: false });
 const Mail = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Mail })), { ssr: false });
 
-// Dynamically import framer-motion components
-const MotionDiv = dynamic(() => import('framer-motion').then(mod => ({ default: mod.motion.div })), { ssr: false });
+
 
 export function Hero() {
   const [scrollY, setScrollY] = useState(0);
@@ -44,29 +43,29 @@ export function Hero() {
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-indigo-600/20 to-blue-500/20 dark:bg-gradient-to-br dark:from-transparent dark:via-purple-600/30 dark:to-indigo-600/30" />
 
       {/* Soft Parallax Orbs */}
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y1}px)` }}
         className="absolute -top-24 -left-32 w-96 h-96 bg-indigo-400/50 dark:bg-purple-500/40 rounded-full opacity-50 dark:opacity-40 blur-2xl"
       />
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y2}px)` }}
         className="absolute -bottom-32 -right-20 w-96 h-96 bg-purple-400/50 dark:bg-indigo-500/40 rounded-full opacity-50 dark:opacity-40 blur-2xl"
       />
       {/* Additional soft orbs */}
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y1}px)` }}
         className="absolute top-1/3 right-1/4 w-64 h-64 bg-blue-400/40 dark:bg-emerald-500/35 rounded-full opacity-40 dark:opacity-35 blur-2xl"
       />
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y2}px)` }}
         className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-purple-300/45 dark:bg-teal-500/30 rounded-full opacity-45 dark:opacity-30 blur-2xl"
       />
       {/* Extra soft floating orbs */}
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y1}px)` }}
         className="absolute top-1/4 left-1/3 w-48 h-48 bg-indigo-300/35 dark:bg-purple-400/30 rounded-full opacity-35 dark:opacity-30 blur-2xl"
       />
-      <MotionDiv
+      <div
         style={{ transform: `translateY(${y2}px)` }}
         className="absolute bottom-1/4 right-1/3 w-56 h-56 bg-blue-300/35 dark:bg-indigo-400/30 rounded-full opacity-35 dark:opacity-30 blur-2xl"
       />
@@ -127,11 +126,7 @@ export function Hero() {
         </div>
 
         {/* Scroll Down */}
-        <MotionDiv
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="mt-16"
-        >
+        <div className="mt-16 animate-bounce">
           <Button
             variant="ghost"
             onClick={scrollToNext}
@@ -139,7 +134,7 @@ export function Hero() {
           >
             <ArrowDown className="h-6 w-6" />
           </Button>
-        </MotionDiv>
+        </div>
       </div>
 
       {/* Bottom Fade-out Overlay - creates smooth transition to about section */}
