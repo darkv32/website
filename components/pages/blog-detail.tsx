@@ -11,6 +11,7 @@ import { BlogLoading } from '@/components/blog/blog-loading';
 import { getAllBlogPosts, getFeaturedBlogPosts, getBlogCategories, BlogPost, formatDate, formatReadTime } from '@/lib/data';
 import { PageLayout } from '@/components/ui/page-layout';
 import Link from 'next/link';
+import { BlogPostCard } from '@/components/blog/blog-post-card';
 
 export function BlogDetail() {
   const [isVisible, setIsVisible] = useState(false);
@@ -25,6 +26,8 @@ export function BlogDetail() {
   const allPosts = useMemo(() => getAllBlogPosts(), []);
   const featuredPosts = useMemo(() => getFeaturedBlogPosts(), []);
   const blogCategories = useMemo(() => getBlogCategories(), []);
+
+  const blogCategoriesWithValues = blogCategories.map(cat => ({ value: cat.slug, label: cat.name }));
 
   useEffect(() => {
     setIsVisible(true);
@@ -100,66 +103,12 @@ export function BlogDetail() {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
               {featuredPosts.map((post, index) => (
-                <Card 
-                  key={post.slug} 
-                  className="card-enhanced group overflow-hidden animate-slide-up hover:shadow-2xl hover:scale-[1.02] hover:border-primary/70 hover:bg-card/90 border-2 border-primary/30 shadow-md"
-                  style={{ animationDelay: `${index * 200}ms` }}
-                >
-                <div className="aspect-video overflow-hidden relative">
-                      <img
-                        src={post.featuredImage}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                      <div className="absolute top-4 left-4">
-                        <Badge className="bg-primary">Featured</Badge>
-                      </div>
-                      <div className="absolute bottom-4 left-4 right-4">
-                        <div className="flex items-center space-x-4 text-white text-sm">
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-4 w-4" />
-                            <span>{formatDate(post.publishedAt)}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{formatReadTime(post.readTime)}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </CardTitle>
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <Badge variant="outline" className="text-xs">{post.category}</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                    
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="outline" className="badge-enhanced text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {post.tags.length > 3 && (
-                        <Badge variant="outline" className="badge-enhanced text-xs">
-                          +{post.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button size="sm" className="w-full btn-read-article" asChild>
-                      <Link href={`/blog/${post.slug}`}>
-                        <BookOpen className="h-4 w-4 mr-2 btn-icon" />
-                        <span className="btn-text">Read Article</span>
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                <BlogPostCard
+                  key={String(post.slug || post.id)}
+                  post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
+                  categories={blogCategoriesWithValues}
+                  animationDelay={`${index * 200}ms`}
+                />
               ))}
             </div>
           </div>

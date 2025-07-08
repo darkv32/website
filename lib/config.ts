@@ -1,7 +1,7 @@
 // Site configuration constants
 export const SITE_CONFIG = {
   // Base URL for the site
-  baseUrl: 'https://tangyetong.dev',
+  baseUrl: 'https://tangyeto.ng',
   
   // Site metadata
   site: {

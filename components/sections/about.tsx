@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { GraduationCap, Heart, Target, Users, Code, Database, Smartphone, Award, Sparkles, Zap, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { AboutCard } from '@/components/blog/about-card';
 
 export function About() {
   const [isVisible, setIsVisible] = useState(false);
@@ -369,35 +370,11 @@ export function About() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {expertise.map((area, index) => (
-                  <Card 
-                    key={area.title} 
-                    className={`card-enhanced-light card-about-light animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
-                    style={{ animationDelay: `${index * 200}ms` }}
-                  >
-                    <CardContent className="p-8 group">
-                      <div className="flex items-start space-x-4 mb-6">
-                        <div className={`p-4 rounded-xl ${area.bgColor} group-hover:scale-110 transition-transform duration-300`}>
-                          <area.icon className={`h-8 w-8 ${area.color} group-hover:animate-pulse`} />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors duration-300">{area.title}</h4>
-                          <p className="text-muted-foreground text-sm mb-4">{area.description}</p>
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {area.technologies.map((tech, techIndex) => (
-                          <Badge 
-                            key={tech} 
-                            variant="outline" 
-                            className="text-xs backdrop-blur-sm border border-border/50 hover:scale-105 transition-transform duration-200 hover:border-primary/50"
-                            style={{ animationDelay: `${(index * 200) + (techIndex * 50)}ms` }}
-                          >
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <AboutCard
+                    key={area.title}
+                    about={area}
+                    animationDelay={`${index * 200}ms`}
+                  />
                 ))}
               </div>
             </div>
@@ -412,19 +389,11 @@ export function About() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {values.map((value, index) => (
-                  <Card 
-                    key={value.title} 
-                    className={`card-enhanced-light card-about-light animate-slide-up ${isVisible ? 'opacity-100' : 'opacity-0'}`} 
-                    style={{ animationDelay: `${(index + 3) * 200}ms` }}
-                  >
-                    <CardContent className="p-8 text-center group">
-                      <div className={`p-4 bg-primary/10 rounded-full w-fit mx-auto mb-6 ${value.color} bg-opacity-20 group-hover:scale-110 transition-transform duration-300 group-hover:animate-pulse`}>
-                        <value.icon className="h-10 w-10" />
-                      </div>
-                      <h4 className="font-bold text-xl mb-3 group-hover:text-primary transition-colors duration-300">{value.title}</h4>
-                      <p className="text-muted-foreground text-sm leading-relaxed">{value.description}</p>
-                    </CardContent>
-                  </Card>
+                  <AboutCard
+                    key={value.title}
+                    about={value}
+                    animationDelay={`${(index + 3) * 200}ms`}
+                  />
                 ))}
               </div>
             </div>

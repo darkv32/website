@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Mail, Phone, MapPin, Github, Linkedin, Globe, Calendar, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ContactCard } from '@/components/blog/contact-card';
 
 export function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -131,22 +132,11 @@ export function Contact() {
                   <CardTitle>Contact Information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {contactInfo.map((info) => (
-                    <a
-                      key={info.title}
-                      href={info.href}
-                      className="flex items-center space-x-4 p-3 rounded-lg hover:bg-secondary/50 transition-colors group"
-                    >
-                      <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                        <info.icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-medium">{info.title}</div>
-                        <div className="text-muted-foreground text-sm">{info.value}</div>
-                        <div className="text-muted-foreground text-xs">{info.description}</div>
-                      </div>
-                    </a>
-                  ))}
+                  <div className="space-y-4">
+                    {contactInfo.map((info, idx) => (
+                      <ContactCard key={info.title} contact={info} animationDelay={`${idx * 100}ms`} />
+                    ))}
+                  </div>
                 </CardContent>
               </Card>
 
@@ -157,22 +147,8 @@ export function Contact() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {socialLinks.map((social) => (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center space-x-4 p-3 rounded-lg hover:bg-secondary/50 transition-colors group"
-                      >
-                        <div className={`p-2 bg-secondary/50 rounded-lg transition-all duration-300 ${social.color}`}>
-                          <social.icon className="h-5 w-5" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">{social.name}</div>
-                          <div className="text-muted-foreground text-sm">{social.description}</div>
-                        </div>
-                      </a>
+                    {socialLinks.map((social, idx) => (
+                      <ContactCard key={social.name} contact={social} animationDelay={`${idx * 100}ms`} />
                     ))}
                   </div>
                 </CardContent>

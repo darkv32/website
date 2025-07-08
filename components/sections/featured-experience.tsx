@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { ExperienceCard } from '@/components/blog/experience-card';
 
 export function FeaturedExperience() {
   const [isVisible, setIsVisible] = useState(false);
@@ -168,68 +169,11 @@ export function FeaturedExperience() {
           {/* Featured Experiences */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             {featuredExperiences.map((exp, index) => (
-              <Card 
-                key={index} 
-                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 border-l-4 border-l-primary border-2 border-primary/40 shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
-                style={{ animationDelay: `${index * 200}ms` }}
-                onMouseEnter={() => setHoveredCard(`exp-${index}`)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-2 bg-primary/10 rounded-lg group-hover:bg-primary/20 transition-colors">
-                        <exp.icon className={`h-6 w-6 ${exp.color}`} />
-                      </div>
-                      <div>
-                        <h3 className="font-bold group-hover:text-primary transition-colors">{exp.title}</h3>
-                        <p className="text-primary font-medium">{exp.company}</p>
-                      </div>
-                    </div>
-                    <Badge variant="secondary" className="shrink-0">{exp.type}</Badge>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>{exp.period}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <MapPin className="h-4 w-4" />
-                      <span>{exp.location}</span>
-                    </div>
-                  </div>
-                </CardHeader>
-
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground text-sm leading-relaxed">{exp.description}</p>
-
-                  {/* Key Achievements */}
-                  <div>
-                    <h4 className="font-medium mb-2 flex items-center text-sm">
-                      <Award className="h-4 w-4 mr-1 text-primary" />
-                      Key Achievements
-                    </h4>
-                    <ul className="space-y-1">
-                      {exp.achievements.map((achievement, i) => (
-                        <li key={i} className="flex items-start space-x-2">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0" />
-                          <span className="text-muted-foreground text-xs">{achievement}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-1">
-                    {exp.technologies.map((tech) => (
-                      <Badge key={tech} variant="outline" className="text-xs">
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+              <ExperienceCard
+                key={exp.title + exp.company}
+                experience={exp}
+                animationDelay={`${index * 200}ms`}
+              />
             ))}
           </div>
 

@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { SkillCard } from '@/components/blog/skill-card';
 
 export function FeaturedSkills() {
   const [isVisible, setIsVisible] = useState(false);
@@ -128,33 +129,11 @@ export function FeaturedSkills() {
           {/* Top Skills Categories */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             {topSkillCategories.map((category, index) => (
-              <Card key={category.title} className={`hover:shadow-xl transition-all duration-300 group ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 150}ms` }}>
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center space-x-3">
-                    <div className={`p-3 rounded-lg ${category.bgColor} group-hover:scale-110 transition-transform`}>
-                      <category.icon className={`h-6 w-6 ${category.color}`} />
-                    </div>
-                    <div>
-                      <span className="text-lg">{category.title}</span>
-                      <p className="text-sm text-muted-foreground font-normal">{category.description}</p>
-                    </div>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {category.topSkills.map((skill) => (
-                    <div key={skill.name} className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="font-medium">{skill.name}</span>
-                        <span className="text-sm text-muted-foreground">{skill.level}%</span>
-                      </div>
-                      <Progress 
-                        value={isVisible ? skill.level : 0} 
-                        className="h-2"
-                      />
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+              <SkillCard
+                key={category.title}
+                skillCategory={category}
+                animationDelay={`${index * 150}ms`}
+              />
             ))}
           </div>
 

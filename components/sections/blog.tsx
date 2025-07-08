@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getAllBlogPosts, getBlogCategories } from '@/lib/data';
+import { BlogPostCard } from '@/components/blog/blog-post-card';
 
 export function Blog() {
   const [isVisible, setIsVisible] = useState(false);
@@ -96,52 +97,12 @@ export function Blog() {
             <h3 className="text-2xl font-semibold mb-8 text-center">Featured Posts</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.slice(0, 3).map((post, index) => (
-                <Card key={post.id} className={`group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${index * 200}ms` }}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between mb-2">
-                      <Badge className="bg-primary/10 text-primary">Featured</Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {categories.find(cat => cat.slug === post.category)?.name}
-                      </Badge>
-                    </div>
-                    <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                      {post.title}
-                    </CardTitle>
-                    <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-                      <div className="flex items-center space-x-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDate(post.publishedAt)}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Clock className="h-4 w-4" />
-                        <span>{post.readTime}</span>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                    
-                    <div className="flex flex-wrap gap-1">
-                      {post.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
-                      {post.tags.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
-                          +{post.tags.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                    
-                    <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
-                      <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
-                        <span className="btn-text">Read More</span>
-                      </a>
-                    </Button>
-                  </CardContent>
-                </Card>
+                <BlogPostCard
+                  key={String(post.id)}
+                  post={{ ...post, id: String(post.id), readTime: String(post.readTime ?? '') }}
+                  categories={categoriesWithValues}
+                  animationDelay={`${index * 200}ms`}
+                />
               ))}
             </div>
           </div>
@@ -208,56 +169,13 @@ export function Blog() {
               : 'space-y-6'
             }>
               {filteredPosts.map((post, index) => (
-                <Card key={post.id} className={`group hover:shadow-xl transition-all duration-300 border-2 border-primary/30 shadow-md ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} style={{ animationDelay: `${(index + 3) * 100}ms` }}>
-                  <div className={viewMode === 'list' ? 'md:w-2/3 p-6' : ''}>
-                    <CardHeader className={viewMode === 'list' ? 'p-0 pb-4' : ''}>
-                      <div className="flex items-center justify-between mb-2">
-                        <Badge variant="outline" className="text-xs">
-                          {categories.find(cat => cat.slug === post.category)?.name}
-                        </Badge>
-                        {post.featured && (
-                          <Badge className="bg-primary/10 text-primary text-xs">Featured</Badge>
-                        )}
-                      </div>
-                      <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                        {post.title}
-                      </CardTitle>
-                      <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="h-4 w-4" />
-                          <span>{formatDate(post.publishedAt)}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Clock className="h-4 w-4" />
-                          <span>{post.readTime} min read</span>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className={`space-y-3 ${viewMode === 'list' ? 'p-0' : ''}`}>
-                      <p className="text-muted-foreground text-sm line-clamp-2">{post.excerpt}</p>
-                      
-                      <div className="flex flex-wrap gap-1">
-                        {post.tags.slice(0, 3).map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs">
-                            {tag}
-                          </Badge>
-                        ))}
-                        {post.tags.length > 3 && (
-                          <Badge variant="secondary" className="text-xs">
-                            +{post.tags.length - 3}
-                          </Badge>
-                        )}
-                      </div>
-                      
-                      <Button size="sm" variant="outline" className="w-full btn-read-article" asChild>
-                        <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
-                          <span className="btn-text">Read More</span>
-                        </a>
-                      </Button>
-                    </CardContent>
-                  </div>
-                </Card>
+                <BlogPostCard
+                  key={String(post.id)}
+                  post={{ ...post, id: String(post.id), readTime: String(post.readTime ?? '') }}
+                  categories={categoriesWithValues}
+                  animationDelay={`${(index + 3) * 100}ms`}
+                  viewMode={viewMode}
+                />
               ))}
             </div>
 

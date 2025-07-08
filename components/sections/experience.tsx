@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Briefcase, Calendar, MapPin, Award, Building, Code, Database, Smartphone } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { ExperienceCard } from '@/components/blog/experience-card';
 
 export function Experience() {
   const [isVisible, setIsVisible] = useState(false);
@@ -167,55 +168,12 @@ export function Experience() {
                   <div className="absolute left-4 md:left-1/2 md:transform md:-translate-x-1/2 w-12 h-12 bg-background border-4 border-primary rounded-full z-10 flex items-center justify-center">
                     <exp.icon className={`h-5 w-5 ${exp.color}`} />
                   </div>
-
                   {/* Content */}
                   <div className={`ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <Card className="hover:shadow-xl transition-shadow duration-300 border-l-4 border-l-primary border-2 border-primary/40 shadow-lg">
-                      <CardContent className="p-6">
-                        <div className="flex items-start justify-between mb-3">
-                          <div>
-                            <h3 className="text-xl font-semibold">{exp.title}</h3>
-                            <p className="text-primary font-medium text-lg">{exp.company}</p>
-                          </div>
-                          <Badge variant="secondary">{exp.type}</Badge>
-                        </div>
-
-                        <div className="flex flex-wrap items-center gap-4 text-muted-foreground text-sm mb-4">
-                          <div className="flex items-center space-x-1">
-                            <Calendar className="h-4 w-4" />
-                            <span>{exp.period}</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <span className="font-medium">({exp.duration})</span>
-                          </div>
-                          <div className="flex items-center space-x-1">
-                            <MapPin className="h-4 w-4" />
-                            <span>{exp.location}</span>
-                          </div>
-                        </div>
-
-                        <p className="text-muted-foreground mb-4">{exp.description}</p>
-
-                        {/* Achievements */}
-                        <div className="mb-4">
-                          <h4 className="font-medium mb-2">Key Achievements:</h4>
-                          <ul className="list-disc list-inside text-muted-foreground text-sm space-y-1">
-                            {exp.achievements.map((achievement, i) => (
-                              <li key={i}>{achievement}</li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Technologies */}
-                        <div className="flex flex-wrap gap-2">
-                          {exp.technologies.map((tech) => (
-                            <Badge key={tech} variant="outline" className="text-xs">
-                              {tech}
-                            </Badge>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <ExperienceCard
+                      experience={exp}
+                      animationDelay={`${index * 100}ms`}
+                    />
                   </div>
                 </div>
               ))}

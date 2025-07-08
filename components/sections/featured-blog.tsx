@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { BlogPostCard } from '@/components/blog/blog-post-card';
 
 export function FeaturedBlog() {
   const [isVisible, setIsVisible] = useState(false);
@@ -165,65 +166,12 @@ export function FeaturedBlog() {
           {/* Featured Posts */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             {featuredPosts.map((post, index) => (
-              <Card 
-                key={post.id} 
-                className={`group hover:shadow-3xl hover:scale-105 transition-all duration-300 border-2 border-primary/40 shadow-lg ${isVisible ? 'animate-slide-up' : 'opacity-0'}`} 
-                style={{ animationDelay: `${index * 200}ms` }}
-                onMouseEnter={() => setHoveredCard(`blog-${index}`)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-2">
-                    <Badge className="bg-primary/10 text-primary">Featured</Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {categories.find(cat => cat.value === post.category)?.label}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-lg line-clamp-2 group-hover:text-primary transition-colors">
-                    {post.title}
-                  </CardTitle>
-                  <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-                    <div className="flex items-center space-x-1">
-                      <Calendar className="h-4 w-4" />
-                      <span>{formatDate(post.date)}</span>
-                    </div>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4" />
-                      <span>{post.readTime}</span>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
-                  
-                  <div className="flex items-center justify-between text-xs text-muted-foreground">
-                    <div className="flex items-center space-x-1">
-                      <Tag className="h-3 w-3" />
-                      <span>{post.tags.length} tags</span>
-                    </div>
-                  </div>
-                  
-                  <div className="flex flex-wrap gap-1">
-                    {post.tags.slice(0, 3).map((tag) => (
-                      <Badge key={tag} variant="secondary" className="text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                    {post.tags.length > 3 && (
-                      <Badge variant="secondary" className="text-xs">
-                        +{post.tags.length - 3}
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  <Button size="sm" variant="outline" className="w-full btn-read-more" asChild>
-                    <a href={`https://darkvoid32.github.io/`} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-2 btn-icon" />
-                      <span className="btn-text">Read More</span>
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
+              <BlogPostCard
+                key={String(post.id)}
+                post={{ ...post, id: String(post.id), readTime: String(post.readTime ?? '') }}
+                categories={categories}
+                animationDelay={`${index * 200}ms`}
+              />
             ))}
           </div>
 
