@@ -75,8 +75,8 @@ export function BlogDetail() {
 
   return (
     <PageLayout
-      title="Technical Blog"
-      description="Insights, tutorials, and experiences in blockchain development, mobile applications, and software engineering from my journey in tech."
+      title="My Blog"
+      description="Anything under the sun, from insights, to tutorials, to experiences in blockchain development, mobile applications, and software engineering from my life."
       badge="Blog"
       showBackButton
       className="overflow-visible"
