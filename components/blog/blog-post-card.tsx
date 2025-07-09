@@ -60,7 +60,11 @@ export const BlogPostCard: React.FC<BlogPostCardProps> = ({
       {showImage && post.featuredImage && (
         <div className="aspect-video overflow-hidden relative">
           <Image
-            src={post.featuredImage}
+            src={
+              post.featuredImage.startsWith('https://images.pexels.com/')
+                ? `${post.featuredImage}${post.featuredImage.includes('?') ? '&' : '?'}auto=compress,format&w=600`
+                : post.featuredImage
+            }
             alt={post.title}
             fill
             className="w-full h-full object-cover"

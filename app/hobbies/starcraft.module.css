@@ -1,0 +1,34 @@
+.starcraftBg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a0f1c 0%, #1a2233 60%, #0a0f1c 100%), url('/starcraft-bg.jpg') center/cover no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+
+.starcraftBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 60% 30%, rgba(0, 153, 255, 0.18) 0%, transparent 70%),
+              radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.10) 0%, transparent 80%),
+              linear-gradient(120deg, rgba(0, 153, 255, 0.08) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.starcraftBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/logo-black.png') no-repeat right 5% bottom 5%;
+  background-size: 180px;
+  opacity: 0.08;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Ensure content is above the background layers */
+.starcraftBg > * {
+  position: relative;
+  z-index: 3;
+} 

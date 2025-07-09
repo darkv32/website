@@ -20,6 +20,7 @@
       { "name": "About", "href": "/about" },
       { "name": "Experience", "href": "/experience" },
       { "name": "Blog", "href": "/blog" },
+      { "name": "Hobbies", "href": "/hobbies" },
       { "name": "Contact", "href": "/contact" }
     ]
   },
