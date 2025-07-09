@@ -131,7 +131,7 @@ export default function HobbiesPage() {
         <section className={styles.stunningSectionBg + " w-full max-w-4xl mb-12 p-2 md:p-6 shadow-2xl"}>
           <div className="flex flex-col items-center mb-6">
             <h2 className="text-4xl font-extrabold text-blue-400 dark:text-blue-300 drop-shadow-lg mb-2 tracking-widest uppercase px-2 py-4 text-center">
-              Top Anime
+              My Top Anime
             </h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
