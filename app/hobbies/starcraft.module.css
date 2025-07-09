@@ -31,4 +31,54 @@
 .starcraftBg > * {
   position: relative;
   z-index: 3;
+}
+
+.stunningSectionBg {
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: linear-gradient(120deg, rgba(96,165,250,0.08) 0%, rgba(168,139,250,0.06) 100%);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.stunningSectionBg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 60% 30%, rgba(96,165,250,0.18) 0%, transparent 70%),
+              radial-gradient(circle at 20% 80%, rgba(168,139,250,0.10) 0%, transparent 80%),
+              linear-gradient(120deg, rgba(96,165,250,0.08) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
+  animation: sectionBgMove 12s ease-in-out infinite alternate;
+}
+
+.stunningSectionBg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  pointer-events: none;
+  z-index: 2;
+  border: 2px solid;
+  border-image: linear-gradient(120deg, rgba(96,165,250,0.18) 0%, rgba(168,139,250,0.10) 100%, rgba(255,255,255,0.01) 100%) 1;
+  opacity: 0.5;
+}
+
+.stunningSectionBg > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes sectionBgMove {
+  0% {
+    background-position: 0% 0%, 100% 100%, 0% 100%;
+  }
+  100% {
+    background-position: 100% 100%, 0% 0%, 100% 0%;
+  }
 } 
