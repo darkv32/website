@@ -26,11 +26,11 @@ export default function ContactPage() {
     url: getFullUrl('/contact'),
     mainEntity: {
       '@type': 'Person',
-      name: 'Tang Yetong',
-      email: 'ytyt0792@gmail.com',
+      name: SITE_CONFIG.site.name,
+      email: SITE_CONFIG.site.email,
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Singapore',
+        addressLocality: SITE_CONFIG.site.location,
       },
     },
   };
@@ -74,11 +74,11 @@ export default function ContactPage() {
               <div className="space-y-4">
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
                   <Mail className="h-6 w-6 text-primary" />
-                  <span className="font-semibold">ytyt0792@gmail.com</span>
+                  <span className="font-semibold">{SITE_CONFIG.site.email}</span>
                 </div>
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
                   <MapPin className="h-6 w-6 text-primary" />
-                  <span className="font-semibold">Singapore</span>
+                  <span className="font-semibold">{SITE_CONFIG.site.location}</span>
                 </div>
                 <div className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-colors duration-300">
                   <Clock className="h-6 w-6 text-primary" />
@@ -94,7 +94,7 @@ export default function ContactPage() {
               <h4 className="font-bold text-lg mb-6">Connect With Me</h4>
               <div className="space-y-4">
                 <a 
-                  href="https://github.com/fivetran-tangyetong" 
+                  href={SITE_CONFIG.social.github}
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-all duration-300 hover:scale-105 group"
@@ -103,7 +103,7 @@ export default function ContactPage() {
                   <span className="font-semibold group-hover:text-primary transition-colors">GitHub</span>
                 </a>
                 <a 
-                  href="https://www.linkedin.com/in/tang-yetong/" 
+                  href={SITE_CONFIG.social.linkedin}
                   target="_blank" 
                   rel="noopener noreferrer" 
                   className="flex items-center space-x-4 p-3 hover:bg-secondary/20 rounded-lg transition-all duration-300 hover:scale-105 group"

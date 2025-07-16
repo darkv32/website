@@ -11,7 +11,7 @@
       "timezone": "SGT (UTC+8)",
       "social": {
         "github": "https://github.com/fivetran-tangyetong",
-        "linkedin": "https://linkedin.com/in/tang-yetong",
+        "linkedin": "https://linkedin.com/in/tangyetong",
         "twitter": "@tangyetong"
       }
     },
@@ -39,7 +39,7 @@
         "label": "GitHub"
       },
       {
-        "href": "https://linkedin.com/in/tang-yetong",
+        "href": "https://linkedin.com/in/tangyetong",
         "icon": "Linkedin",
         "label": "LinkedIn"
       },
@@ -320,7 +320,7 @@
       },
       {
         "name": "LinkedIn",
-        "href": "https://linkedin.com/in/tang-yetong",
+        "href": "https://linkedin.com/in/tangyetong",
         "description": "Professional network and experience",
         "icon": "Linkedin",
         "color": "text-blue-600 hover:text-blue-700"

@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { SITE_CONFIG } from '@/lib/config';
 
 export function Footer() {
   const [mounted, setMounted] = useState(false);
@@ -38,19 +39,19 @@ export function Footer() {
             </p>
             <div className="flex items-center space-x-4">
               <Button variant="ghost" size="sm" asChild>
-                <a href="https://github.com/fivetran-tangyetong" target="_blank" rel="noopener noreferrer">
+                <a href={SITE_CONFIG.social.github} target="_blank" rel="noopener noreferrer">
                   <Github className="h-5 w-5" />
                   <span className="sr-only">GitHub</span>
                 </a>
               </Button>
               <Button variant="ghost" size="sm" asChild>
-                <a href="https://linkedin.com/in/tang-yetong" target="_blank" rel="noopener noreferrer">
+                <a href={SITE_CONFIG.social.linkedin} target="_blank" rel="noopener noreferrer">
                   <Linkedin className="h-5 w-5" />
                   <span className="sr-only">LinkedIn</span>
                 </a>
               </Button>
               <Button variant="ghost" size="sm" asChild>
-                <a href="mailto:ytyt0792@gmail.com">
+                <a href={`mailto:${SITE_CONFIG.site.email}`}>
                   <Mail className="h-5 w-5" />
                   <span className="sr-only">Email</span>
                 </a>
@@ -68,8 +69,8 @@ export function Footer() {
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <Mail className="h-4 w-4" />
-                <a href="mailto:ytyt0792@gmail.com" className="hover:text-primary transition-colors">
-                ytyt0792@gmail.com
+                <a href={`mailto:${SITE_CONFIG.site.email}`} className="hover:text-primary transition-colors">
+                {SITE_CONFIG.site.email}
                 </a>
               </div>
             </div>

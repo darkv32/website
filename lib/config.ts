@@ -17,7 +17,7 @@ export const SITE_CONFIG = {
   // Social media URLs
   social: {
     github: 'https://github.com/fivetran-tangyetong',
-    linkedin: 'https://www.linkedin.com/in/tang-yetong/',
+    linkedin: 'https://www.linkedin.com/in/tangyetong/',
     twitter: 'https://twitter.com/tangyetong',
   },
   

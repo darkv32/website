@@ -6,6 +6,7 @@ import { Mail, Phone, MapPin, Github, Linkedin, Globe, Calendar, Clock } from 'l
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ContactCard } from '@/components/blog/contact-card';
+import { SITE_CONFIG } from '@/lib/config';
 
 export function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -36,14 +37,14 @@ export function Contact() {
     {
       icon: Mail,
       title: "Email",
-      value: "ytyt0792@gmail.com",
-      href: "mailto:ytyt0792@gmail.com",
+      value: SITE_CONFIG.site.email,
+      href: `mailto:${SITE_CONFIG.site.email}`,
       description: "Primary contact method"
     },
     {
       icon: MapPin,
       title: "Location",
-      value: "Singapore",
+      value: SITE_CONFIG.site.location,
       href: "https://maps.google.com/?q=Singapore",
       description: "Available for local opportunities"
     },
@@ -60,14 +61,14 @@ export function Contact() {
     {
       icon: Github,
       name: "GitHub",
-      href: "https://github.com/fivetran-tangyetong",
+      href: SITE_CONFIG.social.github,
       color: "hover:text-gray-900 dark:hover:text-gray-100",
       description: "25+ repositories"
     },
     {
       icon: Linkedin,
       name: "LinkedIn", 
-      href: "https://www.linkedin.com/in/tang-yetong/",
+      href: SITE_CONFIG.social.linkedin,
       color: "hover:text-blue-600",
       description: "Professional network"
     }
