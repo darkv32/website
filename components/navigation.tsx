@@ -76,8 +76,8 @@ export function Navigation() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-background/95 backdrop-blur-md shadow-lg border-b-2 border-border/60'
-          : 'bg-transparent'
+          ? 'bg-background/90 backdrop-blur-md shadow-lg border-b-2 border-border/60'
+          : 'bg-background/40 backdrop-blur-sm shadow-sm'
       )}
     >
       <div className="container-width section-padding">
@@ -112,7 +112,7 @@ export function Navigation() {
                 className="h-8 w-auto bg-transparent"
                 style={{ paddingBottom: '5px' }}
               />
-              <span className="text-xl font-bold text-primary">Tang Yetong</span>
+              <span className="text-xl font-bold text-foreground font-semibold">Tang Yetong</span>
             </Link>
           </div>
 
@@ -137,8 +137,8 @@ export function Navigation() {
                     className={cn(
                       'px-3 py-2 rounded-md text-sm font-medium transition-colors relative',
                       isActive
-                        ? 'text-primary'
-                        : 'text-muted-foreground hover:text-foreground'
+                        ? 'text-primary font-semibold'
+                        : 'text-foreground hover:text-primary'
                     )}
                   >
                     {item.name}
@@ -192,7 +192,7 @@ export function Navigation() {
                       className="h-6 w-auto bg-transparent"
                       style={{ paddingBottom: '3px' }}
                     />
-                    <span className="text-lg font-bold text-primary">Tang Yetong</span>
+                    <span className="text-lg font-bold text-foreground font-semibold">Tang Yetong</span>
                   </Link>
                   <Button
                     variant="ghost"
@@ -226,8 +226,8 @@ export function Navigation() {
                         className={cn(
                           'block px-4 py-4 rounded-lg text-base font-medium transition-colors min-h-[48px] flex items-center',
                           isActive
-                            ? 'text-primary bg-primary/10 border-l-4 border-primary'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                            ? 'text-primary bg-primary/10 border-l-4 border-primary font-semibold'
+                            : 'text-foreground hover:text-primary hover:bg-accent/50'
                         )}
                       >
                         {item.name}
