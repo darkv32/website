@@ -10,44 +10,26 @@ export const COLORS = {
     
     // Splash mark colors
     splashPrimary: {
-      light: 'radial-gradient(ellipse at center, rgba(59, 130, 246, 0.35) 0%, rgba(99, 102, 241, 0.28) 30%, rgba(147, 51, 234, 0.20) 60%, rgba(59, 130, 246, 0.08) 100%)',
-      dark: 'radial-gradient(ellipse at center, rgba(168, 85, 247, 0.45) 0%, rgba(147, 51, 234, 0.38) 30%, rgba(126, 34, 206, 0.30) 60%, rgba(168, 85, 247, 0.15) 100%)',
+      light: 'radial-gradient(ellipse at center, rgba(173, 216, 230, 0.18) 0%, rgba(173, 216, 230, 0.12) 30%, rgba(173, 216, 230, 0.08) 60%, rgba(173, 216, 230, 0.04) 100%)',
+      dark: 'radial-gradient(ellipse at center, rgba(128, 128, 128, 0.22) 0%, rgba(160, 160, 160, 0.18) 30%, rgba(192, 192, 192, 0.14) 60%, rgba(220, 220, 220, 0.08) 100%)',
     },
     splashSecondary: {
-      light: 'radial-gradient(ellipse at center, rgba(147, 51, 234, 0.30) 0%, rgba(59, 130, 246, 0.22) 40%, rgba(99, 102, 241, 0.15) 70%, rgba(147, 51, 234, 0.05) 100%)',
-      dark: 'radial-gradient(ellipse at center, rgba(147, 51, 234, 0.40) 0%, rgba(168, 85, 247, 0.32) 40%, rgba(126, 34, 206, 0.25) 70%, rgba(147, 51, 234, 0.12) 100%)',
+      light: 'radial-gradient(ellipse at center, rgba(173, 216, 230, 0.14) 0%, rgba(173, 216, 230, 0.10) 40%, rgba(173, 216, 230, 0.07) 70%, rgba(173, 216, 230, 0.02) 100%)',
+      dark: 'radial-gradient(ellipse at center, rgba(160, 160, 160, 0.16) 0%, rgba(192, 192, 192, 0.12) 40%, rgba(220, 220, 220, 0.09) 70%, rgba(240, 240, 240, 0.04) 100%)',
     },
     splashTertiary: {
-      light: 'radial-gradient(ellipse at center, rgba(99, 102, 241, 0.25) 0%, rgba(147, 51, 234, 0.18) 50%, rgba(59, 130, 246, 0.12) 80%, rgba(99, 102, 241, 0.04) 100%)',
-      dark: 'radial-gradient(ellipse at center, rgba(126, 34, 206, 0.35) 0%, rgba(147, 51, 234, 0.28) 50%, rgba(168, 85, 247, 0.22) 80%, rgba(126, 34, 206, 0.10) 100%)',
+      light: 'radial-gradient(ellipse at center, rgba(173, 216, 230, 0.10) 0%, rgba(173, 216, 230, 0.07) 50%, rgba(173, 216, 230, 0.05) 80%, rgba(173, 216, 230, 0.01) 100%)',
+      dark: 'radial-gradient(ellipse at center, rgba(192, 192, 192, 0.13) 0%, rgba(220, 220, 220, 0.10) 50%, rgba(240, 240, 240, 0.08) 80%, rgba(255, 255, 255, 0.03) 100%)',
     },
     
     // Parallax orb colors
     orbsPrimary: {
-      light: 'radial-gradient(ellipse at center, rgba(59, 130, 246, 0.35) 0%, rgba(99, 102, 241, 0.28) 30%, rgba(147, 51, 234, 0.20) 60%, rgba(59, 130, 246, 0.08) 100%)',
-      dark: 'radial-gradient(ellipse at center, rgba(147, 51, 234, 0.35) 0%, rgba(99, 102, 241, 0.28) 30%, rgba(59, 130, 246, 0.20) 60%, rgba(147, 51, 234, 0.08) 100%)',
+      light: 'rgba(99, 102, 241, 0.25)',
+      dark: 'rgba(20, 184, 166, 0.25)',
     },
     orbsSecondary: {
-      light: 'radial-gradient(ellipse at center, rgba(147, 51, 234, 0.35) 0%, rgba(99, 102, 241, 0.28) 30%, rgba(59, 130, 246, 0.20) 60%, rgba(147, 51, 234, 0.08) 100%)',
-      dark: 'radial-gradient(ellipse at center, rgba(147, 51, 234, 0.35) 0%, rgba(99, 102, 241, 0.28) 30%, rgba(59, 130, 246, 0.20) 60%, rgba(147, 51, 234, 0.08) 100%)',
-    },
-    
-    // Floating orb colors
-    floatingBlue: {
-      light: 'rgba(59, 130, 246, 0.4)',
-      dark: 'rgba(34, 197, 94, 0.6)',
-    },
-    floatingIndigo: {
-      light: 'rgba(99, 102, 241, 0.45)',
-      dark: 'rgba(20, 184, 166, 0.55)',
-    },
-    floatingPurple: {
-      light: 'rgba(147, 51, 234, 0.35)',
-      dark: 'rgba(168, 85, 247, 0.5)',
-    },
-    floatingTeal: {
-      light: 'rgba(20, 184, 166, 0.35)',
-      dark: 'rgba(99, 102, 241, 0.55)',
+      light: 'rgba(20, 184, 166, 0.25)',
+      dark: 'rgba(99, 102, 241, 0.25)',
     },
     
     // Text colors

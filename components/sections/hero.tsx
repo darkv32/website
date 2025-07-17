@@ -104,54 +104,22 @@ export function Hero() {
       <div
         style={{ 
           transform: `translateY(${y1}px)`,
-          background: getThemeColor('floatingIndigo', currentTheme),
+          background: getThemeColor('orbsPrimary', currentTheme),
           clipPath: 'polygon(15% 5%, 85% 5%, 95% 25%, 95% 75%, 85% 95%, 15% 95%, 5% 75%, 5% 25%)',
           filter: 'blur(40px)',
-          mixBlendMode: 'multiply'
+          mixBlendMode: 'screen'
         }}
         className="absolute -top-24 -left-32 w-96 h-96 opacity-60 dark:opacity-50"
       />
       <div
         style={{ 
           transform: `translateY(${y2}px)`,
-          background: getThemeColor('floatingTeal', currentTheme),
+          background: getThemeColor('orbsSecondary', currentTheme),
           clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
           filter: 'blur(45px)',
           mixBlendMode: 'screen'
         }}
         className="absolute -bottom-32 -right-20 w-96 h-96 opacity-55 dark:opacity-45"
-      />
-      
-      {/* Additional soft orbs */}
-      <div
-        style={{ 
-          transform: `translateY(${y1}px)`,
-          backgroundColor: getThemeColor('floatingBlue', currentTheme)
-        }}
-        className="absolute top-1/3 right-1/4 w-64 h-64 rounded-full opacity-40 dark:opacity-35 blur-2xl"
-      />
-      <div
-        style={{ 
-          transform: `translateY(${y2}px)`,
-          backgroundColor: getThemeColor('floatingIndigo', currentTheme)
-        }}
-        className="absolute bottom-1/3 left-1/4 w-80 h-80 rounded-full opacity-45 dark:opacity-30 blur-2xl"
-      />
-      
-      {/* Extra soft floating orbs */}
-      <div
-        style={{ 
-          transform: `translateY(${y1}px)`,
-          backgroundColor: getThemeColor('floatingPurple', currentTheme)
-        }}
-        className="absolute top-1/4 left-1/3 w-48 h-48 rounded-full opacity-35 dark:opacity-30 blur-2xl"
-      />
-      <div
-        style={{ 
-          transform: `translateY(${y2}px)`,
-          backgroundColor: getThemeColor('floatingTeal', currentTheme)
-        }}
-        className="absolute bottom-1/4 right-1/3 w-56 h-56 rounded-full opacity-35 dark:opacity-30 blur-2xl"
       />
 
       {/* Main Content */}
