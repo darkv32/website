@@ -52,16 +52,16 @@ export const COLORS = {
     
     // Text colors
     textName: {
-      light: 'bg-gradient-to-r from-white via-white to-gray-100',
-      dark: 'bg-gradient-to-r from-white via-white to-gray-100',
+      light: 'text-white',
+      dark: 'text-white',
     },
     textRole: {
       light: 'text-white',
       dark: 'text-white',
     },
     textDescription: {
-      light: 'text-gray-200',
-      dark: 'text-gray-200',
+      light: 'text-white',
+      dark: 'text-white',
     },
     
     // Button colors

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { getHeroData } from '@/lib/data';
 import { COLORS, getThemeColor } from '@/lib/colors';
 import { useTheme } from 'next-themes';
+import Image from 'next/image';
 
 // Dynamically import social icons to reduce initial bundle
 const Github = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Github })), { ssr: false });
@@ -40,10 +41,16 @@ export function Hero() {
   return (
     <section id="home" className="relative w-full h-screen overflow-hidden">
       {/* Hero Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/hero_background/hero-background-1.jpg)' }}
-      />
+      <div className="absolute inset-0">
+        <Image
+          src="/hero_background/hero-background-1.jpg"
+          alt="Hero Background"
+          fill
+          className="object-cover object-center"
+          priority
+          sizes="100vw"
+        />
+      </div>
       
       {/* Dark overlay for better text readability */}
       <div 
@@ -150,7 +157,7 @@ export function Hero() {
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pt-32 [text-shadow:_0_1px_2px_rgba(0,0,0,0.1)] dark:[text-shadow:_0_1px_2px_rgba(255,255,255,0.1)]">
         {/* Name with Theme-aware Gradient */}
-        <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight sm:leading-relaxed overflow-visible bg-clip-text text-transparent ${getThemeColor('textName', currentTheme)} mb-4 sm:mb-6 pb-2 drop-shadow-lg`}>
+        <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight sm:leading-relaxed overflow-visible bg-clip-text text-transparent ${getThemeColor('textName', currentTheme)} mb-4 sm:mb-6 pb-2 drop-shadow-lg opacity-95`}>
           Tang Yetong
         </h1>
 
@@ -168,7 +175,7 @@ export function Hero() {
         </div>
 
         {/* Description */}
-        <p className={`max-w-2xl text-base sm:text-lg md:text-xl ${getThemeColor('textDescription', currentTheme)} mb-8 sm:mb-10 px-4 sm:px-0 transition-colors duration-300 font-medium drop-shadow-sm`}>
+        <p className={`max-w-2xl text-base sm:text-lg md:text-xl ${getThemeColor('textDescription', currentTheme)} mb-8 sm:mb-10 px-4 sm:px-0 transition-colors duration-300 font-medium drop-shadow-sm opacity-95`}>
           {description}
         </p>
 
