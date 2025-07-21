@@ -156,6 +156,20 @@ export default function HobbiesPage() {
               <span className="text-2xl font-bold mb-1 z-10 text-orange-600 dark:text-orange-300 drop-shadow">Bleach</span>
               <span className="text-sm text-muted-foreground z-10">Action, Supernatural, Shounen</span>
             </Card>
+            {/* Grand Blue Dreaming */}
+            <Card className="relative flex flex-col items-center p-6 border-2 border-cyan-400 bg-gradient-to-br from-cyan-100/60 via-white/80 to-cyan-200/60 dark:from-cyan-900/40 dark:to-cyan-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-cyan-200/40 to-transparent dark:from-cyan-900/60" />
+              <Image src="/anime/grand_blue_dreaming.webp" alt="Grand Blue Dreaming" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
+              <span className="text-2xl font-bold mb-1 z-10 text-cyan-600 dark:text-cyan-300 drop-shadow">Grand Blue Dreaming</span>
+              <span className="text-sm text-muted-foreground z-10">Comedy, Slice of Life, College</span>
+            </Card>
+            {/* Call of the Night */}
+            <Card className="relative flex flex-col items-center p-6 border-2 border-purple-400 bg-gradient-to-br from-purple-100/60 via-white/80 to-purple-200/60 dark:from-purple-900/40 dark:to-purple-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
+              <div className="absolute inset-0 z-0 bg-gradient-to-t from-purple-200/40 to-transparent dark:from-purple-900/60" />
+              <Image src="/anime/call_of_the_night.webp" alt="Call of the Night" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
+              <span className="text-2xl font-bold mb-1 z-10 text-purple-600 dark:text-purple-300 drop-shadow">Call of the Night</span>
+              <span className="text-sm text-muted-foreground z-10">Supernatural, Romance, Urban Fantasy</span>
+            </Card>
           </div>
         </section>
       </div>
