@@ -10,7 +10,7 @@
       "email": "ytyt0792@gmail.com",
       "timezone": "SGT (UTC+8)",
       "social": {
-        "github": "https://github.com/fivetran-tangyetong",
+        "github": "https://github.com/darkv32",
         "linkedin": "https://linkedin.com/in/tangyetong",
         "twitter": "@tangyetong"
       }
@@ -34,7 +34,7 @@
     "description": "Data Analyst at Fivetran passionate about building scalable pipelines, mobile apps, and full-stack solutions.",
     "socialLinks": [
       {
-        "href": "https://github.com/fivetran-tangyetong",
+        "href": "https://github.com/darkv32",
         "icon": "Github",
         "label": "GitHub"
       },
@@ -175,7 +175,7 @@
         "title": "Personal Website",
         "description": "Portfolio and technical blog built with Next.js",
         "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "React"],
-        "github": "https://github.com/fivetran-tangyetong/personal-website",
+        "github": "https://github.com/darkv32/personal-website",
         "live": "https://tangyetong.dev",
         "featured": true
       },
@@ -313,7 +313,7 @@
     "socialLinks": [
       {
         "name": "GitHub",
-        "href": "https://github.com/fivetran-tangyetong",
+        "href": "https://github.com/darkv32",
         "description": "Open source contributions and projects",
         "icon": "Github",
         "color": "text-gray-600 hover:text-gray-900"
