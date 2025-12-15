@@ -13,6 +13,7 @@ import ReactMarkdown, { type ExtraProps } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { BlogPostCard } from '@/components/blog/blog-post-card';
+import React from 'react';
 
 interface BlogArticleProps {
   post: BlogPost;
@@ -117,7 +118,7 @@ export function BlogArticle({ post }: BlogArticleProps) {
               <article className="article-content prose prose-lg max-w-none">
                 <ReactMarkdown
                   components={{
-                    code: (props: JSX.IntrinsicElements['code'] & ExtraProps) => {
+                    code: (props: React.ComponentPropsWithoutRef<'code'> & ExtraProps) => {
                       const { className, children } = props;
                       const match = /language-(\w+)/.exec(className || '');
                       if (match) {

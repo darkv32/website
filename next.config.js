@@ -5,9 +5,9 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   // output: 'export', // Temporarily disabled for testing
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // Note: eslint config moved to next.config.js is deprecated in Next.js 16
+  // Use .eslintrc.json or eslint.config.js instead
+  turbopack: {}, // Allow webpack config to work alongside Turbopack
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -23,6 +23,7 @@ const nextConfig = {
     ],
   },
   experimental: {
+    // `optimizePackageImports` is supported in Next 14+; keep it enabled for lucide
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'],
   },
   webpack: (config, { dev, isServer }) => {

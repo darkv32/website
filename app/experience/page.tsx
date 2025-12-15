@@ -6,6 +6,7 @@ import { BreadcrumbData } from '@/components/seo/structured-data';
 import { SITE_CONFIG, getFullUrl } from '@/lib/config';
 
 // Dynamic import with loading fallback
+// Note: Removed ssr: false as it's not allowed in Server Components in Next.js 16
 const ExperienceDetail = dynamic(() => import('@/components/pages/experience-detail').then(mod => ({ default: mod.ExperienceDetail })), {
   loading: () => (
     <div className="min-h-screen bg-background flex items-center justify-center">
@@ -14,8 +15,7 @@ const ExperienceDetail = dynamic(() => import('@/components/pages/experience-det
         <p className="text-muted-foreground">Loading experience...</p>
       </div>
     </div>
-  ),
-  ssr: false // Disable SSR for better performance with heavy animations
+  )
 });
 
 export const metadata = generateMetadata({
