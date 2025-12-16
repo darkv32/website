@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { List } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -35,35 +35,86 @@ export function BlogTableOfContents({ content }: BlogTableOfContentsProps) {
     setHeadings(extractedHeadings);
   }, [content]);
 
+  // Use IntersectionObserver instead of scroll listener for better performance
   useEffect(() => {
-    const handleScroll = () => {
-      const headingElements = headings.map(heading => 
-        document.getElementById(heading.id)
-      ).filter(Boolean);
+    if (headings.length === 0) return;
 
-      const currentHeading = headingElements.find(element => {
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
+    const headingElements = headings
+      .map(heading => document.getElementById(heading.id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (headingElements.length === 0) return;
+
+    // Track which headings are visible
+    const visibleHeadings = new Map<HTMLElement, boolean>();
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          visibleHeadings.set(entry.target as HTMLElement, entry.isIntersecting);
+        });
+
+        // Find the first visible heading (topmost in viewport)
+        const visible = Array.from(visibleHeadings.entries())
+          .filter(([_, isVisible]) => isVisible)
+          .map(([element]) => element);
+
+        if (visible.length > 0) {
+          // Get the topmost visible heading
+          const topmost = visible.reduce((top, current) => {
+            const topRect = top.getBoundingClientRect();
+            const currentRect = current.getBoundingClientRect();
+            return currentRect.top < topRect.top ? current : top;
+          });
+
+          setActiveHeading(topmost.id);
         }
-        return false;
-      });
-
-      if (currentHeading) {
-        setActiveHeading(currentHeading.id);
+      },
+      {
+        rootMargin: '-100px 0px -80% 0px', // Trigger when heading is near top
+        threshold: [0, 0.1, 0.5, 1],
       }
-    };
+    );
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Observe all heading elements
+    headingElements.forEach(element => {
+      observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
   }, [headings]);
 
-  const scrollToHeading = (id: string) => {
+  // Optimized smooth scroll function
+  const scrollToHeading = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      const start = window.pageYOffset;
+      const target = element.offsetTop - 100; // Account for fixed header
+      const distance = target - start;
+      const duration = 600;
+      let startTime: number | null = null;
+
+      const easeInOutCubic = (t: number): number => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+
+      const animateScroll = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        window.scrollTo(0, start + distance * easeInOutCubic(progress));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
     }
-  };
+  }, []);
 
   if (headings.length === 0) {
     return null;

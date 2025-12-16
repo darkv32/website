@@ -101,13 +101,15 @@
     @apply container-width section-padding;
   }
 
-  /* Essential Animation Classes */
+  /* Essential Animation Classes - GPU Accelerated */
   .animate-slide-up {
     animation: slideUp 0.6s ease-out forwards;
+    will-change: transform, opacity;
   }
   
   .animate-float {
     animation: float 6s ease-in-out infinite;
+    will-change: transform;
   }
 
   /* Enhanced Background Patterns */
@@ -512,41 +514,41 @@
   }
 }
 
-/* Enhanced Keyframe Animations */
+/* Enhanced Keyframe Animations - GPU Accelerated */
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 30px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
 @keyframes bgMove {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(30px); }
-  100% { transform: translateX(0); }
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(30px, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 .animate-bg-move {
   animation: bgMove 12s ease-in-out infinite;
+  will-change: transform;
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translate3d(0, 0px, 0); }
+  50% { transform: translate3d(0, -20px, 0); }
+  100% { transform: translate3d(0, 0px, 0); }
 }
 .animate-float {
   animation: float 6s ease-in-out infinite;
+  will-change: transform;
 }
 
 
 /* Enhanced Scrollbar */
-html {
-  scroll-behavior: smooth;
-}
+/* scroll-behavior: smooth removed for better performance - using JS-based smooth scrolling where needed */
 
 ::-webkit-scrollbar {
   width: 8px;

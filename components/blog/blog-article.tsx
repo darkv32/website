@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowLeft, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -14,6 +14,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { BlogPostCard } from '@/components/blog/blog-post-card';
 import React from 'react';
+import { rafThrottle } from '@/lib/performance';
 
 interface BlogArticleProps {
   post: BlogPost;
@@ -22,24 +23,54 @@ interface BlogArticleProps {
 export function BlogArticle({ post }: BlogArticleProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
+  const articleRef = useRef<HTMLElement | null>(null);
+  const cachedDataRef = useRef<{ articleHeight: number; windowHeight: number } | null>(null);
 
   const relatedPosts = getRelatedBlogPosts(post);
 
   useEffect(() => {
     setIsVisible(true);
-    const handleScroll = () => {
-      const article = document.querySelector('.article-content');
-      if (article) {
+    
+    // Cache article element reference
+    articleRef.current = document.querySelector('.article-content') as HTMLElement;
+    
+    // Cache initial measurements
+    if (articleRef.current) {
+      cachedDataRef.current = {
+        articleHeight: articleRef.current.scrollHeight,
+        windowHeight: window.innerHeight,
+      };
+    }
+
+    // Optimized scroll handler with throttling and cached measurements
+    const handleScroll = rafThrottle(() => {
+      const article = articleRef.current;
+      if (article && cachedDataRef.current) {
         const rect = article.getBoundingClientRect();
-        const windowHeight = window.innerHeight;
-        const articleHeight = article.scrollHeight;
+        const { articleHeight, windowHeight } = cachedDataRef.current;
         const scrolled = Math.max(0, windowHeight - rect.top);
         const progress = Math.min(100, (scrolled / articleHeight) * 100);
         setReadingProgress(progress);
       }
+    });
+
+    // Recalculate cached data on resize
+    const handleResize = () => {
+      if (articleRef.current) {
+        cachedDataRef.current = {
+          articleHeight: articleRef.current.scrollHeight,
+          windowHeight: window.innerHeight,
+        };
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   return (

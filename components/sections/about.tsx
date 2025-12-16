@@ -304,8 +304,8 @@ export function About() {
 
       <style jsx>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(180deg); }
+          0%, 100% { transform: translate3d(0, 0px, 0) rotate(0deg); }
+          50% { transform: translate3d(0, -20px, 0) rotate(180deg); }
         }
         
         @keyframes grid-flow {
@@ -319,13 +319,13 @@ export function About() {
         }
         
         @keyframes slide-in-left {
-          from { opacity: 0; transform: translateX(-50px); }
-          to { opacity: 1; transform: translateX(0); }
+          from { opacity: 0; transform: translate3d(-50px, 0, 0); }
+          to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
         @keyframes slide-in-right {
-          from { opacity: 0; transform: translateX(50px); }
-          to { opacity: 1; transform: translateX(0); }
+          from { opacity: 0; transform: translate3d(50px, 0, 0); }
+          to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         
         @keyframes fade-in {
@@ -335,27 +335,33 @@ export function About() {
         
         .animate-float {
           animation: float 3s ease-in-out infinite;
+          will-change: transform;
         }
         
         .animate-grid-flow {
           animation: grid-flow 20s linear infinite;
+          will-change: background-position;
         }
         
         .animate-gradient-x {
           background-size: 200% 200%;
           animation: gradient-x 3s ease infinite;
+          will-change: background-position;
         }
         
         .animate-slide-in-left {
           animation: slide-in-left 0.8s ease-out forwards;
+          will-change: transform, opacity;
         }
         
         .animate-slide-in-right {
           animation: slide-in-right 0.8s ease-out forwards;
+          will-change: transform, opacity;
         }
         
         .animate-fade-in {
           animation: fade-in 1s ease-out forwards;
+          will-change: opacity;
         }
         
         .bg-grid-pattern {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { Typewriter } from 'react-simple-typewriter';
 import { Download, ArrowDown } from 'lucide-react';
@@ -9,6 +9,7 @@ import { getHeroData } from '@/lib/data';
 import { COLORS, getThemeColor } from '@/lib/colors';
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
+import { rafThrottle } from '@/lib/performance';
 
 // Dynamically import social icons to reduce initial bundle
 const Github = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Github })), { ssr: false });
@@ -19,14 +20,24 @@ export function Hero() {
   const [scrollY, setScrollY] = useState(0);
   const { theme } = useTheme();
   const currentTheme = theme as 'light' | 'dark' || 'dark';
+  const rafIdRef = useRef<number | null>(null);
 
+  // Optimized scroll handler using requestAnimationFrame
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const updateScrollY = rafThrottle(() => {
+      setScrollY(window.scrollY);
+    });
+
+    window.addEventListener('scroll', updateScrollY, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', updateScrollY);
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
+    };
   }, []);
 
-  // Simple transform calculations
+  // Simple transform calculations - memoized for performance
   const y1 = Math.max(-50, Math.min(50, (scrollY / 300) * -50));
   const y2 = Math.max(-50, Math.min(50, (scrollY / 300) * 50));
 
@@ -34,9 +45,35 @@ export function Hero() {
 
   useEffect(() => window.scrollTo(0, 0), []);
 
-  const scrollToNext = () => {
-    document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // Optimized smooth scroll function
+  const scrollToNext = useCallback(() => {
+    const element = document.getElementById('about');
+    if (element) {
+      const start = window.pageYOffset;
+      const target = element.offsetTop;
+      const distance = target - start;
+      const duration = 800;
+      let startTime: number | null = null;
+
+      const easeInOutCubic = (t: number): number => {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      };
+
+      const animateScroll = (currentTime: number) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        
+        window.scrollTo(0, start + distance * easeInOutCubic(progress));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    }
+  }, []);
 
   return (
     <section id="home" className="relative w-full h-screen overflow-hidden">
@@ -100,10 +137,11 @@ export function Hero() {
         />
       </div>
 
-      {/* Soft Parallax Orbs */}
+      {/* Soft Parallax Orbs - GPU accelerated */}
       <div
         style={{ 
-          transform: `translateY(${y1}px)`,
+          transform: `translate3d(0, ${y1}px, 0)`,
+          willChange: 'transform',
           background: getThemeColor('orbsPrimary', currentTheme),
           clipPath: 'polygon(15% 5%, 85% 5%, 95% 25%, 95% 75%, 85% 95%, 15% 95%, 5% 75%, 5% 25%)',
           filter: 'blur(40px)',
@@ -113,7 +151,8 @@ export function Hero() {
       />
       <div
         style={{ 
-          transform: `translateY(${y2}px)`,
+          transform: `translate3d(0, ${y2}px, 0)`,
+          willChange: 'transform',
           background: getThemeColor('orbsSecondary', currentTheme),
           clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
           filter: 'blur(45px)',

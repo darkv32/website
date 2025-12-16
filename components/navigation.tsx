@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTheme } from 'next-themes';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getSiteMetadata } from '@/lib/data';
+import { rafThrottle } from '@/lib/performance';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -22,9 +23,10 @@ export function Navigation() {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
+    // Throttled scroll handler for isScrolled state
+    const handleScroll = rafThrottle(() => {
       setIsScrolled(window.scrollY > 50);
-    };
+    });
 
     const handleSectionObserver = () => {
       const sections = ['home', 'about', 'contact'];
@@ -50,7 +52,7 @@ export function Navigation() {
       };
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     const cleanup = handleSectionObserver();
 
     return () => {
@@ -59,15 +61,38 @@ export function Navigation() {
     };
   }, []);
 
-  const handleNavClick = (href: string) => {
+  // Optimized smooth scroll function
+  const handleNavClick = useCallback((href: string) => {
     setIsMobileMenuOpen(false);
     if (href.startsWith('/#')) {
       const element = document.querySelector(href.slice(1));
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const start = window.pageYOffset;
+        const target = (element as HTMLElement).offsetTop;
+        const distance = target - start;
+        const duration = 600;
+        let startTime: number | null = null;
+
+        const easeInOutCubic = (t: number): number => {
+          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        };
+
+        const animateScroll = (currentTime: number) => {
+          if (startTime === null) startTime = currentTime;
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / duration, 1);
+          
+          window.scrollTo(0, start + distance * easeInOutCubic(progress));
+          
+          if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+          }
+        };
+
+        requestAnimationFrame(animateScroll);
       }
     }
-  };
+  }, []);
 
   const isHomePage = typeof window !== 'undefined' && window.location.pathname === '/';
 
