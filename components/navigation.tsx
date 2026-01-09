@@ -6,7 +6,6 @@ import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getSiteMetadata } from '@/lib/data';
 import { rafThrottle } from '@/lib/performance';
 
@@ -129,14 +128,6 @@ export function Navigation() {
               href="/"
               className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
             >
-              <Image
-                src={!mounted || theme === 'light' ? '/logo-black.png' : '/logo-white.png'}
-                alt="Tang Yetong Logo"
-                width={28}
-                height={28}
-                className="h-8 w-auto bg-transparent"
-                style={{ paddingBottom: '5px' }}
-              />
               <span className="text-xl font-bold text-foreground font-semibold">Tang Yetong</span>
             </Link>
           </div>
@@ -209,14 +200,6 @@ export function Navigation() {
                     className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <Image
-                      src={!mounted || theme === 'light' ? '/logo-black.png' : '/logo-white.png'}
-                      alt="Tang Yetong Logo"
-                      width={24}
-                      height={24}
-                      className="h-6 w-auto bg-transparent"
-                      style={{ paddingBottom: '3px' }}
-                    />
                     <span className="text-lg font-bold text-foreground font-semibold">Tang Yetong</span>
                   </Link>
                   <Button
