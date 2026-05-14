@@ -35,7 +35,7 @@ export const SITE_CONFIG = {
   
   // Performance configuration
   performance: {
-    preloadImages: ['/og-image.jpg'],
+    preloadImages: [],
     preloadFonts: ['https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'],
   },
 } as const;

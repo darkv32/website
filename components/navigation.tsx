@@ -33,7 +33,7 @@ export function Navigation() {
           : 'bg-transparent py-4'
       )}
     >
-      <div className="container-width px-6">
+      <div className="w-full px-6 md:px-8 lg:px-12">
         <div className="flex items-center justify-between h-12">
           {/* Logo */}
           <div className="flex-shrink-0">

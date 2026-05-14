@@ -72,6 +72,15 @@ export function generateMetadata(config: SEOConfig): Metadata {
     verification: {
       google: SITE_CONFIG.seo.googleVerification,
     },
+    icons: {
+      icon: [
+        { url: '/logo-white.png' },
+        { url: '/logo-white.png', sizes: '32x32', type: 'image/png' },
+      ],
+      apple: [
+        { url: '/logo-white.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
     other: {
       'theme-color': SITE_CONFIG.seo.themeColor,
       'color-scheme': 'light dark',
@@ -201,7 +210,7 @@ export function generateOrganizationData() {
     url: SITE_CONFIG.baseUrl,
     logo: {
       '@type': 'ImageObject',
-      url: getFullUrl('/logo.png'),
+      url: getFullUrl('/logo-white.png'),
     },
     sameAs: [
       site.author.social.github,

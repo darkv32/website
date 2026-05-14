@@ -15,5 +15,4 @@ Disallow: /admin/
 # Allow important files
 Allow: /logo-white.png
 Allow: /logo-black.png
-Allow: /manifest.json
-Allow: /apple-touch-icon.png 
+Allow: /manifest.json 
