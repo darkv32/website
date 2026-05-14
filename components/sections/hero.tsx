@@ -108,6 +108,38 @@ export function Hero() {
       {/* Decorative background elements */}
       <div className="absolute top-1/4 -left-20 -z-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl opacity-60 animate-pulse" />
       <div className="absolute bottom-1/4 -right-20 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl opacity-60" />
+
+      {/* Marine Background */}
+      <div className="absolute -left-60 top-[15%] w-[35%] h-[60%] z-0 opacity-60 dark:opacity-40 pointer-events-none hidden lg:block overflow-hidden">
+        <Image
+          src="/background/marine-wp.png"
+          alt="Marine Background"
+          fill
+          className="object-contain object-left scale-x-[-1]"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            maskComposite: 'intersect',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskComposite: 'destination-in',
+          }}
+        />
+      </div>
+
+      {/* Zergling Background */}
+      <div className="absolute right-0 bottom-0 w-[55%] h-[65%] z-0 opacity-60 dark:opacity-40 pointer-events-none hidden md:block overflow-hidden">
+        <Image
+          src="/background/zergling-wp.png"
+          alt="Zergling Background"
+          fill
+          className="object-contain object-right-bottom"
+          style={{
+            maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            maskComposite: 'intersect',
+            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
+            WebkitMaskComposite: 'destination-in',
+          }}
+        />
+      </div>
     </section>
   );
 }

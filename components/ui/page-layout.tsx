@@ -1,9 +1,15 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import { ArrowLeft, LucideIcon } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+
+interface BackgroundIcon {
+  Icon: LucideIcon;
+  className: string;
+  style?: React.CSSProperties;
+}
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -14,6 +20,7 @@ interface PageLayoutProps {
   backText?: string;
   badge?: string;
   className?: string;
+  backgroundIcons?: BackgroundIcon[];
 }
 
 const PageLayoutComponent = ({
@@ -24,13 +31,13 @@ const PageLayoutComponent = ({
   backHref = '/',
   backText = 'Back to Home',
   badge,
-  className = ''
+  className = '',
+  backgroundIcons = []
 }: PageLayoutProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Optimize mouse move handler with useCallback
   const handleMouseMove = useCallback((e: MouseEvent) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
   }, []);
@@ -58,81 +65,85 @@ const PageLayoutComponent = ({
   }, [handleMouseMove]);
 
   return (
-    <div className={`min-h-screen bg-background relative ${className}`}>
-      {/* Enhanced gradient overlay with animation */}
-      {/* <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-background/0 via-background/50 to-background z-10" /> */}
-      
-      {/* Enhanced animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-1/4 right-1/4 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '8s', animationDelay: '1s' }} />
-        <div className="absolute top-1/3 left-1/3 w-48 h-48 bg-green-500/4 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '3s' }} />
-        <div className="absolute bottom-1/3 right-1/3 w-56 h-56 bg-orange-500/3 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '7s', animationDelay: '4s' }} />
+    <div className={`min-h-screen bg-background relative overflow-hidden ${className}`}>
+      {/* High-Tech Background Gradients (Same as Hero) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Top-Left Ambient Glow */}
+        <div 
+          className="absolute -left-20 -top-20 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] opacity-50 animate-pulse" 
+          style={{ animationDuration: '8s' }}
+        />
+        {/* Bottom-Right Ambient Glow */}
+        <div 
+          className="absolute -right-20 -bottom-20 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[120px] opacity-40" 
+        />
+        
+        {/* Precision Radial Mask (Landing Page Style) */}
+        <div 
+          className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_30%,rgba(0,0,0,0.5)_70%,transparent_100%)] opacity-20 pointer-events-none"
+          style={{ 
+            background: 'radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 50%)',
+            backgroundSize: '100% 100%'
+          }}
+        />
       </div>
 
-      {/* Enhanced floating particles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(12)].map((_, i) => (
+      {/* Contextual Background Icons */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0 opacity-20 dark:opacity-10">
+        {backgroundIcons.map(({ Icon, className: iconClass, style }, index) => (
           <div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/15 rounded-full animate-float"
-            style={{
-              left: `${15 + i * 8}%`,
-              top: `${8 + i * 12}%`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${2 + i * 1.5}s`
-            }}
-          />
+            key={index}
+            className={`absolute transition-all duration-1000 ${iconClass}`}
+            style={style}
+          >
+            <Icon size={120} strokeWidth={0.5} className="text-primary animate-float" style={{ animationDelay: `${index * 1.5}s` }} />
+          </div>
         ))}
       </div>
 
-      {/* Additional geometric shapes */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/6 w-8 h-8 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-md rotate-45 transition-transform duration-3000 hover:scale-110"></div>
-        <div className="absolute bottom-1/4 right-1/6 w-6 h-6 bg-gradient-to-br from-green-500/10 to-blue-500/10 rounded-full transition-transform duration-3000 hover:scale-110"></div>
-        <div className="absolute top-3/4 left-1/3 w-4 h-4 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-sm rotate-12 transition-transform duration-3000 hover:scale-110"></div>
-        <div className="absolute bottom-3/4 right-1/4 w-5 h-5 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-lg transition-transform duration-3000 hover:scale-110"></div>
-      </div>
-
-      {/* Subtle gradient lines */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/3 left-0 w-0.5 h-24 bg-gradient-to-b from-transparent via-blue-500/15 to-transparent animate-pulse-slow"></div>
-        <div className="absolute bottom-1/3 right-0 w-0.5 h-24 bg-gradient-to-b from-transparent via-purple-500/15 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-transparent via-green-500/15 to-transparent animate-pulse-slow" style={{ animationDelay: '4s' }}></div>
-      </div>
-
-      {/* Mouse-following gradient */}
+      {/* Mouse-following spotlight effect */}
       <div 
-        className="absolute inset-0 opacity-30 pointer-events-none transition-opacity duration-300"
+        className="absolute inset-0 opacity-40 pointer-events-none z-0 transition-opacity duration-300"
         style={{
-          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(120, 119, 198, 0.1), transparent 40%)`
+          background: `radial-gradient(800px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(var(--primary-rgb), 0.05), transparent 40%)`
         }}
       />
       
-      {/* Main background */}
-      <div className="pt-8 bg-gradient-to-br from-background via-background to-background relative">
-        {/* Enhanced grid pattern for light mode */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:bg-grid-pattern bg-grid-pattern-light" />
-        
-        <div className="container-width section-padding relative z-10">
+      <div className="relative z-10 pt-20">
+        <div className="container-width px-6">
           <div className={`transition-all duration-1000 ${isVisible ? 'animate-slide-up' : 'opacity-0 translate-y-10'}`}>
+            
             {/* Page Header */}
-            <div className="mb-16">
-              <div className="flex flex-col items-center">
-                <div className="inline-flex items-center space-x-2 mb-3 pt-16" />
-                <h1 className="text-4xl sm:text-5xl font-bold text-gradient-primary text-center leading-tight pb-2 drop-shadow-2xl filter brightness-110">
+            <div className="mb-16 text-center lg:text-left">
+              {showBackButton && (
+                <Link 
+                  href={backHref}
+                  className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary transition-colors mb-6 group"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                  {backText}
+                </Link>
+              )}
+              
+              <div className="space-y-4">
+                {badge && (
+                  <Badge variant="outline" className="px-3 py-1 border-primary/30 text-primary bg-primary/5 tracking-widest uppercase text-[10px] font-bold">
+                    {badge}
+                  </Badge>
+                )}
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter leading-tight text-gradient-primary">
                   {title}
                 </h1>
                 {description && (
-                  <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed animate-fade-in text-center" style={{ animationDelay: '0.5s' }}>
+                  <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0">
                     {description}
                   </p>
                 )}
               </div>
             </div>
+
             {/* Page Content */}
-            <div ref={sectionRef}>
+            <div ref={sectionRef} className="pb-20">
               {children}
             </div>
           </div>
@@ -142,5 +153,5 @@ const PageLayoutComponent = ({
   );
 };
 
-// Export with React.memo for performance optimization
-export const PageLayout = React.memo(PageLayoutComponent); 
+export const PageLayout = React.memo(PageLayoutComponent);
+ 

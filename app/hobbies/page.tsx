@@ -5,110 +5,92 @@ import { Card } from '../../components/ui/card';
 import { PageLayout } from '../../components/ui/page-layout';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import styles from './starcraft.module.css';
+import { Gamepad2, Tv, Activity, Heart, Sparkles } from 'lucide-react';
 
 export default function HobbiesPage() {
   const { theme } = useTheme();
   // StarCraft II race
   const sc2Race = 'Terran';
 
-  return (
-    <PageLayout title="My Hobbies" badge="Hobbies" showBackButton>
-      {/* Enhanced Animated Background with animation */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <svg
-          className="absolute top-0 left-0 w-full h-full animate-bg-move"
-          viewBox="0 0 1440 320"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            filter: 'blur(8px) brightness(1.1)',
-            opacity: 0.5,
-            mixBlendMode: 'lighten',
-          }}
-        >
-          <defs>
-            <linearGradient id="bg-gradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.18" />
-              <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.22" />
-            </linearGradient>
-          </defs>
-          <path
-            fill="url(#bg-gradient)"
-            d="M0,160L60,170.7C120,181,240,203,360,197.3C480,192,600,160,720,133.3C840,107,960,85,1080,101.3C1200,117,1320,171,1380,197.3L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"
-          />
-        </svg>
-        {/* Existing floating blobs */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0s' }} />
-        <div className="absolute top-40 right-20 w-24 h-24 bg-green-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-40 left-20 w-28 h-28 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }} />
-        <div className="absolute bottom-20 right-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }} />
-      </div>
+  const backgroundIcons = [
+    { Icon: Gamepad2, className: "top-20 right-10 opacity-20" },
+    { Icon: Tv, className: "bottom-40 left-10 opacity-15" },
+    { Icon: Activity, className: "top-1/3 left-1/4 opacity-10" },
+    { Icon: Heart, className: "bottom-20 right-1/4 opacity-15" },
+  ];
 
-      <div className="relative z-10 flex flex-col items-center" style={{ marginTop: '-3rem' }}>
+  return (
+    <PageLayout 
+      title="My Hobbies" 
+      badge="Hobbies" 
+      showBackButton
+      backgroundIcons={backgroundIcons}
+    >
+      <div className="relative z-10 flex flex-col items-center gap-20">
+        
         {/* StarCraft II Hobby Section */}
-        <section className={styles.stunningSectionBg + " w-full max-w-4xl mb-12 p-2 md:p-6 shadow-2xl"}>
-          <div className="flex flex-col items-center">
-            <Image
-              src="/sc2-logo.png"
-              alt="Starcraft II Logo"
-              width={64}
-              height={64}
-              className="mb-1 drop-shadow-xl"
-            />
-            <h1 className="text-5xl font-extrabold text-blue-400 drop-shadow-lg mb-1 tracking-widest uppercase px-2 py-4 text-center">
-              StarCraft II
-            </h1>
-          </div>
-          <div className="w-full max-w-3xl mx-auto">
-            <div className="flex justify-center pb-10">
-              <Card className={`flex flex-col items-center p-6 card-enhanced-light border-2 ${theme === 'light' ? 'border-blue-400' : 'border-card'} transition-transform duration-200 hover:scale-105 hover:shadow-2xl`}>
-                <Image src={theme ? theme === 'dark' ? "/logo-white.png" : "/logo-black.png" : "/logo-white.png"} alt="Starcraft II Logo" width={32} height={32} className="mb-2" />
-                <span className="text-xs uppercase text-muted-foreground">Race</span>
-                <span className="font-semibold text-2xl text-blue-400 mt-1">{sc2Race}</span>
-              </Card>
+        <section className="w-full max-w-4xl">
+          <div className="flex flex-col items-center mb-10">
+            <div className="p-4 bg-primary/10 rounded-3xl mb-4 animate-pulse">
+              <Image
+                src="/sc2-logo.png"
+                alt="Starcraft II Logo"
+                width={64}
+                height={64}
+                className="drop-shadow-2xl"
+              />
             </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-primary tracking-[0.2em] uppercase text-center drop-shadow-sm">
+              StarCraft II
+            </h2>
           </div>
+
+          <Card className="bg-card/40 backdrop-blur-xl border-primary/20 p-12 flex flex-col items-center group hover:border-primary/40 transition-all duration-500 overflow-hidden relative">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-50" />
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="p-6 bg-primary/5 rounded-full mb-6 group-hover:scale-110 transition-transform duration-500">
+                <Image 
+                  src={theme === 'dark' ? "/logo-white.png" : "/logo-black.png"} 
+                  alt="Race Icon" 
+                  width={48} 
+                  height={48} 
+                />
+              </div>
+              <span className="text-xs uppercase tracking-[0.3em] text-muted-foreground font-bold mb-2">Main Race</span>
+              <span className="text-4xl font-black text-primary tracking-tighter italic">{sc2Race}</span>
+            </div>
+          </Card>
         </section>
 
         {/* Anime Hobby Section */}
-        <section className={styles.stunningSectionBg + " w-full max-w-4xl mb-12 p-2 md:p-6 shadow-2xl"}>
-          <div className="flex flex-col items-center mb-6">
-            <h2 className="text-4xl font-extrabold text-blue-400 dark:text-blue-300 drop-shadow-lg mb-2 tracking-widest uppercase px-2 py-4 text-center">
-              My Top Anime
-            </h2>
+        <section className="w-full max-w-5xl">
+          <div className="flex flex-col items-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-center">My Top Anime</h2>
+            <div className="h-1 w-20 bg-primary/20 rounded-full mt-4" />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {/* Made in Abyss */}
-            <Card className="relative flex flex-col items-center p-6 border-2 border-pink-400 bg-gradient-to-br from-pink-100/60 via-white/80 to-pink-200/60 dark:from-pink-900/40 dark:to-pink-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-pink-200/40 to-transparent dark:from-pink-900/60" />
-              <Image src="/anime/made_in_abyss.jpg" alt="Made in Abyss" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
-              <span className="text-2xl font-bold mb-1 z-10 text-pink-600 dark:text-pink-300 drop-shadow">Made in Abyss</span>
-            </Card>
-            {/* Quan Zhi Gao Shou */}
-            <Card className="relative flex flex-col items-center p-6 border-2 border-blue-400 bg-gradient-to-br from-blue-100/60 via-white/80 to-blue-200/60 dark:from-blue-900/40 dark:to-blue-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-blue-200/40 to-transparent dark:from-blue-900/60" />
-              <Image src="/anime/quan_zhi_gao_shou.jpg" alt="Quan Zhi Gao Shou" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
-              <span className="text-2xl font-bold mb-1 z-10 text-blue-600 dark:text-blue-300 drop-shadow">Quan Zhi Gao Shou</span>
-            </Card>
-            {/* Bleach */}
-            <Card className="relative flex flex-col items-center p-6 border-2 border-orange-400 bg-gradient-to-br from-orange-100/60 via-white/80 to-orange-200/60 dark:from-orange-900/40 dark:to-orange-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-orange-200/40 to-transparent dark:from-orange-900/60" />
-              <Image src="/anime/bleach.jpg" alt="Bleach" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
-              <span className="text-2xl font-bold mb-1 z-10 text-orange-600 dark:text-orange-300 drop-shadow">Bleach</span>
-            </Card>
-            {/* Grand Blue Dreaming */}
-            <Card className="relative flex flex-col items-center p-6 border-2 border-cyan-400 bg-gradient-to-br from-cyan-100/60 via-white/80 to-cyan-200/60 dark:from-cyan-900/40 dark:to-cyan-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-cyan-200/40 to-transparent dark:from-cyan-900/60" />
-              <Image src="/anime/grand_blue_dreaming.webp" alt="Grand Blue Dreaming" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
-              <span className="text-2xl font-bold mb-1 z-10 text-cyan-600 dark:text-cyan-300 drop-shadow">Grand Blue Dreaming</span>
-            </Card>
-            {/* Call of the Night */}
-            <Card className="relative flex flex-col items-center p-6 border-2 border-purple-400 bg-gradient-to-br from-purple-100/60 via-white/80 to-purple-200/60 dark:from-purple-900/40 dark:to-purple-700/30 transition-transform duration-200 hover:scale-105 hover:shadow-2xl text-center overflow-hidden">
-              <div className="absolute inset-0 z-0 bg-gradient-to-t from-purple-200/40 to-transparent dark:from-purple-900/60" />
-              <Image src="/anime/call_of_the_night.webp" alt="Call of the Night" width={80} height={110} className="mb-3 rounded-lg shadow-lg z-10" />
-              <span className="text-2xl font-bold mb-1 z-10 text-purple-600 dark:text-purple-300 drop-shadow">Call of the Night</span>
-            </Card>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {[
+              { name: "Made in Abyss", img: "/anime/made_in_abyss.jpg", color: "from-pink-500/20" },
+              { name: "Quan Zhi Gao Shou", img: "/anime/quan_zhi_gao_shou.jpg", color: "from-blue-500/20" },
+              { name: "Bleach", img: "/anime/bleach.jpg", color: "from-orange-500/20" },
+              { name: "Grand Blue Dreaming", img: "/anime/grand_blue_dreaming.webp", color: "from-cyan-500/20" },
+              { name: "Call of the Night", img: "/anime/call_of_the_night.webp", color: "from-purple-500/20" },
+            ].map((anime, index) => (
+              <Card 
+                key={anime.name} 
+                className="bg-card/40 backdrop-blur-md border-primary/10 hover:border-primary/40 transition-all duration-500 group overflow-hidden flex flex-col items-center p-6"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-t ${anime.color} to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                <div className="relative z-10 flex flex-col items-center text-center">
+                  <div className="mb-4 rounded-xl overflow-hidden shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:rotate-2">
+                    <Image src={anime.img} alt={anime.name} width={100} height={140} className="object-cover aspect-[2/3]" />
+                  </div>
+                  <span className="text-sm font-bold tracking-tight leading-tight group-hover:text-primary transition-colors">{anime.name}</span>
+                </div>
+              </Card>
+            ))}
           </div>
         </section>
       </div>

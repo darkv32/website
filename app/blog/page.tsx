@@ -1,9 +1,6 @@
 import { BlogDetail } from '@/components/pages/blog-detail';
 import { generateMetadata } from '@/lib/seo';
-import { StructuredData } from '@/components/seo/structured-data';
-import { BreadcrumbData } from '@/components/seo/structured-data';
-import { generateStructuredData } from '@/lib/seo';
-import { SITE_CONFIG, getFullUrl } from '@/lib/config';
+import { getFullUrl } from '@/lib/config';
 
 export const metadata = generateMetadata({
   title: 'Technical Blog - Tang Yetong',
@@ -30,11 +27,5 @@ export default function BlogPage() {
     { name: 'Blog', url: '/blog' },
   ];
 
-  return (
-    <>
-      <BlogDetail />
-      <StructuredData data={blogListData} />
-      <BreadcrumbData items={breadcrumbItems} />
-    </>
-  );
+  return <BlogDetail />;
 }

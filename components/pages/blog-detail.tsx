@@ -69,6 +69,13 @@ export function BlogDetail() {
 
   const totalViews = allPosts.reduce((sum, post) => sum + post.views, 0);
 
+  const backgroundIcons = [
+    { Icon: BookOpen, className: "top-20 right-10 opacity-20" },
+    { Icon: Tag, className: "bottom-40 left-10 opacity-15" },
+    { Icon: TrendingUp, className: "top-1/3 left-1/4 opacity-10" },
+    { Icon: Users, className: "bottom-20 right-1/4 opacity-15" },
+  ];
+
   if (isLoading) {
     return <BlogLoading />;
   }
@@ -79,93 +86,69 @@ export function BlogDetail() {
       description="Anything under the sun, from insights, to tutorials, to experiences in blockchain development, mobile applications, and software engineering from my life."
       badge="Blog"
       showBackButton
-      className="overflow-visible"
+      backgroundIcons={backgroundIcons}
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Floating Orbs */}
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '0s' }}></div>
-        <div className="absolute top-40 right-20 w-24 h-24 bg-green-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-40 left-20 w-28 h-28 bg-purple-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute bottom-20 right-10 w-20 h-20 bg-orange-500/10 rounded-full blur-xl animate-float" style={{ animationDelay: '1s' }}></div>
-        
-        {/* Geometric Shapes */}
-        <div className="absolute top-60 left-1/4 w-16 h-16 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg rotate-45 animate-float" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-60 right-1/3 w-12 h-12 bg-gradient-to-br from-green-500/20 to-blue-500/20 rounded-full animate-float" style={{ animationDelay: '5s' }}></div>
-        
-        {/* Gradient Lines */}
-        <div className="absolute top-1/3 left-0 w-1 h-32 bg-gradient-to-b from-transparent via-blue-500/20 to-transparent animate-pulse-slow"></div>
-        <div className="absolute bottom-1/3 right-0 w-1 h-32 bg-gradient-to-b from-transparent via-purple-500/20 to-transparent animate-pulse-slow" style={{ animationDelay: '2s' }}></div>
-        
-        {/* Floating Text Elements */}
-        <div className="absolute top-1/4 right-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '1s' }}>Blog</div>
-        <div className="absolute bottom-1/4 left-1/4 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '3s' }}>Insights</div>
-        <div className="absolute top-1/2 left-1/2 text-xs text-muted-foreground/30 font-mono animate-float" style={{ animationDelay: '5s' }}>Knowledge</div>
-      </div>
-
       {/* Featured Posts */}
       {featuredPosts.length > 0 && (
-        <div className="page-section relative z-10" style={{ marginTop: '-6rem' }}>
-          <div className="page-section-content">
-            <h2 className="text-3xl font-bold text-center mb-8 animate-fade-in" style={{ animationDelay: '0.3s' }}>
-              Featured Articles
-            </h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-              {featuredPosts.map((post, index) => (
-                <BlogPostCard
-                  key={String(post.slug || post.id)}
-                  post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
-                  categories={blogCategoriesWithValues}
-                  animationDelay={`${index * 200}ms`}
-                  onTagClick={handleTagClick}
-                />
-              ))}
-            </div>
+        <div className="relative z-10 mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12 tracking-tight">Featured Articles</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+            {featuredPosts.map((post, index) => (
+              <BlogPostCard
+                key={String(post.slug || post.id)}
+                post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
+                categories={blogCategoriesWithValues}
+                animationDelay={`${index * 200}ms`}
+                onTagClick={handleTagClick}
+              />
+            ))}
           </div>
         </div>
       )}
 
       {/* Search and Filters */}
-      <div className="page-section-alt relative z-10" style={{ marginTop: '-6rem' }}>
-        <div className="page-section-content">
-          <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between">
+      <div className="relative z-10 mb-12">
+        <Card className="bg-card/40 backdrop-blur-md border-primary/10 p-6 md:p-8">
+          <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between">
             {/* Search */}
-            <div className="w-full lg:w-96 relative z-20">
+            <div className="flex-1 max-w-xl">
               <BlogSearch onSearchResults={handleSearchResults} onCategoryClick={setSelectedCategory} query={searchTerm} setQuery={setSearchTerm} />
             </div>
+            
             {/* Controls */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 w-full lg:w-auto">
+            <div className="flex flex-wrap items-center gap-4">
               {/* Category Filter */}
-              <div className="flex items-center space-x-2">
-                <Filter className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center space-x-3 bg-primary/5 border border-primary/10 rounded-xl px-4 py-2">
+                <Filter className="h-4 w-4 text-primary" />
                 <select
                   value={selectedCategory}
                   onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-2 rounded-md border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-primary input-enhanced"
+                  className="bg-transparent text-sm font-medium focus:outline-none cursor-pointer"
                 >
                   <option value="all">All Categories</option>
                   {blogCategories.map((category: any) => (
                     <option key={category.slug} value={category.slug}>
-                      {category.name} ({category.postCount})
+                      {category.name}
                     </option>
                   ))}
                 </select>
               </div>
+
               {/* View Mode */}
-              <div className="flex rounded-md border border-border overflow-hidden">
+              <div className="flex bg-primary/5 border border-primary/10 rounded-xl p-1">
                 <Button
                   size="sm"
-                  variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                  variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
                   onClick={() => setViewMode('grid')}
-                  className="rounded-none"
+                  className={`rounded-lg px-3 ${viewMode === 'grid' ? 'bg-primary text-white' : 'text-muted-foreground'}`}
                 >
                   <Grid className="h-4 w-4" />
                 </Button>
                 <Button
                   size="sm"
-                  variant={viewMode === 'list' ? 'default' : 'ghost'}
+                  variant={viewMode === 'list' ? 'secondary' : 'ghost'}
                   onClick={() => setViewMode('list')}
-                  className="rounded-none"
+                  className={`rounded-lg px-3 ${viewMode === 'list' ? 'bg-primary text-white' : 'text-muted-foreground'}`}
                 >
                   <List className="h-4 w-4" />
                 </Button>
@@ -173,96 +156,84 @@ export function BlogDetail() {
             </div>
           </div>
 
-          {/* Category Pills - Moved here under search bar */}
-          <div className="mt-4 border-t border-border/50">
+          {/* Category Pills */}
+          <div className="mt-8 pt-6 border-t border-primary/5">
             <div className="flex flex-wrap gap-2">
               <button
-                onClick={() => {
-                  console.log('All button clicked');
-                  setSelectedCategory('all');
-                }}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 border hover:bg-accent hover:text-accent-foreground ${
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${
                   selectedCategory === 'all' 
-                    ? 'bg-primary text-primary-foreground border-primary shadow-sm' 
-                    : 'bg-background text-foreground border-border hover:border-border/80'
+                    ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20' 
+                    : 'bg-primary/5 border-primary/10 text-muted-foreground hover:border-primary/30 hover:text-primary'
                 }`}
-                style={{ pointerEvents: 'auto' }}
               >
                 All ({allPosts.length})
               </button>
-              {blogCategories.map((category: any, index: any) => (
+              {blogCategories.map((category: any) => (
                 <button
                   key={category.slug}
-                  onClick={() => {
-                    setSelectedCategory(category.slug);
-                  }}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 border hover:bg-accent hover:text-accent-foreground ${
+                  onClick={() => setSelectedCategory(category.slug)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${
                     selectedCategory === category.slug 
-                      ? 'bg-primary text-primary-foreground border-primary shadow-sm' 
-                      : 'bg-background text-foreground border-border hover:border-border/80'
+                      ? 'bg-primary border-primary text-white shadow-lg shadow-primary/20' 
+                      : 'bg-primary/5 border-primary/10 text-muted-foreground hover:border-primary/30 hover:text-primary'
                   }`}
-                  style={{ 
-                    pointerEvents: 'auto', 
-                    animationDelay: `${index * 100}ms`,
-                    animation: 'fadeInUp 0.5s ease-out forwards'
-                  }}
                 >
                   {category.name} ({category.postCount})
                 </button>
               ))}
             </div>
           </div>
-        </div>
+        </Card>
       </div>
 
-      {/* All Posts */}
-      <div className="relative z-10" style={{ marginTop: '-2rem', paddingBottom: '2rem' }}>
-        <div className="page-section-content">
-          {/* Posts Grid/List */}
-          <div className={viewMode === 'grid' 
-            ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6' 
-            : 'space-y-6'
-          }>
-            {currentPosts.map((post, index) => (
-              <BlogPostCard
-                key={String(post.slug || post.id)}
-                post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
-                categories={blogCategoriesWithValues}
-                animationDelay={`${index * 100}ms`}
-                viewMode={viewMode}
-                showImage={true}
-                showButton={true}
-                onTagClick={handleTagClick}
-              />
-            ))}
-          </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-12">
-              <BlogPagination 
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
-              />
-            </div>
-          )}
-
-          {filteredPosts.length === 0 && (
-            <div className="text-center py-12 animate-fade-in">
-              <p className="text-muted-foreground mb-4">No articles found matching your criteria.</p>
-              <Button 
-                variant="outline" 
-                onClick={() => {
-                  setSearchResults([]);
-                  setSelectedCategory('all');
-                }}
-              >
-                Clear Filters
-              </Button>
-            </div>
-          )}
+      {/* Posts Section */}
+      <div className="relative z-10">
+        <div className={viewMode === 'grid' 
+          ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8' 
+          : 'space-y-8'
+        }>
+          {currentPosts.map((post, index) => (
+            <BlogPostCard
+              key={String(post.slug || post.id)}
+              post={{ ...post, id: String(post.id ?? post.slug ?? index), readTime: String(post.readTime ?? '') }}
+              categories={blogCategoriesWithValues}
+              animationDelay={`${index * 100}ms`}
+              viewMode={viewMode}
+              showImage={true}
+              showButton={true}
+              onTagClick={handleTagClick}
+            />
+          ))}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="mt-16">
+            <BlogPagination 
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </div>
+        )}
+
+        {filteredPosts.length === 0 && (
+          <div className="text-center py-20 bg-card/20 backdrop-blur-sm rounded-3xl border border-primary/10">
+            <p className="text-muted-foreground mb-6 font-medium">No articles found matching your criteria.</p>
+            <Button 
+              variant="outline" 
+              className="rounded-full px-8 border-primary/20 text-primary hover:bg-primary/5"
+              onClick={() => {
+                setSearchResults([]);
+                setSelectedCategory('all');
+                setSearchTerm('');
+              }}
+            >
+              Clear Filters
+            </Button>
+          </div>
+        )}
       </div>
     </PageLayout>
   );
