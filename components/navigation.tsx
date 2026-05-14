@@ -1,265 +1,110 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { Moon, Sun, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { getSiteMetadata } from '@/lib/data';
-import { rafThrottle } from '@/lib/performance';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
   const { navigation } = getSiteMetadata();
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    // Throttled scroll handler for isScrolled state
-    const handleScroll = rafThrottle(() => {
-      setIsScrolled(window.scrollY > 50);
-    });
-
-    const handleSectionObserver = () => {
-      const sections = ['home', 'about', 'contact'];
-      const observers = sections.map(sectionId => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          const observer = new IntersectionObserver(
-            ([entry]) => {
-              if (entry.isIntersecting) {
-                setActiveSection(sectionId);
-              }
-            },
-            { threshold: 0.3, rootMargin: '-20% 0px -80% 0px' }
-          );
-          observer.observe(element);
-          return observer;
-        }
-        return null;
-      });
-
-      return () => {
-        observers.forEach(observer => observer?.disconnect());
-      };
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
-    const cleanup = handleSectionObserver();
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      cleanup?.();
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  // Optimized smooth scroll function
-  const handleNavClick = useCallback((href: string) => {
-    setIsMobileMenuOpen(false);
-    if (href.startsWith('/#')) {
-      const element = document.querySelector(href.slice(1));
-      if (element) {
-        const start = window.pageYOffset;
-        const target = (element as HTMLElement).offsetTop;
-        const distance = target - start;
-        const duration = 600;
-        let startTime: number | null = null;
-
-        const easeInOutCubic = (t: number): number => {
-          return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-        };
-
-        const animateScroll = (currentTime: number) => {
-          if (startTime === null) startTime = currentTime;
-          const timeElapsed = currentTime - startTime;
-          const progress = Math.min(timeElapsed / duration, 1);
-          
-          window.scrollTo(0, start + distance * easeInOutCubic(progress));
-          
-          if (progress < 1) {
-            requestAnimationFrame(animateScroll);
-          }
-        };
-
-        requestAnimationFrame(animateScroll);
-      }
-    }
-  }, []);
-
-  const isHomePage = typeof window !== 'undefined' && window.location.pathname === '/';
 
   return (
     <nav
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-background/90 backdrop-blur-md shadow-lg border-b-2 border-border/60'
-          : 'bg-background/40 backdrop-blur-sm shadow-sm'
+          ? 'bg-background/80 backdrop-blur-md border-b border-border/40 py-2'
+          : 'bg-transparent py-4'
       )}
     >
-      <div className="container-width section-padding">
-        <div className="flex items-center justify-between h-16">
-          {/* Mobile menu button - Left side */}
-          <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="w-10 h-10 p-2"
-            >
-              {isMobileMenuOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
-            </Button>
-          </div>
-
-          {/* Logo - Center on mobile, left on desktop */}
-          <div className="flex-shrink-0 md:flex-shrink-0">
+      <div className="container-width px-6">
+        <div className="flex items-center justify-between h-12">
+          {/* Logo */}
+          <div className="flex-shrink-0">
             <Link
               href="/"
-              className="flex items-center space-x-1 hover:opacity-80 transition-opacity"
+              className="text-lg font-bold tracking-tight hover:opacity-70 transition-opacity"
             >
-              <span className="text-xl font-bold text-foreground font-semibold">Tang Yetong</span>
+              TYT
             </Link>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
-              {navigation.map((item) => {
-                const isActive = isHomePage && item.href.startsWith('/#') 
-                  ? activeSection === item.href.slice(2)
-                  : false;
-                
-                return (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => {
-                      if (item.href.startsWith('/#')) {
-                        e.preventDefault();
-                        handleNavClick(item.href);
-                      }
-                    }}
-                    className={cn(
-                      'px-3 py-2 rounded-md text-sm font-medium transition-colors relative',
-                      isActive
-                        ? 'text-primary font-semibold'
-                        : 'text-foreground hover:text-primary'
-                    )}
-                  >
-                    {item.name}
-                    {isActive && (
-                      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full" />
-                    )}
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Theme Toggle - Right side */}
-          <div className="flex items-center">
+          <div className="hidden md:flex items-center space-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              >
+                {item.name}
+              </Link>
+            ))}
             <Button
               variant="ghost"
-              size="sm"
+              size="icon"
               onClick={() => setTheme(mounted && theme === 'dark' ? 'light' : 'dark')}
-              className="w-10 h-10 p-2 relative"
+              className="w-9 h-9"
             >
-              <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               <span className="sr-only">Toggle theme</span>
+            </Button>
+          </div>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-4">
+             <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(mounted && theme === 'dark' ? 'light' : 'dark')}
+              className="w-9 h-9"
+            >
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            >
+              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
 
-        {/* Mobile Navigation - Left Side Drawer */}
+        {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <>
-            {/* Backdrop */}
-            <div 
-              className="md:hidden fixed inset-0 bg-black/50 z-40"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            {/* Side Drawer */}
-            <div className="md:hidden fixed top-0 left-0 h-full w-64 bg-background/95 backdrop-blur-md shadow-xl border-r border-border/40 z-50 transform transition-transform duration-300 ease-in-out">
-              <div className="flex flex-col h-full">
-                {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-border/40">
-                  <Link
-                    href="/"
-                    className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <span className="text-lg font-bold text-foreground font-semibold">Tang Yetong</span>
-                  </Link>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-8 h-8"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-                
-                {/* Navigation Links */}
-                <div className="flex-1 p-4 space-y-3">
-                  {navigation.map((item) => {
-                    const isActive = isHomePage && item.href.startsWith('/#') 
-                      ? activeSection === item.href.slice(2)
-                      : false;
-                    
-                    return (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        onClick={(e) => {
-                          if (item.href.startsWith('/#')) {
-                            e.preventDefault();
-                            handleNavClick(item.href);
-                          } else {
-                            setIsMobileMenuOpen(false);
-                          }
-                        }}
-                        className={cn(
-                          'block px-4 py-4 rounded-lg text-base font-medium transition-colors min-h-[48px] flex items-center',
-                          isActive
-                            ? 'text-primary bg-primary/10 border-l-4 border-primary font-semibold'
-                            : 'text-foreground hover:text-primary hover:bg-accent/50'
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    );
-                  })}
-                </div>
-                
-                {/* Footer with Theme Toggle */}
-                <div className="p-4 border-t border-border/40">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                    className="w-full relative"
-                  >
-                    <Sun className="absolute h-4 w-4 left-3 mr-2 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                    <Moon className="absolute h-4 w-4 left-3 top-1/2 -translate-y-1/2 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                    <span>Toggle Theme</span>
-                  </Button>
-                </div>
-              </div>
+          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border/40 p-6 animate-in fade-in slide-in-from-top-4">
+            <div className="flex flex-col space-y-4">
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {item.name}
+                </Link>
+              ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     </nav>

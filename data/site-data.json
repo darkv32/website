@@ -5,7 +5,7 @@
     "author": {
       "name": "Tang Yetong",
       "avatar": "/avatar.jpg",
-      "bio": "Data Analyst at Fivetran with expertise in data engineering, mobile development, and blockchain technology.",
+      "bio": "Full Stack Developer and former Data Analyst at Fivetran with a background in government digital services and blockchain technology.",
       "location": "Singapore",
       "email": "ytyt0792@gmail.com",
       "timezone": "SGT (UTC+8)",
@@ -17,21 +17,21 @@
     },
     "navigation": [
       { "name": "Home", "href": "/" },
-      { "name": "About", "href": "/about" },
-      { "name": "Experience", "href": "/experience" },
-      { "name": "Blog", "href": "/blog" },
-      { "name": "Hobbies", "href": "/hobbies" },
-      { "name": "Contact", "href": "/contact" }
+      { "name": "About", "href": "#" },
+      { "name": "Experience", "href": "#" },
+      { "name": "Blog", "href": "#" },
+      { "name": "Hobbies", "href": "#" },
+      { "name": "Contact", "href": "#" }
     ]
   },
   "hero": {
     "roles": [
-      "Data Analyst @ Fivetran",
       "Full Stack Developer",
+      "Data Analyst",
       "Android Engineer",
       "Blockchain Developer"
     ],
-    "description": "Data Analyst at Fivetran passionate about building scalable pipelines, mobile apps, and full-stack solutions.",
+    "description": "Full Stack Developer that dabbles in Data Analytics. Previously built scalable pipelines at Fivetran, digital services at GovTech, and contributed to the Bitcoin ecosystem.",
     "socialLinks": [
       {
         "href": "https://github.com/darkv32",

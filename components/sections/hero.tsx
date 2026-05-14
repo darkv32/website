@@ -1,235 +1,113 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
-import dynamic from 'next/dynamic';
-import { Typewriter } from 'react-simple-typewriter';
-import { Download, ArrowDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Github, Linkedin, Mail, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getHeroData } from '@/lib/data';
-import { COLORS, getThemeColor } from '@/lib/colors';
-import { useTheme } from 'next-themes';
-import Image from 'next/image';
-import { rafThrottle } from '@/lib/performance';
 
-// Dynamically import social icons to reduce initial bundle
-const Github = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Github })), { ssr: false });
-const Linkedin = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Linkedin })), { ssr: false });
-const Mail = dynamic(() => import('lucide-react').then(mod => ({ default: mod.Mail })), { ssr: false });
+const portraits = [
+  '/portrait/portrait-1.jpg',
+  '/portrait/portrait-2.jpg',
+  '/portrait/portrait-3.jpg',
+  '/portrait/portrait-4.jpg',
+  '/portrait/portrait-5.jpg',
+  '/portrait/portrait-6.jpg',
+  '/hero_background/hero-background-1.jpg',
+];
 
 export function Hero() {
-  const [scrollY, setScrollY] = useState(0);
-  const { theme } = useTheme();
-  const currentTheme = theme as 'light' | 'dark' || 'dark';
-  const rafIdRef = useRef<number | null>(null);
+  const { description, socialLinks } = getHeroData();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // Optimized scroll handler using requestAnimationFrame
   useEffect(() => {
-    const updateScrollY = rafThrottle(() => {
-      setScrollY(window.scrollY);
-    });
-
-    window.addEventListener('scroll', updateScrollY, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', updateScrollY);
-      if (rafIdRef.current !== null) {
-        cancelAnimationFrame(rafIdRef.current);
-      }
-    };
-  }, []);
-
-  // Simple transform calculations - memoized for performance
-  const y1 = Math.max(-50, Math.min(50, (scrollY / 300) * -50));
-  const y2 = Math.max(-50, Math.min(50, (scrollY / 300) * 50));
-
-  const { roles, description, socialLinks } = getHeroData();
-
-  useEffect(() => window.scrollTo(0, 0), []);
-
-  // Optimized smooth scroll function
-  const scrollToNext = useCallback(() => {
-    const element = document.getElementById('about');
-    if (element) {
-      const start = window.pageYOffset;
-      const target = element.offsetTop;
-      const distance = target - start;
-      const duration = 800;
-      let startTime: number | null = null;
-
-      const easeInOutCubic = (t: number): number => {
-        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      };
-
-      const animateScroll = (currentTime: number) => {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-        
-        window.scrollTo(0, start + distance * easeInOutCubic(progress));
-        
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll);
-        }
-      };
-
-      requestAnimationFrame(animateScroll);
-    }
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % portraits.length);
+    }, 10000);
+    return () => clearInterval(timer);
   }, []);
 
   return (
-    <section id="home" className="relative w-full h-screen overflow-hidden">
-      {/* Hero Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/hero_background/hero-background-1.jpg"
-          alt="Hero Background"
-          fill
-          className="object-cover object-center"
-          priority
-          sizes="100vw"
-        />
-      </div>
-      
-      {/* Dark overlay for better text readability */}
-      <div 
-        className="absolute inset-0"
-        style={{ backgroundColor: getThemeColor('overlay', currentTheme) }}
-      />
-      
-      {/* Main splash mark blob behind text */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div 
-          className="relative w-[900px] h-[700px] opacity-95 dark:opacity-90"
-          style={{
-            background: getThemeColor('splashPrimary', currentTheme),
-            clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
-            filter: 'blur(60px)',
-            transform: 'rotate(15deg) scale(1.1)',
-            mixBlendMode: 'multiply',
-          }}
-        />
-      </div>
-      
-      {/* Secondary splash mark for depth */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div 
-          className="relative w-[800px] h-[600px] opacity-85 dark:opacity-80"
-          style={{
-            background: getThemeColor('splashSecondary', currentTheme),
-            clipPath: 'polygon(25% 5%, 75% 5%, 95% 25%, 95% 75%, 75% 95%, 25% 95%, 5% 75%, 5% 25%)',
-            filter: 'blur(50px)',
-            transform: 'rotate(-10deg) scale(1.0) translateX(20px) translateY(-15px)',
-            mixBlendMode: 'screen',
-          }}
-        />
-      </div>
-      
-      {/* Tertiary splash mark for texture */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div 
-          className="relative w-[600px] h-[500px] opacity-75 dark:opacity-70"
-          style={{
-            background: getThemeColor('splashTertiary', currentTheme),
-            clipPath: 'polygon(35% 15%, 65% 15%, 85% 35%, 85% 65%, 65% 85%, 35% 85%, 15% 65%, 15% 35%)',
-            filter: 'blur(45px)',
-            transform: 'rotate(25deg) scale(0.85) translateX(-20px) translateY(10px)',
-            mixBlendMode: 'overlay',
-          }}
-        />
-      </div>
+    <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-6 pt-20 pb-10 overflow-hidden">
+      <div className="container-width w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        {/* Left Column - Text Content (lg:col-7) */}
+        <div className="lg:col-span-7 space-y-10 order-2 lg:order-1 text-center lg:text-left">
+          <div className="space-y-6">
+            <p className="text-sm md:text-base font-medium tracking-widest uppercase text-muted-foreground animate-in fade-in slide-in-from-bottom-3 duration-700">
+              Hi, I'm Tang Yetong
+            </p>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
+              Full Stack Developer & <br className="hidden md:block" />
+              Data Analyst.
+            </h1>
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
+              {description}
+            </p>
+          </div>
 
-      {/* Soft Parallax Orbs - GPU accelerated */}
-      <div
-        style={{ 
-          transform: `translate3d(0, ${y1}px, 0)`,
-          willChange: 'transform',
-          background: getThemeColor('orbsPrimary', currentTheme),
-          clipPath: 'polygon(15% 5%, 85% 5%, 95% 25%, 95% 75%, 85% 95%, 15% 95%, 5% 75%, 5% 25%)',
-          filter: 'blur(40px)',
-          mixBlendMode: 'screen'
-        }}
-        className="absolute -top-24 -left-32 w-96 h-96 opacity-60 dark:opacity-50"
-      />
-      <div
-        style={{ 
-          transform: `translate3d(0, ${y2}px, 0)`,
-          willChange: 'transform',
-          background: getThemeColor('orbsSecondary', currentTheme),
-          clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)',
-          filter: 'blur(45px)',
-          mixBlendMode: 'screen'
-        }}
-        className="absolute -bottom-32 -right-20 w-96 h-96 opacity-55 dark:opacity-45"
-      />
-
-      {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6 pt-32 [text-shadow:_0_1px_2px_rgba(0,0,0,0.1)] dark:[text-shadow:_0_1px_2px_rgba(255,255,255,0.1)]">
-        {/* Name with Theme-aware Gradient */}
-        <h1 className={`text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-extrabold leading-tight sm:leading-relaxed overflow-visible bg-clip-text text-transparent ${getThemeColor('textName', currentTheme)} mb-4 sm:mb-6 pb-2 drop-shadow-lg opacity-95`}>
-          Tang Yetong
-        </h1>
-
-        {/* Dynamic Role */}
-        <div className={`text-lg sm:text-xl md:text-2xl lg:text-3xl ${getThemeColor('textRole', currentTheme)} mb-6 sm:mb-8 h-8 sm:h-10 bg-transparent font-semibold drop-shadow-md`}>
-          <Typewriter
-            words={roles}
-            loop={0}
-            cursor
-            cursorStyle="|"
-            typeSpeed={90}
-            deleteSpeed={50}
-            delaySpeed={2000}
-          />
-        </div>
-
-        {/* Description */}
-        <p className={`max-w-2xl text-base sm:text-lg md:text-xl ${getThemeColor('textDescription', currentTheme)} mb-8 sm:mb-10 px-4 sm:px-0 transition-colors duration-300 font-medium drop-shadow-sm opacity-95`}>
-          {description}
-        </p>
-
-        {/* CTAs */}
-        <div className="cta-container mb-10 sm:mb-12">
-          <Button
-            size="lg"
-            className={`${getThemeColor('buttonPrimary', currentTheme)} text-white ${getThemeColor('shadowPrimary', currentTheme)} transform hover:scale-105 transition-all duration-300 ${getThemeColor('borderPrimary', currentTheme)} cta-button-primary`}
-            onClick={() => window.open('/resume.pdf', '_blank')}
-          >
-            <Download className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-            Download Resume
-          </Button>
-          <div className="flex space-x-2 sm:space-x-3 justify-center w-full sm:w-auto">
-            {socialLinks.map(({ href, icon, label }) => {
-              const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
-              return (
-                <Button
-                  key={label}
-                  variant="outline"
-                  size="lg"
-                  className={`${getThemeColor('buttonSecondary', currentTheme)} transform hover:scale-110 transition-colors p-3 sm:p-4 cta-button-secondary drop-shadow-sm`}
-                  asChild
-                >
-                  <a href={href} target="_blank" rel="noopener noreferrer">
-                    <IconComponent className="h-5 w-5 sm:h-6 sm:w-6" />
-                  </a>
-                </Button>
-              );
-            })}
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto rounded-full px-8 h-12 text-base font-medium transition-all hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+              onClick={() => window.open('/resume.pdf', '_blank')}
+            >
+              <FileText className="mr-2 h-4 w-4" />
+              Resume
+            </Button>
+            
+            <div className="flex items-center gap-2">
+              {socialLinks.map(({ href, icon, label }) => {
+                const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
+                return (
+                  <Button
+                    key={label}
+                    variant="ghost"
+                    size="icon"
+                    className="w-12 h-12 rounded-full hover:bg-accent transition-all hover:scale-110"
+                    asChild
+                  >
+                    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
+                      <IconComponent className="h-5 w-5" />
+                    </a>
+                  </Button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
-        {/* Scroll Down */}
-        <div className="mt-16 animate-bounce">
-          <Button
-            variant="ghost"
-            onClick={scrollToNext}
-            className={`${getThemeColor('buttonScroll', currentTheme)} transition-all duration-300 hover:scale-110 drop-shadow-sm`}
-          >
-            <ArrowDown className="h-6 w-6" />
-          </Button>
+        {/* Right Column - Floating Portrait Card (lg:col-5) */}
+        <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
+          <div className="relative w-full max-w-[320px] md:max-w-[400px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-background animate-in fade-in zoom-in duration-1000">
+            {portraits.map((src, index) => (
+              <div
+                key={src}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                }`}
+              >
+                <Image
+                  src={src}
+                  alt={`Portrait ${index + 1}`}
+                  fill
+                  priority={index === 0}
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 30vw"
+                />
+              </div>
+            ))}
+            {/* Glossy overlay effect */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent z-20 pointer-events-none" />
+          </div>
         </div>
+
       </div>
 
-      {/* Bottom Fade-out Overlay - creates smooth transition to about section */}
-      <div className="absolute bottom-0 left-0 w-full h-24 z-10 bg-gradient-to-t from-background via-background/90 to-transparent pointer-events-none" />
+      {/* Decorative background elements */}
+      <div className="absolute top-1/4 -left-20 -z-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl opacity-60 animate-pulse" />
+      <div className="absolute bottom-1/4 -right-20 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl opacity-60" />
     </section>
   );
 }
