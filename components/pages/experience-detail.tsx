@@ -11,13 +11,31 @@ import { ExperienceCard } from '@/components/blog/experience-card';
 // Move static data outside component to prevent re-creation
 const experiences = [
   {
+    title: "Software Engineer",
+    company: "RFCOM Technologies Pte. Ltd.",
+    location: "Singapore · On-site",
+    period: "Jun 2026 - Present",
+    duration: "5 mos",
+    type: "Full-time",
+    description: "Full-time software engineer at RFCOM Technologies, returning after earlier contract work on Android and Bluetooth LE applications for the hospitality industry.",
+    achievements: [],
+    technologies: [],
+    icon: Smartphone,
+    color: "text-orange-500",
+    companyInfo: {
+      industry: "IoT Solutions",
+      size: "50+ employees",
+      founded: "2015"
+    }
+  },
+  {
     title: "Data Analyst Intern",
     company: "Fivetran",
     location: "Oakland, California, United States",
-    period: "Sep 2024 - Present",
+    period: "Sep 2024 - Jul 2025",
     duration: "11 mos",
     type: "Full-time",
-    description: "Working on data pipeline optimization and analytics at a leading data integration platform. Contributing to enterprise-scale data solutions serving thousands of customers.",
+    description: "Worked on data pipeline optimization and analytics at a leading data integration platform. Contributed to enterprise-scale data solutions serving thousands of customers.",
     achievements: [
       "Optimized data pipeline performance for enterprise clients, reducing processing time by 30%",
       "Developed analytics dashboards for internal teams using Python and SQL",
@@ -38,8 +56,8 @@ const experiences = [
     title: "Software Engineer Internship",
     company: "GovTech Singapore",
     location: "Singapore · Hybrid",
-    period: "May 2023 - Aug 2023",
-    duration: "4 mos",
+    period: "May 2022 - Aug 2022 & May 2023 - Aug 2023",
+    duration: "2 internships",
     type: "Full-time",
     description: "Developed government digital services and applications. Worked on citizen-facing applications and internal government systems with focus on scalability and security.",
     achievements: [
@@ -62,8 +80,8 @@ const experiences = [
     title: "Contract Software Engineer",
     company: "RFCOM Technologies Pte. Ltd.",
     location: "Singapore",
-    period: "Apr 2022 - Dec 2022",
-    duration: "9 mos",
+    period: "2018 & Apr 2022 - Dec 2022",
+    duration: "multiple contracts",
     type: "Part-time",
     description: "Developed Android applications with Bluetooth Low Energy integration for enterprise clients in hospitality industry. Created innovative solutions for hotel management systems.",
     achievements: [
@@ -71,7 +89,8 @@ const experiences = [
       "Implemented BLE technology for real-time tracking and inventory management",
       "Deployed solutions to Pan Pacific Hotel and other major hospitality clients",
       "Developed custom UI components for enhanced user experience",
-      "Maintained 99.9% uptime for production applications"
+      "Maintained 99.9% uptime for production applications",
+      "Helped Omni-Remotes build a user-friendly television app on an open-source Kotlin project by Google, showcased in Silicon Valley (2018)"
     ],
     technologies: ["Kotlin", "Android", "Bluetooth LE", "Enterprise", "SQLite", "Material Design"],
     icon: Smartphone,
@@ -134,7 +153,7 @@ const experiences = [
 
 const organizations = [
   { name: "NUS Hackers", role: "Committee Member", period: "2022 - Present" },
-  { name: "Fivetran", role: "Data Analyst Intern", period: "2024 - Present" },
+  { name: "Fivetran", role: "Data Analyst Intern", period: "2024 - 2025" },
   { name: "AppVenture NUSH", role: "Contributor", period: "2023" },
   { name: "NUS CS2103 AY2324S2", role: "Student", period: "2024" },
   { name: "AY2324S2-CS2103T-W12-3", role: "Team Member", period: "2024" }
@@ -270,7 +289,7 @@ const ExperienceDetailComponent = () => {
                     <Badge variant="outline" className="border-primary/20 bg-primary/5 text-primary text-[10px] font-bold uppercase">Jan 2022 - Aug 2026</Badge>
                   </div>
                   <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-                    Pursuing Computer Science degree with focus on software engineering, data structures, 
+                    Computer Science degree with focus on software engineering, data structures, 
                     algorithms, and system design. Active member of NUS Hackers community.
                   </p>
                   <div className="flex flex-wrap gap-2">

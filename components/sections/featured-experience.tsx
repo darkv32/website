@@ -48,9 +48,9 @@ export function FeaturedExperience() {
       title: "Data Analyst Intern",
       company: "Fivetran",
       location: "Oakland, California, United States",
-      period: "Sep 2024 - Present",
+      period: "Sep 2024 - Jul 2025",
       type: "Full-time",
-      description: "Working on data pipeline optimization and analytics at a leading data integration platform serving thousands of customers.",
+      description: "Worked on data pipeline optimization and analytics at a leading data integration platform serving thousands of customers.",
       achievements: [
         "Optimized data pipeline performance for enterprise clients",
         "Developed analytics dashboards for internal teams",
@@ -65,7 +65,7 @@ export function FeaturedExperience() {
       title: "Software Engineer Internship",
       company: "GovTech Singapore",
       location: "Singapore",
-      period: "May 2023 - Aug 2023",
+      period: "May 2022 - Aug 2022 & May 2023 - Aug 2023",
       type: "Full-time",
       description: "Developed government digital services and applications with focus on citizen-facing solutions.",
       achievements: [
@@ -79,18 +79,14 @@ export function FeaturedExperience() {
       featured: true
     },
     {
-      title: "Contract Software Engineer",
+      title: "Software Engineer",
       company: "RFCOM Technologies",
       location: "Singapore",
-      period: "Apr 2022 - Dec 2022",
-      type: "Part-time",
-      description: "Developed Android applications with Bluetooth LE integration for hospitality industry clients.",
-      achievements: [
-        "Created luggage management system for hotels",
-        "Implemented BLE technology for real-time tracking",
-        "Deployed to Pan Pacific Hotel and other clients"
-      ],
-      technologies: ["Kotlin", "Android", "Bluetooth LE", "Enterprise"],
+      period: "Jun 2026 - Present",
+      type: "Full-time",
+      description: "Full-time software engineer at RFCOM Technologies, returning after earlier contract work on Android and Bluetooth LE applications for the hospitality industry.",
+      achievements: [],
+      technologies: [],
       icon: Smartphone,
       color: "text-orange-500",
       featured: true

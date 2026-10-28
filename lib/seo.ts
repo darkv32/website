@@ -69,9 +69,9 @@ export function generateMetadata(config: SEOConfig): Metadata {
         'max-snippet': -1,
       },
     },
-    verification: {
-      google: SITE_CONFIG.seo.googleVerification,
-    },
+    verification: SITE_CONFIG.seo.googleVerification
+      ? { google: SITE_CONFIG.seo.googleVerification }
+      : undefined,
     icons: {
       icon: [
         { url: '/logo-white.png' },
@@ -139,10 +139,10 @@ export function generateStructuredData(type: 'website' | 'person' | 'article', d
           site.author.social.linkedin,
           site.author.social.twitter,
         ],
-        jobTitle: 'Data Analyst',
+        jobTitle: 'Software Engineer',
         worksFor: {
           '@type': 'Organization',
-          name: 'Fivetran',
+          name: 'RFCOM Technologies',
         },
         knowsAbout: [
           'Data Engineering',

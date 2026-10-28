@@ -140,7 +140,7 @@ export function Contact() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Current Role</span>
-                      <Badge className="bg-blue-500">Data Analyst @ Fivetran</Badge>
+                      <Badge className="bg-blue-500">Software Engineer @ RFCOM</Badge>
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Open to</span>

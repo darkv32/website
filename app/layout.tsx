@@ -19,8 +19,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = generateMetadata({
-  title: 'Tang Yetong - Data Analyst at Fivetran | Technical Blog & Portfolio',
-  description: 'Data Analyst at Fivetran with expertise in data engineering, Android development, and blockchain technology. Technical blog covering Bitcoin development, mobile apps, and software engineering insights.',
+  title: 'Tang Yetong - Full Stack Developer | Technical Blog & Portfolio',
+  description: 'Full Stack Developer with a background in data analytics at Fivetran, plus expertise in Android development and blockchain technology. Technical blog covering Bitcoin development, mobile apps, and software engineering insights.',
   keywords: [
     'Tang Yetong', 'Data Analyst', 'Fivetran', 'Data Engineering',
     'Android Developer', 'Blockchain', 'Singapore', 'GovTech',

@@ -2,8 +2,8 @@ import { AboutDetail } from '@/components/pages/about-detail';
 import { generateMetadata, generateStructuredData } from '@/lib/seo';
 
 export const metadata = generateMetadata({
-  title: 'About Tang Yetong - Data Analyst & Developer',
-  description: 'Learn about Tang Yetong, a Data Analyst at Fivetran with expertise in data engineering, Android development, and blockchain technology. Discover my journey, skills, and contributions to the tech community.',
+  title: 'About Tang Yetong - Full Stack Developer',
+  description: 'Learn about Tang Yetong, a Full Stack Developer and former Data Analyst Intern at Fivetran with expertise in data engineering, Android development, and blockchain technology. Discover my journey, skills, and contributions to the tech community.',
   keywords: [
     'About Tang Yetong', 'Data Analyst', 'Fivetran', 'Data Engineering',
     'Android Developer', 'Blockchain', 'Singapore', 'GovTech',

@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://tangyetong.dev/sitemap.xml
+Sitemap: https://personalwebsite-theta-sand.vercel.app/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

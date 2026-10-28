@@ -53,7 +53,7 @@ export function About() {
     {
       icon: Database,
       title: "Data Engineering",
-      description: "Building scalable data pipelines and analytics solutions at Fivetran",
+      description: "Built scalable data pipelines and analytics solutions at Fivetran",
       technologies: ["Python", "SQL", "ETL", "Data Pipelines"],
       color: "text-blue-500",
       bgColor: "bg-blue-500/10"
@@ -109,8 +109,8 @@ export function About() {
                 About Me
               </h2>
               <p className="text-xl text-muted-foreground dark:text-muted-foreground text-gray-700 max-w-3xl mx-auto leading-relaxed">
-                <span className="dark:hidden">Passionate Data Analyst at Fivetran, crafting innovative solutions and driving technological advancement through scalable engineering and collaborative problem-solving.</span>
-                <span className="hidden dark:inline">Data Analyst at Fivetran with a passion for building scalable solutions and driving innovation through technology</span>
+                <span className="dark:hidden">Passionate Full Stack Developer and former Data Analyst Intern at Fivetran, crafting innovative solutions and driving technological advancement through scalable engineering and collaborative problem-solving.</span>
+                <span className="hidden dark:inline">Full Stack Developer and former Data Analyst Intern at Fivetran with a passion for building scalable solutions and driving innovation through technology</span>
               </p>
             </div>
 
@@ -127,8 +127,8 @@ export function About() {
                 <div className="space-y-6 text-muted-foreground leading-relaxed">
                   <div className="p-6 bg-card/95 backdrop-blur-sm rounded-xl border-2 border-gray-200 dark:border-border/60 shadow-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 border-l-4 border-l-primary bg-gradient-to-br from-primary/5 via-background to-secondary/10 hover:bg-gradient-to-br hover:from-primary/10 hover:via-background hover:to-secondary/20 hover:border-l-primary/80 cursor-pointer group">
                     <p className="group-hover:text-foreground transition-colors duration-300">
-                      I&apos;m currently a <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">Data Analyst at Fivetran</span>, 
-                      where I work on optimizing data pipelines and building analytics solutions for enterprise clients. 
+                      I&apos;m a Full Stack Developer who previously worked as a <span className="text-primary font-semibold group-hover:text-primary/80 transition-colors duration-300">Data Analyst Intern at Fivetran</span>, 
+                      where I optimized data pipelines and built analytics solutions for enterprise clients. 
                       My journey in technology spans across data engineering, mobile development, and full-stack web applications.
                     </p>
                   </div>

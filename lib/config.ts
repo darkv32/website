@@ -1,13 +1,13 @@
 // Site configuration constants
 export const SITE_CONFIG = {
   // Base URL for the site
-  baseUrl: 'https://tangyeto.ng',
+  baseUrl: 'https://personalwebsite-theta-sand.vercel.app',
   
   // Site metadata
   site: {
     name: 'Tang Yetong',
-    title: 'Tang Yetong - Data Analyst at Fivetran | Technical Blog & Portfolio',
-    description: 'Data Analyst at Fivetran with expertise in data engineering, Android development, and blockchain technology.',
+    title: 'Tang Yetong - Full Stack Developer | Technical Blog & Portfolio',
+    description: 'Full Stack Developer with a background in data analytics at Fivetran, plus expertise in Android development and blockchain technology.',
     author: 'Tang Yetong',
     email: 'ytyt0792@gmail.com',
     location: 'Singapore',
@@ -29,7 +29,8 @@ export const SITE_CONFIG = {
       'Python', 'Kotlin', 'SQL', 'Mobile Development', 'Bitcoin',
       'BDK-Kotlin', 'Technical Blog', 'Software Engineering'
     ],
-    googleVerification: 'your-google-verification-code',
+    // Paste the Google Search Console verification code here; the meta tag is omitted while empty
+    googleVerification: '' as string,
     themeColor: '#6366f1',
   },
   
@@ -57,19 +58,3 @@ export const getSitemapUrl = (): string => {
 export const getRssFeedUrl = (): string => {
   return getFullUrl('/feed.xml');
 };
-
-// Helper function to get site data with centralized URLs
-export const getSiteDataWithConfig = () => {
-  const siteData = require('../data/site-data.json');
-  
-  // Replace hardcoded URLs with centralized ones
-  if (siteData.projects?.featured) {
-    siteData.projects.featured.forEach((project: any) => {
-      if (project.live === 'https://tangyetong.dev') {
-        project.live = SITE_CONFIG.baseUrl;
-      }
-    });
-  }
-  
-  return siteData;
-}; 

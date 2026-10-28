@@ -45,7 +45,7 @@ export function AboutDetail({ personData, breadcrumbItems }: AboutDetailProps) {
     <>
       <PageLayout
         title="About Me"
-        description="Data Analyst at Fivetran with a passion for building scalable solutions and driving innovation through technology."
+        description="Full Stack Developer and former Data Analyst Intern at Fivetran with a passion for building scalable solutions and driving innovation through technology."
         badge="About Me"
         showBackButton
         backgroundIcons={backgroundIcons}
@@ -63,7 +63,7 @@ export function AboutDetail({ personData, breadcrumbItems }: AboutDetailProps) {
             <div className="space-y-6 text-muted-foreground leading-relaxed">
               {[
                 {
-                  text: <>I&apos;m currently a <span className="text-primary font-semibold">Data Analyst at Fivetran</span>, where I work on optimizing data pipelines and building analytics solutions for enterprise clients. My journey in technology spans across data engineering, mobile development, and full-stack web applications.</>,
+                  text: <>I&apos;m a Full Stack Developer who previously worked as a <span className="text-primary font-semibold">Data Analyst Intern at Fivetran</span>, where I optimized data pipelines and built analytics solutions for enterprise clients. My journey in technology spans across data engineering, mobile development, and full-stack web applications.</>,
                   delay: '0.5s'
                 },
                 {
@@ -171,7 +171,7 @@ export function AboutDetail({ personData, breadcrumbItems }: AboutDetailProps) {
               {
                 icon: Database,
                 title: "Data Engineering",
-                description: "Building scalable data pipelines and analytics solutions at Fivetran",
+                description: "Built scalable data pipelines and analytics solutions at Fivetran",
                 technologies: ["Python", "SQL", "ETL", "Data Pipelines"],
               },
               {
