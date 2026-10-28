@@ -15,13 +15,14 @@ import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { BlogPostCard } from '@/components/blog/blog-post-card';
 import React from 'react';
 import { rafThrottle } from '@/lib/performance';
+import { useMounted } from '@/hooks/use-mounted';
 
 interface BlogArticleProps {
   post: BlogPost;
 }
 
 export function BlogArticle({ post }: BlogArticleProps) {
-  const [isVisible, setIsVisible] = useState(false);
+  const isVisible = useMounted();
   const [readingProgress, setReadingProgress] = useState(0);
   const articleRef = useRef<HTMLElement | null>(null);
   const cachedDataRef = useRef<{ articleHeight: number; windowHeight: number } | null>(null);
@@ -29,8 +30,6 @@ export function BlogArticle({ post }: BlogArticleProps) {
   const relatedPosts = getRelatedBlogPosts(post);
 
   useEffect(() => {
-    setIsVisible(true);
-    
     // Cache article element reference
     articleRef.current = document.querySelector('.article-content') as HTMLElement;
     

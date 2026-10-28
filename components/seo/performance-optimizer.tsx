@@ -77,6 +77,8 @@ export function SEOImage({
   className = '' 
 }: SEOImageProps) {
   return (
+    // Intentionally a plain <img>: width/height are optional here, which next/image requires
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       alt={alt}

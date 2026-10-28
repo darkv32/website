@@ -35,7 +35,7 @@ export function Hero() {
         <div className="lg:col-span-7 space-y-10 order-2 lg:order-1 text-center lg:text-left">
           <div className="space-y-6">
             <p className="text-sm md:text-base font-medium tracking-widest uppercase text-muted-foreground animate-in fade-in slide-in-from-bottom-3 duration-700">
-              Hi, I'm Tang Yetong
+              Hi, I&apos;m Tang Yetong
             </p>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
               Full Stack Developer & <br className="hidden md:block" />

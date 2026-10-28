@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState , useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { useMounted } from '@/hooks/use-mounted';
 import { Calendar, Clock, ExternalLink, Tag, Search, Filter, Grid, List, BookOpen, TrendingUp, Users, Award } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,14 +16,18 @@ import { BlogPostCard } from '@/components/blog/blog-post-card';
 import { BlogArticle } from '@/components/blog/blog-article';
 
 export function BlogDetail() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, setSelectedCategoryState] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [searchResults, setSearchResults] = useState<BlogPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const isLoading = !useMounted();
+
+  // Changing category always returns to the first page
+  const setSelectedCategory = (category: string) => {
+    setSelectedCategoryState(category);
+    setCurrentPage(1);
+  };
 
   const postsPerPage = 6;
   const allPosts = useMemo(() => getAllBlogPosts(), []);
@@ -31,25 +36,12 @@ export function BlogDetail() {
 
   const blogCategoriesWithValues = blogCategories.map(cat => ({ value: cat.slug, label: cat.name }));
 
-  useEffect(() => {
-    setIsVisible(true);
-    setIsLoading(false);
-  }, []);
-
-  // Handle data loading
-  useEffect(() => {
-    let posts = searchResults.length > 0 ? searchResults : allPosts;
-    
-    if (selectedCategory !== 'all') {
-      posts = posts.filter(post => post.category === selectedCategory);
-    }
-    
-    setFilteredPosts(posts);
+  const filteredPosts = useMemo(() => {
+    const posts = searchResults.length > 0 ? searchResults : allPosts;
+    return selectedCategory === 'all'
+      ? posts
+      : posts.filter(post => post.category === selectedCategory);
   }, [selectedCategory, searchResults, allPosts]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory]);
 
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const currentPosts = filteredPosts.slice(

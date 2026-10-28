@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { List } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -15,11 +15,10 @@ interface Heading {
 }
 
 export function BlogTableOfContents({ content }: BlogTableOfContentsProps) {
-  const [headings, setHeadings] = useState<Heading[]>([]);
   const [activeHeading, setActiveHeading] = useState<string>('');
 
-  useEffect(() => {
-    // Extract headings from markdown content
+  // Extract headings from markdown content
+  const headings = useMemo(() => {
     const headingRegex = /^(#{1,6})\s+(.+)$/gm;
     const extractedHeadings: Heading[] = [];
     let match;
@@ -28,11 +27,11 @@ export function BlogTableOfContents({ content }: BlogTableOfContentsProps) {
       const level = match[1].length;
       const text = match[2].trim();
       const id = text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-      
+
       extractedHeadings.push({ id, text, level });
     }
 
-    setHeadings(extractedHeadings);
+    return extractedHeadings;
   }, [content]);
 
   // Use IntersectionObserver instead of scroll listener for better performance

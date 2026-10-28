@@ -79,10 +79,7 @@ export function rafThrottle<T extends (...args: any[]) => any>(
 /**
  * React hook for throttled scroll handling using requestAnimationFrame
  */
-export function useThrottledScroll(
-  callback: () => void,
-  deps: React.DependencyList = []
-) {
+export function useThrottledScroll(callback: () => void) {
   const callbackRef = React.useRef(callback);
   
   React.useEffect(() => {
@@ -96,16 +93,13 @@ export function useThrottledScroll(
 
     window.addEventListener('scroll', throttledCallback, { passive: true });
     return () => window.removeEventListener('scroll', throttledCallback);
-  }, deps);
+  }, []);
 }
 
 /**
  * React hook for requestAnimationFrame-based updates
  */
-export function useRequestAnimationFrame(
-  callback: () => void,
-  deps: React.DependencyList = []
-) {
+export function useRequestAnimationFrame(callback: () => void) {
   const callbackRef = React.useRef(callback);
   const rafIdRef = React.useRef<number | null>(null);
 
@@ -126,6 +120,6 @@ export function useRequestAnimationFrame(
         cancelAnimationFrame(rafIdRef.current);
       }
     };
-  }, deps);
+  }, []);
 }
 
