@@ -1,89 +1,88 @@
 # Tang Yetong - Personal Portfolio
 
-A modern, responsive personal portfolio website built with Next.js, TypeScript, and Tailwind CSS.
+A responsive personal portfolio and technical blog built with Next.js, TypeScript, and Tailwind CSS.
+
+Live site: https://personalwebsite-theta-sand.vercel.app
 
 ## 🛠 Tech Stack
 
-- **Framework**: Next.js 13 (App Router)
+- **Framework**: Next.js 16 (App Router, Turbopack)
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Styling**: Tailwind CSS 3
 - **UI Components**: Radix UI primitives
-- **Icons**: Lucide React
-- **Deployment**: Vercel/Netlify ready
+- **Icons**: Lucide React, React Icons
+- **Content**: JSON data files + Markdown rendering (`react-markdown`)
+- **Deployment**: Vercel
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm or yarn
+- Node.js 20+
+- [Bun](https://bun.sh) (the lockfile is `bun.lock`) or npm
 
 ### Installation
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/tangyetong/portfolio.git
-cd portfolio
+git clone https://github.com/darkv32/website.git
+cd website
 ```
 
 2. Install dependencies:
 ```bash
-npm install
+bun install
 ```
 
 3. Start the development server:
 ```bash
-npm run dev
+bun run dev
 ```
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📝 Customization
 
-### Personal Information
+### Content
 
-Update the following files with your personal information:
+Most site content lives in data files rather than components:
 
-- `components/sections/hero.tsx` - Hero section content
-- `components/sections/about.tsx` - About section biography
-- `components/sections/experience.tsx` - Work experience and achievements
-- `components/sections/projects.tsx` - Project showcase
-- `components/sections/skills.tsx` - Skills and technologies
-- `components/sections/contact.tsx` - Contact information
-- `app/layout.tsx` - SEO metadata
+- `data/site-data.json` - Site metadata, hero, about, skills, projects and contact info
+- `data/blog-data.json` - Blog posts
+- `lib/config.ts` - Base URL, contact details, SEO keywords and social links
+
+Some pages still hold their content inline:
+
+- `components/pages/experience-detail.tsx` - Full work experience list
+- `components/pages/about-detail.tsx` and `components/sections/about.tsx` - About copy
+- `components/sections/featured-experience.tsx` - Landing page experience highlights
+- `app/layout.tsx` - Default SEO metadata
 
 ### Styling
 
-The design system uses CSS variables defined in `app/globals.css`. Customize colors, spacing, and animations by modifying these variables.
+The design system uses CSS variables defined in `app/globals.css`, with Tailwind configured in `tailwind.config.ts`.
 
 ### Components
 
-All components are built with TypeScript and use Tailwind CSS for styling. UI components are based on Radix UI primitives for accessibility.
+- `components/ui/` - Radix-based primitives
+- `components/sections/` - Landing page sections
+- `components/pages/` - Page-level content for About, Experience, Contact and Blog
+- `components/blog/` - Blog and card components
 
 ## 🚀 Deployment
 
-### Vercel (Recommended)
+The site is deployed on Vercel. Pushing to `main` triggers a deploy once the repository is connected to a Vercel project.
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy with one click
-
-### Netlify
-
-1. Build the project:
-```bash
-npm run build
-```
-
-2. Deploy the `out` folder to Netlify
+If you change the domain, update `baseUrl` in `lib/config.ts` and the `Sitemap:` line in `public/robots.txt`.
 
 ## 🔧 Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript type checking
+- `bun run dev` - Start development server
+- `bun run build` - Build for production
+- `bun run start` - Start production server
+- `bun run lint` - Run ESLint
+- `bun run type-check` - Run TypeScript type checking
+- `bun run analyze` - Build with the bundle analyzer (uses webpack)
 
 ## 📱 Browser Support
 
@@ -92,19 +91,6 @@ npm run build
 - Safari (latest)
 - Edge (latest)
 
-## 🤝 Contributing
-
-This is a personal portfolio, but if you find bugs or have suggestions:
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Open a pull request
-
 ## 📄 License
 
 MIT License - feel free to use this as a template for your own portfolio.
-
-## 📞 Contact
-
-Contact information (email, LinkedIn, GitHub) is now managed centrally in the configuration file [`lib/config.ts`](lib/config.ts). Update your details there to reflect across the site.
