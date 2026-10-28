@@ -4,8 +4,8 @@
   "description": "Data Analyst at Fivetran with expertise in data engineering, Android development, and blockchain technology",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#6366f1",
+  "background_color": "#0b0e0f",
+  "theme_color": "#0b0e0f",
   "orientation": "portrait-primary",
   "icons": [
     {

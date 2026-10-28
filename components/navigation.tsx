@@ -1,112 +1,90 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
-import { Moon, Sun, Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
-import { getSiteMetadata } from '@/lib/data';
-import { useMounted } from '@/hooks/use-mounted';
+import { usePathname, useRouter } from 'next/navigation';
+import { useTheme } from 'next-themes';
+import { SITE_CONFIG } from '@/lib/config';
+import s from '@/components/field/field.module.css';
+
+/* About is the home page; the other tabs are separate pages. Each tab also answers to a single key. */
+const TABS = [
+  { name: 'About', href: '/', key: 'a', match: ['/', '/about'] },
+  { name: 'Experience', href: '/experience', key: 'e', match: ['/experience'] },
+  { name: 'Blog', href: '/blog', key: 'b', match: ['/blog'] },
+  { name: 'Hobbies', href: '/hobbies', key: 'h', match: ['/hobbies'] },
+  { name: 'Contact', href: '/contact', key: 'c', match: ['/contact'] },
+];
+
+const clockFormat = new Intl.DateTimeFormat('en-GB', {
+  timeZone: SITE_CONFIG.site.timezone,
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+});
+
+function subscribeClock(onTick: () => void) {
+  const id = setInterval(onTick, 1000);
+  return () => clearInterval(id);
+}
+const clockNow = () => clockFormat.format(new Date());
+const clockServer = () => '--:--:--';
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const mounted = useMounted();
-  const { theme, setTheme } = useTheme();
-  const { navigation } = getSiteMetadata();
+  const pathname = usePathname();
+  const router = useRouter();
+  const { resolvedTheme, setTheme } = useTheme();
+  const clock = useSyncExternalStore(subscribeClock, clockNow, clockServer);
+  const [flashKey, setFlashKey] = useState('');
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+    let timer: ReturnType<typeof setTimeout>;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (/INPUT|TEXTAREA|SELECT/.test(t.tagName) || t.isContentEditable)) return;
+      const k = e.key.toLowerCase();
+      const tab = TABS.find((x) => x.key === k);
+      if (!tab) return;
+      router.push(tab.href);
+      setFlashKey(k);
+      clearTimeout(timer);
+      timer = setTimeout(() => setFlashKey(''), 260);
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    addEventListener('keydown', onKey);
+    return () => {
+      removeEventListener('keydown', onKey);
+      clearTimeout(timer);
+    };
+  }, [router]);
+
+  const isOn = (match: string[]) => match.some((m) => (m === '/' ? pathname === '/' : pathname === m || pathname.startsWith(m + '/')));
 
   return (
-    <nav
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-        isScrolled
-          ? 'bg-background/80 backdrop-blur-md border-b border-border/40 py-2'
-          : 'bg-transparent py-4'
-      )}
-    >
-      <div className="w-full px-6 md:px-8 lg:px-12">
-        <div className="flex items-center justify-between h-12">
-          {/* Logo */}
-          <div className="flex-shrink-0">
+    <header className={s.hud}>
+      <div className={s.in}>
+        <Link className={s.logo} href="/">TYT</Link>
+        <nav aria-label="Sections">
+          {TABS.map((tab) => (
             <Link
-              href="/"
-              className="text-lg font-bold tracking-tight hover:opacity-70 transition-opacity"
+              key={tab.name}
+              href={tab.href}
+              className={[isOn(tab.match) ? s.on : '', flashKey === tab.key ? s.flash : ''].filter(Boolean).join(' ')}
+              aria-current={isOn(tab.match) ? 'page' : undefined}
             >
-              TYT
+              <kbd>{tab.key.toUpperCase()}</kbd>
+              {tab.name}
             </Link>
-          </div>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(mounted && theme === 'dark' ? 'light' : 'dark')}
-              className="w-9 h-9"
-            >
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </Button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center space-x-4">
-             <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(mounted && theme === 'dark' ? 'light' : 'dark')}
-              className="w-9 h-9"
-            >
-              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
-          </div>
+          ))}
+        </nav>
+        <div className={s.status}>
+          <span className={s.clock}>SGT <b suppressHydrationWarning>{clock}</b></span>
+          <button type="button" aria-label="Toggle light or dark theme" onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}>
+            Theme
+          </button>
         </div>
-
-        {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-background border-b border-border/40 p-6 animate-in fade-in slide-in-from-top-4">
-            <div className="flex flex-col space-y-4">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
-    </nav>
+    </header>
   );
 }

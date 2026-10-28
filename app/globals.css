@@ -3,49 +3,66 @@
 @tailwind utilities;
 
 @layer base {
+  /* Field map palette. The shadcn tokens below are HSL triples so Tailwind utilities keep working;
+     the --f-* tokens are plain colours used by components/field. Light is :root, dark is .dark. */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --background: 180 13% 94%;
+    --foreground: 191 31% 7%;
+    --card: 180 14% 90%;
+    --card-foreground: 191 31% 7%;
+    --popover: 180 13% 94%;
+    --popover-foreground: 191 31% 7%;
+    --primary: 188 87% 30%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 180 14% 90%;
+    --secondary-foreground: 191 31% 7%;
+    --muted: 180 14% 90%;
+    --muted-foreground: 192 13% 37%;
+    --accent: 180 14% 90%;
+    --accent-foreground: 191 31% 7%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --border: 186 13% 85%;
+    --input: 187 13% 75%;
+    --ring: 188 87% 30%;
     --radius: 0.5rem;
+
+    --f-bg: #eef2f2; --f-bg2: #e3eaea; --f-fg: #0c1517; --f-muted: #51656a;
+    --f-line: #d3dcdd; --f-line2: #b6c5c7; --f-accent: #0a7c8d; --f-accent-ink: #ffffff; --f-field: 10 124 141;
+    /* paper band: the opposite of the page ground */
+    --f-inv-bg: #0b1113; --f-inv-fg: #e6eded; --f-inv-muted: #8b9a9d; --f-inv-line: #1c2528; --f-inv-line2: #2c3a3f; --f-inv-accent: #5fd0dc; --f-inv-accent-ink: #03242a;
+    /* deep band: lake water */
+    --f-deep-bg: #cfe6e9; --f-deep-line: #aed0d5; --f-deep-line2: #86b6bd; --f-deep-dot: #b5d5da;
+    /* blog band: pine green, the same in both themes */
+    --f-tint-bg: #a9c3a1; --f-tint-fg: #10200f; --f-tint-muted: #3a5236; --f-tint-line: #8aa882; --f-tint-line2: #587452;
+    --f-zerg: #ff80ff;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 195 15% 5%;
+    --foreground: 180 16% 92%;
+    --card: 200 21% 8%;
+    --card-foreground: 180 16% 92%;
+    --popover: 200 21% 8%;
+    --popover-foreground: 180 16% 92%;
+    --primary: 186 64% 62%;
+    --primary-foreground: 189 87% 9%;
+    --secondary: 195 18% 13%;
+    --secondary-foreground: 180 16% 92%;
+    --muted: 195 18% 13%;
+    --muted-foreground: 190 8% 58%;
+    --accent: 195 18% 13%;
+    --accent-foreground: 180 16% 92%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --border: 195 18% 13%;
+    --input: 196 18% 21%;
+    --ring: 186 64% 62%;
+
+    --f-bg: #0b0e0f; --f-bg2: #11171a; --f-fg: #e6eded; --f-muted: #8b9a9d;
+    --f-line: #1c2528; --f-line2: #2c3a3f; --f-accent: #5fd0dc; --f-accent-ink: #03242a; --f-field: 95 208 220;
+    --f-inv-bg: #e8eeee; --f-inv-fg: #0b1214; --f-inv-muted: #4d6166; --f-inv-line: #cbd6d8; --f-inv-line2: #a9babd; --f-inv-accent: #0a7c8d; --f-inv-accent-ink: #ffffff;
+    --f-deep-bg: #0a2c33; --f-deep-line: #17454d; --f-deep-line2: #226069; --f-deep-dot: #15434b;
   }
 }
 
@@ -55,6 +72,7 @@
   }
   body {
     @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-primary-foreground;
+    line-height: 1.55;
   }
 }
 
@@ -62,6 +80,21 @@
   .container-width {
     @apply max-w-5xl mx-auto;
   }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
 }
 
 /* Minimalist Scrollbar */

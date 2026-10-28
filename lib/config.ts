@@ -31,13 +31,13 @@ export const SITE_CONFIG = {
     ],
     // Paste the Google Search Console verification code here; the meta tag is omitted while empty
     googleVerification: '' as string,
-    themeColor: '#6366f1',
+    themeColor: '#0b0e0f',
   },
   
   // Performance configuration
   performance: {
     preloadImages: [],
-    preloadFonts: ['https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'],
+    preloadFonts: [],
   },
 } as const;
 

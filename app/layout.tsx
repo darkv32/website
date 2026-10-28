@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Bricolage_Grotesque, Hanken_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -12,10 +12,22 @@ import { generateMetadata, generateStructuredData, generateOrganizationData } fr
 import { PerformanceOptimizer } from '@/components/seo/performance-optimizer';
 import { SITE_CONFIG } from '@/lib/config';
 
-const inter = Inter({ 
+const display = Bricolage_Grotesque({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-display',
+});
+
+const body = Hanken_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = generateMetadata({
@@ -40,7 +52,7 @@ export default function RootLayout({
   const organizationData = generateOrganizationData();
 
   return (
-    <html lang="en" suppressHydrationWarning className={inter.variable}>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -68,14 +80,14 @@ export default function RootLayout({
         <link rel="manifest" href="/manifest.json" />
         <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml" />
         <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
-        <meta name="theme-color" content="#6366f1" />
+        <meta name="theme-color" content="#0b0e0f" />
         <meta name="color-scheme" content="light dark" />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className="antialiased">
         <ThemeProvider>
-          <div className="min-h-screen bg-background">
+          <div className="flex min-h-screen flex-col bg-background">
             <Navigation />
-            <main className="relative">
+            <main className="relative flex flex-1 flex-col">
               {children}
             </main>
             <Footer />

@@ -1,6 +1,6 @@
-import { BlogDetail } from '@/components/pages/blog-detail';
+import { BlogBand } from '@/components/field/blog-band';
 import { generateMetadata } from '@/lib/seo';
-import { getFullUrl } from '@/lib/config';
+import { getAllBlogPosts } from '@/lib/data';
 
 export const metadata = generateMetadata({
   title: 'Technical Blog - Tang Yetong',
@@ -14,18 +14,14 @@ export const metadata = generateMetadata({
 });
 
 export default function BlogPage() {
-  const blogListData = {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: 'Technical Blog Posts',
-    description: 'Technical articles and insights on blockchain development, mobile apps, and software engineering.',
-    url: getFullUrl('/blog'),
-  };
+  const posts = getAllBlogPosts().map(({ slug, title, excerpt, publishedAt, category, readTime }) => ({
+    slug,
+    title,
+    excerpt,
+    publishedAt: publishedAt.slice(0, 10),
+    category,
+    readTime,
+  }));
 
-  const breadcrumbItems = [
-    { name: 'Home', url: '/' },
-    { name: 'Blog', url: '/blog' },
-  ];
-
-  return <BlogDetail />;
+  return <BlogBand posts={posts} />;
 }

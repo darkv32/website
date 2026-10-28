@@ -1,145 +1,139 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { Github, Linkedin, Mail, FileText } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { getHeroData } from '@/lib/data';
+import { FileText, Github, Linkedin, ArrowUpRight } from 'lucide-react';
+import { HeroField } from '@/components/field/hero-field';
+import { SITE_CONFIG } from '@/lib/config';
+import s from '@/components/field/field.module.css';
 
-const portraits = [
-  '/portrait/portrait-1.jpg',
-  '/portrait/portrait-2.jpg',
-  '/portrait/portrait-3.jpg',
-  '/portrait/portrait-4.jpg',
-  '/portrait/portrait-5.jpg',
-  '/portrait/portrait-6.jpg',
-  '/hero_background/hero-background-1.jpg',
+const SLIDE_MS = 6500;
+
+/* faceY is where the face sits in each photo, as a share of its height. The crop is centred on it for whatever shape the frame is. */
+const frames = [
+  { src: '/field/p1.jpg', label: 'Bow Lake', alt: 'standing by a turquoise lake in the Canadian Rockies', faceY: 0.5 },
+  { src: '/field/p2.jpg', label: 'Glacier edge', alt: 'in front of a glacier and gravel flats', faceY: 0.54 },
+  { src: '/field/p3.jpg', label: 'Glacial lake', alt: 'on the rocky shore of a glacial lake', faceY: 0.43 },
+  { src: '/field/p4.jpg', label: 'Above Banff', alt: 'on a hillside above a mountain town and valley', faceY: 0.55 },
+  { src: '/field/p5.jpg', label: 'Golden hour', alt: 'on a lookout at sunset', faceY: 0.46 },
+  { src: '/field/p6.jpg', label: 'Mountain boardwalk', alt: 'on a wooden boardwalk high above a valley', faceY: 0.5 },
+  { src: '/field/p7.jpg', label: 'Waterfall', alt: 'sitting on a ledge beside a waterfall', faceY: 0.44 },
 ];
 
 export function Hero() {
-  const { description, socialLinks } = getHeroData();
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const heroRef = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const imgRefs = useRef<Array<HTMLImageElement | null>>([]);
+  const pausedRef = useRef(false);
+  const [current, setCurrent] = useState(0);
 
+  const next = useCallback(() => setCurrent((i) => (i + 1) % frames.length), []);
+
+  /* Auto-advance. Depending on `current` restarts the timer whenever a tick is clicked. */
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % portraits.length);
-    }, 10000);
-    return () => clearInterval(timer);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => {
+      if (!pausedRef.current && !document.hidden) next();
+    }, SLIDE_MS);
+    return () => clearInterval(id);
+  }, [current, next]);
+
+  /* Centre each crop on the face for the current frame shape (portrait below 1200px, landscape above). */
+  useEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    const recrop = () => {
+      const r = frame.getBoundingClientRect();
+      if (!r.width) return;
+      const wf = clamp(0.75 * r.height / r.width, 0.05, 1);
+      imgRefs.current.forEach((img, i) => {
+        if (!img) return;
+        const pos = wf >= 0.999 ? 0.5 : clamp((frames[i].faceY - wf / 2) / (1 - wf), 0, 1);
+        img.style.setProperty('--py', (pos * 100).toFixed(1) + '%');
+      });
+    };
+    recrop();
+    const ro = new ResizeObserver(recrop);
+    ro.observe(frame);
+    return () => ro.disconnect();
   }, []);
 
   return (
-    <section className="relative min-h-[calc(100vh-64px)] flex items-center justify-center px-6 pt-20 pb-10 overflow-hidden">
-      <div className="container-width w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        
-        {/* Left Column - Text Content (lg:col-7) */}
-        <div className="lg:col-span-7 space-y-10 order-2 lg:order-1 text-center lg:text-left">
-          <div className="space-y-6">
-            <p className="text-sm md:text-base font-medium tracking-widest uppercase text-muted-foreground animate-in fade-in slide-in-from-bottom-3 duration-700">
-              Hi, I&apos;m Tang Yetong
-            </p>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-tight animate-in fade-in slide-in-from-bottom-4 duration-700 delay-100">
-              Full Stack Developer & <br className="hidden md:block" />
-              Data Analyst.
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-in fade-in slide-in-from-bottom-5 duration-700 delay-200">
-              {description}
-            </p>
-          </div>
+    <section ref={heroRef} className={s.hero}>
+      <HeroField heroRef={heroRef} frameRef={frameRef} />
 
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700 delay-300">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto rounded-full px-8 h-12 text-base font-medium transition-all hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
-              onClick={() => window.open('/resume.pdf', '_blank')}
-            >
-              <FileText className="mr-2 h-4 w-4" />
-              Resume
-            </Button>
-            
-            <div className="flex items-center gap-2">
-              {socialLinks.map(({ href, icon, label }) => {
-                const IconComponent = icon === 'Github' ? Github : icon === 'Linkedin' ? Linkedin : Mail;
-                return (
-                  <Button
-                    key={label}
-                    variant="ghost"
-                    size="icon"
-                    className="w-12 h-12 rounded-full hover:bg-accent transition-all hover:scale-110"
-                    asChild
-                  >
-                    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>
-                      <IconComponent className="h-5 w-5" />
-                    </a>
-                  </Button>
-                );
-              })}
+      <div className={s.in}>
+        <div className={s.heroGrid}>
+          <div>
+            <h1 className={s.name}>
+              <span>Tang</span>
+              <span className={s.l2}>Yetong</span>
+            </h1>
+            <p className={s.lede}>Full stack developer that dabbles in data analytics.</p>
+            <p className={s.sub}>
+              Software engineer at RFCOM. Previously built scalable pipelines at Fivetran, digital services at GovTech, and
+              contributed to the Bitcoin ecosystem.
+            </p>
+            <div className={s.btnrow}>
+              <a className={`${s.b} ${s.primary}`} href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <FileText />
+                Resume<span className={s.meta}>PDF</span>
+              </a>
+              <a className={s.b} href={SITE_CONFIG.social.github} target="_blank" rel="noopener noreferrer">
+                <Github />
+                GitHub
+                <ArrowUpRight className={s.ext} />
+              </a>
+              <a className={s.b} href={SITE_CONFIG.social.linkedin} target="_blank" rel="noopener noreferrer">
+                <Linkedin />
+                LinkedIn
+                <ArrowUpRight className={s.ext} />
+              </a>
             </div>
           </div>
-        </div>
 
-        {/* Right Column - Floating Portrait Card (lg:col-5) */}
-        <div className="lg:col-span-5 flex justify-center order-1 lg:order-2">
-          <div className="relative w-full max-w-[320px] md:max-w-[400px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-background animate-in fade-in zoom-in duration-1000">
-            {portraits.map((src, index) => (
-              <div
-                key={src}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                  index === currentImageIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-                }`}
-              >
+          <figure
+            className={s.photo}
+            onMouseEnter={() => { pausedRef.current = true; }}
+            onMouseLeave={() => { pausedRef.current = false; }}
+          >
+            <div ref={frameRef} className={s.photoFrame} onClick={next}>
+              {frames.map((f, i) => (
                 <Image
-                  src={src}
-                  alt={`Portrait ${index + 1}`}
+                  key={f.src}
+                  ref={(el) => { imgRefs.current[i] = el; }}
+                  className={i === current ? s.on : undefined}
+                  src={f.src}
+                  alt={`Tang Yetong ${f.alt}`}
                   fill
-                  priority={index === 0}
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 30vw"
+                  priority={i === 0}
+                  sizes="(max-width: 860px) 340px, (max-width: 1200px) 380px, 630px"
                 />
-              </div>
-            ))}
-            {/* Glossy overlay effect */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-black/20 to-transparent z-20 pointer-events-none" />
-          </div>
+              ))}
+            </div>
+            <figcaption className={s.photoCap}>
+              <span className={s.ticks}>
+                {frames.map((f, i) => (
+                  <button
+                    key={f.src}
+                    type="button"
+                    className={s.tick}
+                    aria-label={`Show photo ${i + 1}: ${f.label}`}
+                    aria-current={i === current ? 'true' : undefined}
+                    onClick={() => setCurrent(i)}
+                  >
+                    <i />
+                  </button>
+                ))}
+              </span>
+            </figcaption>
+          </figure>
         </div>
-
-      </div>
-
-      {/* Decorative background elements */}
-      <div className="absolute top-1/4 -left-20 -z-10 w-[400px] h-[400px] bg-primary/5 rounded-full blur-3xl opacity-60 animate-pulse" />
-      <div className="absolute bottom-1/4 -right-20 -z-10 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl opacity-60" />
-
-      {/* Marine Background */}
-      <div className="absolute -left-60 top-[15%] w-[35%] h-[60%] z-0 opacity-60 dark:opacity-40 pointer-events-none hidden lg:block overflow-hidden">
-        <Image
-          src="/background/marine-wp.png"
-          alt="Marine Background"
-          fill
-          className="object-contain object-left scale-x-[-1]"
-          style={{
-            maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-            maskComposite: 'intersect',
-            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-            WebkitMaskComposite: 'destination-in',
-          }}
-        />
-      </div>
-
-      {/* Zergling Background */}
-      <div className="absolute right-0 bottom-0 w-[55%] h-[65%] z-0 opacity-60 dark:opacity-40 pointer-events-none hidden md:block overflow-hidden">
-        <Image
-          src="/background/zergling-wp.png"
-          alt="Zergling Background"
-          fill
-          className="object-contain object-right-bottom"
-          style={{
-            maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-            maskComposite: 'intersect',
-            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 8%, black 92%, transparent 100%)',
-            WebkitMaskComposite: 'destination-in',
-          }}
-        />
       </div>
     </section>
   );
+}
+
+function clamp(v: number, a: number, b: number) {
+  return Math.max(a, Math.min(b, v));
 }

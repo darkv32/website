@@ -100,6 +100,121 @@
     ]
   },
   "experience": {
+    "timeline": [
+      {
+        "title": "Software Engineer",
+        "company": "RFCOM Technologies",
+        "period": "Jun 2026 – Now",
+        "current": true,
+        "kind": "Work",
+        "summary": "Enterprise software for the hospitality industry.",
+        "details": [],
+        "tools": []
+      },
+      {
+        "title": "Computer Science",
+        "company": "National University of Singapore",
+        "period": "2022 – 2026",
+        "current": false,
+        "kind": "Education",
+        "summary": "Software engineering, algorithms and systems.",
+        "details": [
+          "Focus on software engineering, data structures, algorithms and system design",
+          "Active member of the NUS Hackers community"
+        ],
+        "tools": [
+          "Algorithms",
+          "Systems"
+        ]
+      },
+      {
+        "title": "Data Analyst Intern",
+        "company": "Fivetran",
+        "period": "Sep 2024 – Jul 2025",
+        "current": false,
+        "kind": "Work",
+        "summary": "Pipelines and analytics for enterprise clients.",
+        "details": [
+          "Built scalable data pipelines for enterprise clients",
+          "Optimized data processing workflows",
+          "Developed analytics dashboards and reports"
+        ],
+        "tools": [
+          "Python",
+          "SQL",
+          "ETL"
+        ]
+      },
+      {
+        "title": "Software Engineer Intern",
+        "company": "GovTech Singapore",
+        "period": "May – Aug 2022 & 2023",
+        "current": false,
+        "kind": "Work",
+        "summary": "Citizen-facing apps and cloud work on AWS.",
+        "details": [
+          "Built citizen-facing applications",
+          "Implemented cloud solutions on AWS",
+          "Handled data collection and analytics for Key Results"
+        ],
+        "tools": [
+          "React",
+          "AWS",
+          "Node.js"
+        ]
+      },
+      {
+        "title": "Android Developer",
+        "company": "RFCOM Technologies",
+        "period": "2018 & Apr – Dec 2022",
+        "current": false,
+        "kind": "Work",
+        "summary": "Bluetooth LE apps and secure payments for the hospitality industry.",
+        "details": [
+          "Developed Android apps with Bluetooth LE integration",
+          "Created enterprise solutions for the hospitality sector",
+          "Implemented secure payment processing systems"
+        ],
+        "tools": [
+          "Kotlin",
+          "Android",
+          "BLE"
+        ]
+      },
+      {
+        "title": "Summer of Bitcoin Intern",
+        "company": "Bitcoin Dev Kit",
+        "period": "Jun – Aug 2022",
+        "current": false,
+        "kind": "Programme",
+        "summary": "BDK-Kotlin and the Padawan testnet wallet.",
+        "details": [
+          "Contributed to Bitcoin development projects and wallet applications",
+          "Wrote a series of BDK-Kotlin how-to guides on this blog"
+        ],
+        "tools": [
+          "Kotlin",
+          "BDK",
+          "Bitcoin"
+        ]
+      },
+      {
+        "title": "Software Engineer Intern",
+        "company": "Travel Prologue",
+        "period": "Jan – Mar 2020",
+        "current": false,
+        "kind": "Work",
+        "summary": "Website fixes and SQL work for a travel booking site.",
+        "details": [
+          "Resolved bugs and added features to existing website infrastructure",
+          "Assisted in SQL database population and system design for public-facing applications"
+        ],
+        "tools": [
+          "SQL",
+          "JavaScript"
+        ]
+      }
+    ],
     "highlights": [
       {
         "title": "Software Engineer",

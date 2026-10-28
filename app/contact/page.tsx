@@ -1,4 +1,5 @@
-import { ContactDetail } from '@/components/pages/contact-detail';
+import { ContactBand } from '@/components/field/contact-band';
+import { BreadcrumbData, StructuredData } from '@/components/seo/structured-data';
 import { generateMetadata } from '@/lib/seo';
 import { SITE_CONFIG, getFullUrl } from '@/lib/config';
 
@@ -36,5 +37,13 @@ export default function ContactPage() {
     { name: 'Contact', url: '/contact' },
   ];
 
-  return <ContactDetail contactData={contactData} breadcrumbItems={breadcrumbItems} />;
+  return (
+    <>
+      <ContactBand />
+
+      {/* Structured Data */}
+      <StructuredData data={contactData} />
+      <BreadcrumbData items={breadcrumbItems} />
+    </>
+  );
 }

@@ -1,22 +1,9 @@
-import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
 import { generateMetadata } from '@/lib/seo';
 import { StructuredData } from '@/components/seo/structured-data';
 import { BreadcrumbData } from '@/components/seo/structured-data';
-import { SITE_CONFIG, getFullUrl } from '@/lib/config';
-
-// Dynamic import with loading fallback
-// Note: Removed ssr: false as it's not allowed in Server Components in Next.js 16
-const ExperienceDetail = dynamic(() => import('@/components/pages/experience-detail').then(mod => ({ default: mod.ExperienceDetail })), {
-  loading: () => (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading experience...</p>
-      </div>
-    </div>
-  )
-});
+import { getFullUrl } from '@/lib/config';
+import { getExperienceData } from '@/lib/data';
+import { ExperienceBand } from '@/components/field/experience-band';
 
 export const metadata = generateMetadata({
   title: 'Professional Experience - Tang Yetong',
@@ -45,17 +32,8 @@ export default function ExperiencePage() {
 
   return (
     <>
-      <Suspense fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading experience...</p>
-          </div>
-        </div>
-      }>
-        <ExperienceDetail />
-      </Suspense>
-      
+      <ExperienceBand roles={getExperienceData().timeline} />
+
       {/* Structured Data */}
       <StructuredData data={experienceData} />
       <BreadcrumbData items={breadcrumbItems} />

@@ -51,6 +51,16 @@ export interface SiteData {
     }>;
   };
   experience: {
+    timeline: Array<{
+      title: string;
+      company: string;
+      period: string;
+      current: boolean;
+      kind: string;
+      summary: string;
+      details: string[];
+      tools: string[];
+    }>;
     highlights: Array<{
       title: string;
       company: string;
