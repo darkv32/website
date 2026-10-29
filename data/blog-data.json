@@ -16,7 +16,7 @@
       "status": "published",
       "seo": {
         "metaTitle": "CS2103 Individual Project - Tang Yetong",
-        "metaDescription": "Quick reference to find the Github Page for CS2103 individual project segment.",
+        "metaDescription": "A quick link to the GitHub Page for my CS2103 individual project, from the NUS Software Engineering module.",
         "keywords": ["CS2103", "NUS", "Computer Science", "Individual Project"]
       }
     },
@@ -36,7 +36,7 @@
       "status": "published",
       "seo": {
         "metaTitle": "Fix React Native BLE createClient Error - Tang Yetong",
-        "metaDescription": "Solution for React Native BLE library createClient null error when using Expo Go.",
+        "metaDescription": "Fix the React Native BLE \"Cannot read property createClient of null\" error that crashes BleManager in Expo Go, by switching to an Expo development build.",
         "keywords": ["React Native", "BLE", "Expo", "Debugging", "Mobile Development"]
       }
     },
@@ -136,7 +136,7 @@
       "status": "published",
       "seo": {
         "metaTitle": "Enable Replace-By-Fee with BDK-Kotlin - Tang Yetong",
-        "metaDescription": "Tutorial on enabling Replace-By-Fee feature for Bitcoin transactions using BDK-Kotlin library.",
+        "metaDescription": "Learn how to enable Replace-By-Fee (RBF) on Bitcoin transactions with the BDK-Kotlin 0.7.0 TxBuilder, with Kotlin code you can copy into your wallet.",
         "keywords": ["BDK-Kotlin", "Bitcoin", "RBF", "Replace-By-Fee", "Transactions"]
       }
     },
@@ -156,7 +156,7 @@
       "status": "published",
       "seo": {
         "metaTitle": "Custom Electrum Servers with BDK-Kotlin - Tang Yetong",
-        "metaDescription": "Learn how to configure custom electrum servers for enhanced privacy with BDK-Kotlin wallets.",
+        "metaDescription": "Why a public Electrum server can see all your wallet's transactions, and how to switch to your own server in a BDK-Kotlin wallet for better privacy.",
         "keywords": ["BDK-Kotlin", "Bitcoin", "Electrum", "Privacy", "Blockchain"]
       }
     },
@@ -175,8 +175,8 @@
       "featured": false,
       "status": "published",
       "seo": {
-        "metaTitle": "Multiple Recipients Bitcoin Transactions with BDK-Kotlin - Tang Yetong",
-        "metaDescription": "Tutorial on creating Bitcoin transactions with multiple recipients using BDK-Kotlin library.",
+        "metaTitle": "Multiple Recipient Transactions in BDK-Kotlin - Tang Yetong",
+        "metaDescription": "How to build, sign and broadcast a Bitcoin transaction that pays multiple recipients with the BDK-Kotlin 0.7.0 TxBuilder and a PSBT.",
         "keywords": ["BDK-Kotlin", "Bitcoin", "Transactions", "Multiple Recipients", "Blockchain"]
       }
     },

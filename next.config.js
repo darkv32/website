@@ -8,6 +8,10 @@ const nextConfig = {
     remotePatterns: [new URL('https://images.pexels.com/photos/**')],
   },
   poweredByHeader: false,
+  async redirects() {
+    // Browsers and crawlers ask for /favicon.ico by default; the icon is generated, so point them at it
+    return [{ source: '/favicon.ico', destination: '/icon', permanent: false }];
+  },
   async headers() {
     return [
       {

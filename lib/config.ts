@@ -6,14 +6,20 @@ export const SITE_CONFIG = {
   // Site metadata
   site: {
     name: 'Tang Yetong',
-    title: 'Tang Yetong - Full Stack Developer | Technical Blog & Portfolio',
-    description: 'Full Stack Developer with a background in data analytics at Fivetran, plus expertise in Android development and blockchain technology. Technical blog covering Bitcoin development, mobile apps, and software engineering insights.',
+    title: 'Tang Yetong - Full Stack Developer in Singapore',
+    description: 'Tang Yetong is a full stack developer in Singapore with a background in data analytics, Android and Bitcoin development. Read the technical blog.',
     author: 'Tang Yetong',
     avatar: '/portrait/portrait-1.jpg',
     bio: 'Full Stack Developer and former Data Analyst Intern at Fivetran with a background in government digital services and blockchain technology.',
     email: 'ytyt0792@gmail.com',
     location: 'Singapore',
     timezone: 'Asia/Singapore',
+  },
+
+  // The blog's own title and description, used by its page, its feed and its structured data
+  blog: {
+    title: 'Technical Blog - Tang Yetong',
+    description: 'Writing on Bitcoin wallets, Android and what an internship is actually like: BDK-Kotlin tutorials, React Native fixes and internship write-ups.',
   },
 
   // Social media URLs
@@ -35,6 +41,7 @@ export const SITE_CONFIG = {
     // Paste the Google Search Console verification code here; the meta tag is omitted while empty
     googleVerification: '' as string,
     themeColor: '#0b0e0f',
+    themeColorLight: '#eef2f2',
   },
 } as const;
 

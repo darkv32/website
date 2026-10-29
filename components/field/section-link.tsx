@@ -14,8 +14,8 @@ export const SECTIONS = [
 ] as const;
 
 /**
- * On the front page a link scrolls to its band; on every other page it goes to the section's own page.
- * `href` overrides the destination off the front page (the logo uses it to go home).
+ * A link always points at the section's own page, so crawlers can follow it from the front page too.
+ * On the front page a plain click scrolls to the band instead; `href` overrides the destination (the logo uses it to go home).
  */
 export function SectionLink({ id, href, onClick, ...props }: { id: string; href?: string } & Omit<ComponentProps<typeof Link>, 'href'>) {
   const pathname = usePathname();
@@ -24,10 +24,11 @@ export function SectionLink({ id, href, onClick, ...props }: { id: string; href?
   return (
     <Link
       {...props}
-      href={onHome ? `/#${id}` : page}
+      href={page}
       onClick={(e) => {
         onClick?.(e);
-        if (onHome && !e.defaultPrevented) {
+        const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
+        if (onHome && !modified && !e.defaultPrevented) {
           e.preventDefault();
           document.getElementById(id)?.scrollIntoView({ block: 'start' });
         }

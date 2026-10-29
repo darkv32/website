@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { BlogArticle } from '@/components/blog/blog-article';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data';
 import { createMetadata, generateArticleData } from '@/lib/seo';
-import { StructuredData, BreadcrumbData } from '@/components/seo/structured-data';
+import { StructuredData } from '@/components/seo/structured-data';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -34,28 +34,22 @@ export async function generateMetadata(props: BlogPostPageProps): Promise<Metada
     title: post.seo.metaTitle,
     description: post.seo.metaDescription,
     keywords: post.seo.keywords,
-    image: post.featuredImage,
     url: `/blog/${post.slug}`,
     type: 'article',
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
+    section: post.category,
+    tags: post.tags,
   });
 }
 
 export default async function BlogPostPage(props: BlogPostPageProps) {
   const post = await loadPost(props);
 
-  const breadcrumbItems = [
-    { name: 'Home', url: '/' },
-    { name: 'Blog', url: '/blog' },
-    { name: post.title, url: `/blog/${post.slug}` },
-  ];
-
   return (
     <>
       <BlogArticle post={post} />
       <StructuredData data={generateArticleData(post)} />
-      <BreadcrumbData items={breadcrumbItems} />
     </>
   );
 }

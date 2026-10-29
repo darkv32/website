@@ -47,7 +47,7 @@ bun run dev
 
 The front page carries every section as a band on `/`, and the footer links scroll between them. Each section also has a page of its own, in the same colours: `/about`, `/experience`, `/blog` (with `/blog/[slug]` for articles), `/hobbies` and `/contact`. The nav tabs always go to those pages, and the tab for the page you are on is highlighted.
 
-- `lib/config.ts` - Base URL, author details, social links, SEO keywords. `robots.txt`, the web manifest and the default share image are generated from it
+- `lib/config.ts` - Base URL, author details, social links, SEO keywords. `robots.txt`, the web manifest and the favicon are generated from it. Each page's share image is an `opengraph-image.tsx` next to it, drawn by `lib/brand-image.tsx`; a new page needs one, or it has no share image
 - `data/site-data.json` - Experience timeline
 - `data/blog-data.json` - Blog posts (Markdown content)
 - `components/field/hero.tsx` - Hero copy and photos

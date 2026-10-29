@@ -8,7 +8,7 @@ const escapeXml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export function GET() {
-  const { site } = SITE_CONFIG;
+  const { site, blog } = SITE_CONFIG;
   const posts = getAllBlogPosts();
   const latest = new Date(Math.max(...posts.map((post) => Date.parse(post.updatedAt)))).toUTCString();
 
@@ -31,11 +31,13 @@ export function GET() {
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>${escapeXml(site.title)}</title>
-    <description>${escapeXml(site.description)}</description>
-    <link>${SITE_CONFIG.baseUrl}</link>
+    <title>${escapeXml(blog.title)}</title>
+    <description>${escapeXml(blog.description)}</description>
+    <link>${getFullUrl('/blog')}</link>
     <atom:link href="${getFullUrl('/feed.xml')}" rel="self" type="application/rss+xml" />
     <language>en-US</language>
+    <copyright>&#169; ${new Date().getFullYear()} ${escapeXml(site.author)}</copyright>
+    <managingEditor>${site.email} (${escapeXml(site.author)})</managingEditor>
     <lastBuildDate>${latest}</lastBuildDate>
     <pubDate>${latest}</pubDate>
     <ttl>60</ttl>${items}

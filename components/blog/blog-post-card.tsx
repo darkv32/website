@@ -13,7 +13,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
       <div className="aspect-video overflow-hidden relative">
         <Image
           src={post.featuredImage}
-          alt={post.title}
+          alt=""
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 33vw"
@@ -28,7 +28,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
           <div className="flex items-center space-x-4 text-white text-sm">
             <div className="flex items-center space-x-1">
               <Calendar className="h-4 w-4" />
-              <span>{formatDate(post.publishedAt)}</span>
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
             </div>
             <div className="flex items-center space-x-1">
               <Clock className="h-4 w-4" />
@@ -60,7 +60,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
           <Button size="sm" className="w-full mt-auto" asChild>
             <Link href={`/blog/${post.slug}`}>
               <BookOpen className="h-4 w-4 mr-2" />
-              Read Article
+              Read Article<span className="sr-only">: {post.title}</span>
             </Link>
           </Button>
         </CardContent>

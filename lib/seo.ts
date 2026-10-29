@@ -1,36 +1,42 @@
 import type { Metadata } from 'next';
-import { getExperienceData, type BlogPost } from './data';
+import { getAllBlogPosts, getExperienceData, type BlogPost } from './data';
 import { SITE_CONFIG, getFullUrl } from './config';
 
 export interface SEOConfig {
   title: string;
   description: string;
   keywords?: string[];
-  /** Absolute URL. Pages without one use the site's generated `opengraph-image`. */
-  image?: string;
   url?: string;
   type?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
+  /** Article only: the category and tags, which become `article:section` and `article:tag`. */
+  section?: string;
+  tags?: string[];
 }
 
-const { site, social } = SITE_CONFIG;
+const { site, social, blog } = SITE_CONFIG;
 const sameAs = [social.github, social.linkedin, social.twitter];
 
+/* Pages with no `openGraph.images` pick up the `opengraph-image` file that sits next to them, so none is set here. */
 export function createMetadata(config: SEOConfig): Metadata {
   const fullUrl = config.url ? getFullUrl(config.url) : SITE_CONFIG.baseUrl;
-  const images = config.image ? [{ url: config.image, width: 1200, height: 630, alt: config.title }] : undefined;
+  const isArticle = config.type === 'article';
 
   return {
     title: config.title,
     description: config.description,
     keywords: config.keywords ?? [...SITE_CONFIG.seo.defaultKeywords],
-    authors: [{ name: site.author }],
+    applicationName: site.name,
+    authors: [{ name: site.author, url: SITE_CONFIG.baseUrl }],
     creator: site.author,
     publisher: site.author,
+    category: 'technology',
+    formatDetection: { telephone: false, date: false, address: false, email: false },
     metadataBase: new URL(SITE_CONFIG.baseUrl),
     alternates: {
       canonical: fullUrl,
+      types: { 'application/rss+xml': [{ url: getFullUrl('/feed.xml'), title: `${site.name} - RSS feed` }] },
     },
     openGraph: {
       type: config.type ?? 'website',
@@ -38,17 +44,21 @@ export function createMetadata(config: SEOConfig): Metadata {
       url: fullUrl,
       title: config.title,
       description: config.description,
-      siteName: site.title,
-      images,
-      publishedTime: config.publishedTime,
-      modifiedTime: config.modifiedTime,
+      siteName: site.name,
+      ...(isArticle && {
+        publishedTime: config.publishedTime,
+        modifiedTime: config.modifiedTime,
+        authors: [SITE_CONFIG.baseUrl],
+        section: config.section,
+        tags: config.tags,
+      }),
     },
     twitter: {
       card: 'summary_large_image',
       title: config.title,
       description: config.description,
+      site: social.twitterHandle,
       creator: social.twitterHandle,
-      images: config.image ? [config.image] : undefined,
     },
     robots: {
       index: true,
@@ -64,55 +74,48 @@ export function createMetadata(config: SEOConfig): Metadata {
     verification: SITE_CONFIG.seo.googleVerification
       ? { google: SITE_CONFIG.seo.googleVerification }
       : undefined,
-    icons: {
-      icon: '/logo-white.png',
-      apple: '/logo-white.png',
-    },
   };
 }
 
-export function generateWebsiteData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: site.title,
-    description: site.description,
-    url: SITE_CONFIG.baseUrl,
-    author: {
-      '@type': 'Person',
-      name: site.author,
-      email: site.email,
-      url: SITE_CONFIG.baseUrl,
-      sameAs,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: site.author,
-    },
-  };
-}
+/* Structured data. Every page ships one JSON-LD graph whose nodes point at each other by @id, so the site, its owner and the page
+   are described once and a search engine can join them up. */
+const PERSON_ID = `${SITE_CONFIG.baseUrl}/#person`;
+const WEBSITE_ID = `${SITE_CONFIG.baseUrl}/#website`;
+const BLOG_ID = `${getFullUrl('/blog')}#blog`;
 
-export function generatePersonData() {
-  const role = getExperienceData().timeline.find((r) => r.current);
+type Node = Record<string, unknown>;
+
+const graph = (...nodes: Node[]) => ({ '@context': 'https://schema.org', '@graph': nodes });
+
+const websiteNode = (): Node => ({
+  '@type': 'WebSite',
+  '@id': WEBSITE_ID,
+  url: SITE_CONFIG.baseUrl,
+  name: site.name,
+  description: site.description,
+  inLanguage: 'en',
+  publisher: { '@id': PERSON_ID },
+});
+
+function personNode(): Node {
+  const { timeline } = getExperienceData();
+  const role = timeline.find((r) => r.current);
 
   return {
-    '@context': 'https://schema.org',
     '@type': 'Person',
+    '@id': PERSON_ID,
     name: site.author,
-    email: site.email,
     url: SITE_CONFIG.baseUrl,
+    email: site.email,
     image: getFullUrl(site.avatar),
     description: site.bio,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: site.location,
-    },
-    sameAs,
+    address: { '@type': 'PostalAddress', addressLocality: site.location, addressCountry: 'SG' },
     jobTitle: role?.title,
-    worksFor: role && {
-      '@type': 'Organization',
-      name: role.company,
-    },
+    worksFor: role && { '@type': 'Organization', name: role.company },
+    alumniOf: timeline
+      .filter((r) => r.kind === 'Education')
+      .map((r) => ({ '@type': 'EducationalOrganization', name: r.company })),
+    sameAs,
     knowsAbout: [
       'Data Engineering',
       'Android Development',
@@ -125,45 +128,103 @@ export function generatePersonData() {
   };
 }
 
-export function generateArticleData(post: BlogPost) {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    headline: post.title,
-    description: post.excerpt,
-    image: post.featuredImage,
-    author: {
-      '@type': 'Person',
-      name: site.author,
-      url: SITE_CONFIG.baseUrl,
-    },
-    publisher: {
-      '@type': 'Person',
-      name: site.author,
-      url: SITE_CONFIG.baseUrl,
-    },
-    datePublished: post.publishedAt,
-    dateModified: post.updatedAt,
-    mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': getFullUrl(`/blog/${post.slug}`),
-    },
-    keywords: post.tags.join(', '),
-    articleSection: post.category,
-    wordCount: post.content.split(/\s+/).length,
-  };
+const breadcrumbNode = (trail: Array<{ name: string; path: string }>): Node => ({
+  '@type': 'BreadcrumbList',
+  itemListElement: trail.map((crumb, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: crumb.name,
+    item: getFullUrl(crumb.path),
+  })),
+});
+
+interface PageInfo {
+  type: 'WebPage' | 'ProfilePage' | 'ContactPage';
+  /** The page's path, '/' for the front page. */
+  path: string;
+  /** Short name, used in the breadcrumb trail and the page's name. */
+  name: string;
+  description: string;
 }
 
-export function generateOrganizationData() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: site.title,
-    url: SITE_CONFIG.baseUrl,
-    logo: {
-      '@type': 'ImageObject',
-      url: getFullUrl('/logo-white.png'),
+/** A plain page: the site, its owner, the page itself and its breadcrumb trail. */
+export function generatePageData({ type, path, name, description }: PageInfo) {
+  const url = getFullUrl(path);
+  const isHome = path === '/';
+
+  return graph(
+    {
+      '@type': type,
+      '@id': `${url}#webpage`,
+      url,
+      name: isHome ? site.title : `${name} - ${site.name}`,
+      description,
+      inLanguage: 'en',
+      isPartOf: { '@id': WEBSITE_ID },
+      ...(type === 'ProfilePage' ? { mainEntity: { '@id': PERSON_ID } } : { about: { '@id': PERSON_ID } }),
     },
-    sameAs,
-  };
+    ...(isHome ? [] : [breadcrumbNode([{ name: 'Home', path: '/' }, { name, path }])]),
+    websiteNode(),
+    personNode(),
+  );
+}
+
+/** The blog's front page, with the list of posts. */
+export function generateBlogData() {
+  return graph(
+    {
+      '@type': 'Blog',
+      '@id': BLOG_ID,
+      url: getFullUrl('/blog'),
+      name: blog.title,
+      description: blog.description,
+      inLanguage: 'en',
+      isPartOf: { '@id': WEBSITE_ID },
+      author: { '@id': PERSON_ID },
+      publisher: { '@id': PERSON_ID },
+      blogPost: getAllBlogPosts().map((post) => ({
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.excerpt,
+        url: getFullUrl(`/blog/${post.slug}`),
+        datePublished: post.publishedAt,
+      })),
+    },
+    breadcrumbNode([{ name: 'Home', path: '/' }, { name: 'Blog', path: '/blog' }]),
+    websiteNode(),
+    personNode(),
+  );
+}
+
+export function generateArticleData(post: BlogPost) {
+  const url = getFullUrl(`/blog/${post.slug}`);
+  const author = { '@id': PERSON_ID, '@type': 'Person', name: site.author, url: SITE_CONFIG.baseUrl };
+
+  return graph(
+    {
+      '@type': 'BlogPosting',
+      '@id': `${url}#article`,
+      headline: post.title,
+      description: post.excerpt,
+      image: getFullUrl(`/blog/${post.slug}/opengraph-image`),
+      author,
+      publisher: author,
+      datePublished: post.publishedAt,
+      dateModified: post.updatedAt,
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      isPartOf: { '@id': BLOG_ID },
+      inLanguage: 'en',
+      keywords: post.tags.join(', '),
+      articleSection: post.category,
+      wordCount: post.content.split(/\s+/).length,
+      timeRequired: `PT${post.readTime}M`,
+    },
+    breadcrumbNode([
+      { name: 'Home', path: '/' },
+      { name: 'Blog', path: '/blog' },
+      { name: post.title, path: `/blog/${post.slug}` },
+    ]),
+    websiteNode(),
+    personNode(),
+  );
 }
