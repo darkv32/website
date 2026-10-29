@@ -258,6 +258,24 @@
 .foot .top span { display: inline-block; transition: transform .2s; }
 .foot .top:hover span { transform: translateY(-3px); }
 
+/* extras used by the dedicated pages (see pages.module.css) */
+.xp li.row.hl { padding-left: 14px; background: linear-gradient(90deg, color-mix(in srgb, var(--f-accent) 14%, transparent), transparent 70%); }
+.xp li.gone { display: none; }
+.tag.pin { background: var(--f-accent); color: var(--f-accent-ink); border-color: var(--f-accent); }
+.chips.chipsWide { max-width: none; justify-content: flex-start; margin-bottom: 26px; }
+.post.flash { animation: flashPost 1.4s ease-out; }
+@keyframes flashPost { 0%, 40% { box-shadow: 0 0 0 4px var(--f-tint-bg), 0 0 0 7px var(--k-bg); transform: translateY(-6px); } 100% { box-shadow: 0 1px 0 rgba(16, 32, 15, .25), 0 10px 24px -14px rgba(16, 32, 15, .55); transform: none; } }
+.posts.listView { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+.posts.listView > div:first-child { margin-top: 0; }
+.posts.listView .post { display: grid; grid-template-columns: 96px minmax(0, 1fr) auto; grid-template-areas: "d t top" "d x top"; align-items: center; gap: 4px 24px; min-height: 0; padding: 16px 22px; }
+.posts.listView .post .t { grid-area: t; font-size: 1.2rem; }
+.posts.listView .post .x { grid-area: x; -webkit-line-clamp: 1; }
+.posts.listView .post .top { grid-area: top; flex-direction: column; align-items: flex-end; gap: 8px; }
+.posts.listView .post .bot { grid-area: d; margin: 0; padding: 0; border: 0; }
+.posts.listView .post .arr { display: none; }
+.posts.listView .post:hover { transform: translateX(6px); }
+@media (max-width: 640px) { .posts.listView .post { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "t" "x" "d"; } .posts.listView .post .top { flex-direction: row; align-items: baseline; } }
+
 @media (prefers-reduced-motion: reduce) {
-  .fan .p, .xp li.row, .moreXp, .post, .post.pop, .photoFrame img, .b, .hi { transition: none; animation: none; }
+  .fan .p, .xp li.row, .moreXp, .post, .post.pop, .post.flash, .photoFrame img, .b, .hi { transition: none; animation: none; }
 }

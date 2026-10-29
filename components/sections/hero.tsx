@@ -2,10 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FileText, Github, Linkedin, ArrowUpRight } from 'lucide-react';
 import { HeroField } from '@/components/field/hero-field';
 import { SITE_CONFIG } from '@/lib/config';
 import s from '@/components/field/field.module.css';
+import p from '@/components/field/pages.module.css';
 
 const SLIDE_MS = 6500;
 
@@ -20,7 +22,8 @@ const frames = [
   { src: '/field/p7.jpg', label: 'Waterfall', alt: 'sitting on a ledge beside a waterfall', faceY: 0.44 },
 ];
 
-export function Hero() {
+/** The front-page hero. With `page` it fills the screen as the top of the About page, with a caption and a hint. */
+export function Hero({ page = false }: { page?: boolean }) {
   const heroRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const imgRefs = useRef<Array<HTMLImageElement | null>>([]);
@@ -28,6 +31,7 @@ export function Hero() {
   const [current, setCurrent] = useState(0);
 
   const next = useCallback(() => setCurrent((i) => (i + 1) % frames.length), []);
+  const prev = useCallback(() => setCurrent((i) => (i - 1 + frames.length) % frames.length), []);
 
   /* Auto-advance. Depending on `current` restarts the timer whenever a tick is clicked. */
   useEffect(() => {
@@ -37,6 +41,20 @@ export function Hero() {
     }, SLIDE_MS);
     return () => clearInterval(id);
   }, [current, next]);
+
+  /* On the About page the arrow keys flip photos while the hero is on screen. */
+  useEffect(() => {
+    if (!page) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey || scrollY > innerHeight * 0.6) return;
+      const t = e.target as HTMLElement | null;
+      if (t && (/INPUT|TEXTAREA|SELECT/.test(t.tagName) || t.isContentEditable)) return;
+      if (e.key === 'ArrowRight') next();
+      else if (e.key === 'ArrowLeft') prev();
+    };
+    addEventListener('keydown', onKey);
+    return () => removeEventListener('keydown', onKey);
+  }, [page, next, prev]);
 
   /* Centre each crop on the face for the current frame shape (portrait below 1200px, landscape above). */
   useEffect(() => {
@@ -59,12 +77,13 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} id="hero" className={s.hero}>
+    <section ref={heroRef} id="hero" className={page ? `${s.hero} ${p.heroTall}` : s.hero}>
       <HeroField heroRef={heroRef} frameRef={frameRef} />
 
       <div className={s.in}>
         <div className={s.heroGrid}>
           <div>
+            {page && <div className={`${s.label} ${p.eyebrow}`}>About &middot; 01 / 05</div>}
             <h1 className={s.name}>
               <span>Tang</span>
               <span className={s.l2}>Yetong</span>
@@ -90,6 +109,11 @@ export function Hero() {
                 <ArrowUpRight className={s.ext} />
               </a>
             </div>
+            {!page && (
+              <Link className={p.pageLink} href="/about">
+                More about me <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
           </div>
 
           <figure
@@ -112,6 +136,11 @@ export function Hero() {
               ))}
             </div>
             <figcaption className={s.photoCap}>
+              {page && (
+                <span className={p.photoWhere}>
+                  <b>{String(current + 1).padStart(2, '0')}</b> / {String(frames.length).padStart(2, '0')} &middot; {frames[current].label}
+                </span>
+              )}
               <span className={s.ticks}>
                 {frames.map((f, i) => (
                   <button
@@ -129,6 +158,11 @@ export function Hero() {
             </figcaption>
           </figure>
         </div>
+        {page && (
+          <p className={`${p.hint} ${p.heroHint}`}>
+            Move the cursor over the field. Click the ground to shoot. <kbd>←</kbd> <kbd>→</kbd> flips photos.
+          </p>
+        )}
       </div>
     </section>
   );

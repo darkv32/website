@@ -15,9 +15,13 @@ export function Footer() {
             <SectionLink key={sec.id} id={sec.id}>{sec.name}</SectionLink>
           ))}
         </nav>
-        <SectionLink id="hero" className={s.top}>
+        <button
+          type="button"
+          className={s.top}
+          onClick={() => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })}
+        >
           Back to top <span aria-hidden="true">&uarr;</span>
-        </SectionLink>
+        </button>
       </div>
     </footer>
   );

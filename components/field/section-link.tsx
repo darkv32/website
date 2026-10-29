@@ -4,30 +4,35 @@ import type { ComponentProps } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-/** The five bands of the front page, in order. `key` is the single-key shortcut for each. */
+/** The five sections, in order. `key` is the single-key shortcut and `href` the section's own page. */
 export const SECTIONS = [
-  { id: 'hero', name: 'About', key: 'a' },
-  { id: 'experience', name: 'Experience', key: 'e' },
-  { id: 'blogs', name: 'Blog', key: 'b' },
-  { id: 'off', name: 'Hobbies', key: 'h' },
-  { id: 'contact', name: 'Contact', key: 'c' },
+  { id: 'hero', name: 'About', key: 'a', href: '/about' },
+  { id: 'experience', name: 'Experience', key: 'e', href: '/experience' },
+  { id: 'blogs', name: 'Blog', key: 'b', href: '/blog' },
+  { id: 'off', name: 'Hobbies', key: 'h', href: '/hobbies' },
+  { id: 'contact', name: 'Contact', key: 'c', href: '/contact' },
 ] as const;
 
-export function scrollToSection(id: string) {
+function scrollToSection(id: string) {
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
 }
 
-/** Scrolls to the band when already on the front page, otherwise navigates to it. */
-export function SectionLink({ id, onClick, ...props }: { id: string } & Omit<ComponentProps<typeof Link>, 'href'>) {
+/**
+ * On the front page a link scrolls to its band; on every other page it goes to the section's own page.
+ * `href` overrides the destination off the front page (the logo uses it to go home).
+ */
+export function SectionLink({ id, href, onClick, ...props }: { id: string; href?: string } & Omit<ComponentProps<typeof Link>, 'href'>) {
   const pathname = usePathname();
+  const onHome = pathname === '/';
+  const page = href ?? SECTIONS.find((sec) => sec.id === id)?.href ?? '/';
   return (
     <Link
       {...props}
-      href={`/#${id}`}
+      href={onHome ? `/#${id}` : page}
       onClick={(e) => {
         onClick?.(e);
-        if (pathname === '/' && !e.defaultPrevented) {
+        if (onHome && !e.defaultPrevented) {
           e.preventDefault();
           scrollToSection(id);
         }

@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import s from './field.module.css';
+import p from './pages.module.css';
 
 const ANIME = [
   { name: 'Made in Abyss', src: '/field/a1.jpg' },
@@ -107,6 +109,9 @@ export function OffClockBand() {
             )}
           </p>
         </div>
+        <Link className={p.pageLink} href="/hobbies">
+          Rank the posters, pop a bubble, train a marine <span aria-hidden="true">&rarr;</span>
+        </Link>
       </div>
     </section>
   );

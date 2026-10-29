@@ -8,6 +8,10 @@ export interface Role {
   period: string;
   current: boolean;
   kind: string;
+  /** Short label on the timeline. */
+  short: string;
+  /** Stretches of the role as [start, end] in decimal years (2022.5 is mid 2022); a null end means still going. */
+  spans: Array<[number, number | null]>;
   summary: string;
   details: string[];
   tools: string[];
@@ -45,7 +49,7 @@ export interface BlogPost {
   };
 }
 
-export const getExperienceData = (): { timeline: Role[] } => siteData.experience;
+export const getExperienceData = (): { timeline: Role[] } => siteData.experience as { timeline: Role[] };
 
 const author: BlogPost['author'] = {
   name: SITE_CONFIG.site.author,

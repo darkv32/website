@@ -9,6 +9,8 @@
         "kind": "Work",
         "summary": "Enterprise software for the hospitality industry.",
         "details": [],
+        "short": "RFCOM",
+        "spans": [[2026.42,null]],
         "tools": []
       },
       {
@@ -23,6 +25,8 @@
           "Optimized data processing workflows",
           "Developed analytics dashboards and reports"
         ],
+        "short": "Fivetran",
+        "spans": [[2024.67,2025.58]],
         "tools": [
           "Python",
           "SQL",
@@ -40,6 +44,8 @@
           "Focus on software engineering, data structures, algorithms and system design",
           "Active member of the NUS Hackers community"
         ],
+        "short": "NUS",
+        "spans": [[2022,2026.5]],
         "tools": [
           "Algorithms",
           "Systems"
@@ -57,6 +63,8 @@
           "Implemented cloud solutions on AWS",
           "Handled data collection and analytics for Key Results"
         ],
+        "short": "GovTech",
+        "spans": [[2022.33,2022.67], [2023.33,2023.67]],
         "tools": [
           "React",
           "AWS",
@@ -74,6 +82,8 @@
           "Contributed to Bitcoin development projects and wallet applications",
           "Wrote a series of BDK-Kotlin how-to guides on this blog"
         ],
+        "short": "Bitcoin Dev Kit",
+        "spans": [[2022.42,2022.67]],
         "tools": [
           "Kotlin",
           "BDK",
@@ -92,6 +102,8 @@
           "Created enterprise solutions for the hospitality sector",
           "Implemented secure payment processing systems"
         ],
+        "short": "RFCOM",
+        "spans": [[2018,2019], [2022.25,2023]],
         "tools": [
           "Kotlin",
           "Android",
@@ -109,6 +121,8 @@
           "Resolved bugs and added features to existing website infrastructure",
           "Assisted in SQL database population and system design for public-facing applications"
         ],
+        "short": "Travel Prologue",
+        "spans": [[2020,2020.25]],
         "tools": [
           "SQL",
           "JavaScript"

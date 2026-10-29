@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { toast } from '@/hooks/use-toast';
 import { SITE_CONFIG } from '@/lib/config';
+import { Composer, TimeStrip } from './contact-extras';
 import s from './field.module.css';
+import p from './pages.module.css';
 
 const EMAIL = SITE_CONFIG.site.email;
 const GITHUB = SITE_CONFIG.social.github;
@@ -11,7 +14,14 @@ const LINKEDIN = SITE_CONFIG.social.linkedin;
 
 const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
-export function ContactBand() {
+const GREETINGS = ['hi.', 'hello.', '你好.', 'hey.', 'halo.', 'こんにちは.'];
+
+/**
+ * The last band of the front page. With `asPage` it is the whole Contact page: the greeting cycles through languages when clicked,
+ * and a clock and a draft composer follow the ruled lines.
+ */
+export function ContactBand({ asPage = false }: { asPage?: boolean }) {
+  const [greet, setGreet] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const hiRef = useRef<HTMLButtonElement>(null);
   const addrRef = useRef<HTMLSpanElement>(null);
@@ -54,13 +64,35 @@ export function ContactBand() {
     navigator.clipboard.writeText(EMAIL).then(() => toast({ title: 'Email copied' }), fallback);
   };
 
+  const onHi = () => {
+    if (asPage) setGreet((g) => (g + 1) % GREETINGS.length);
+    copy();
+  };
+  const Heading = asPage ? 'h1' : 'h2';
+  const heading = (
+    <Heading className={s.say}>
+      Say{' '}
+      <button ref={hiRef} type="button" className={s.hi} onClick={onHi} title="Click to copy my email">
+        {asPage ? <span key={greet} className={greet ? p.swap : undefined}>{GREETINGS[greet]}</span> : 'hi.'}
+      </button>
+    </Heading>
+  );
+
   return (
     <section ref={sectionRef} id="contact" className={`${s.band} ${s.bandPaper} ${s.sec} ${s.contact}`}>
       <div className={s.in}>
         <div className={s.sayGrid}>
-          <h2 className={s.say}>
-            Say <button ref={hiRef} type="button" className={s.hi} onClick={copy} title="Click to copy my email">hi.</button>
-          </h2>
+          {asPage ? (
+            <div>
+              {heading}
+              <p className={p.sayNote}>
+                That word is a button. Click it: <b>it copies my email</b>{greet ? <> and says <b>{GREETINGS[greet].replace('.', '')}</b></> : ' and learns a new greeting'}.
+              </p>
+            </div>
+          ) : (
+            heading
+          )}
+          <div>
           <div className={s.lines}>
             <button type="button" className={s.ln} onClick={copy}>
               <span className={s.k}>Email</span>
@@ -83,7 +115,19 @@ export function ContactBand() {
               <span className={s.ar}>PDF</span>
             </a>
           </div>
+          {!asPage && (
+            <Link className={p.pageLink} href="/contact">
+              Or write a message <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
+          </div>
         </div>
+        {asPage && (
+          <>
+            <TimeStrip />
+            <Composer />
+          </>
+        )}
       </div>
     </section>
   );

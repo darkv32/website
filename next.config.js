@@ -19,15 +19,6 @@ const nextConfig = {
     ],
   },
   poweredByHeader: false,
-  // The old tab pages are now bands on the front page
-  async redirects() {
-    return [
-      { source: '/about', destination: '/', permanent: true },
-      { source: '/experience', destination: '/#experience', permanent: true },
-      { source: '/hobbies', destination: '/#off', permanent: true },
-      { source: '/contact', destination: '/#contact', permanent: true },
-    ];
-  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

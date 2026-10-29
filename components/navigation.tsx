@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState, useSyncExternalStore } from 'react';
+import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { SITE_CONFIG } from '@/lib/config';
-import { SECTIONS, SectionLink, scrollToSection } from '@/components/field/section-link';
+import { SECTIONS, SectionLink } from '@/components/field/section-link';
 import s from '@/components/field/field.module.css';
 
 const clockFormat = new Intl.DateTimeFormat('en-GB', {
@@ -28,35 +29,6 @@ export function Navigation() {
   const { resolvedTheme, setTheme } = useTheme();
   const clock = useSyncExternalStore(subscribeClock, clockNow, clockServer);
   const [flashKey, setFlashKey] = useState('');
-  const [spy, setSpy] = useState(0);
-  const onHome = pathname === '/';
-
-  /* On the front page the tab for the band you are reading is highlighted. */
-  useEffect(() => {
-    if (!onHome) return;
-    let queued = false;
-    const update = () => {
-      queued = false;
-      const y = scrollY + innerHeight * 0.4;
-      let idx = 0;
-      SECTIONS.forEach((sec, k) => {
-        const el = document.getElementById(sec.id);
-        if (el && y >= el.getBoundingClientRect().top + scrollY) idx = k;
-      });
-      if (scrollY + innerHeight >= document.documentElement.scrollHeight - 4) idx = SECTIONS.length - 1;
-      setSpy(idx);
-    };
-    const queue = () => {
-      if (!queued) { queued = true; requestAnimationFrame(update); }
-    };
-    addEventListener('scroll', queue, { passive: true });
-    addEventListener('resize', queue);
-    queue();
-    return () => {
-      removeEventListener('scroll', queue);
-      removeEventListener('resize', queue);
-    };
-  }, [onHome]);
 
   /* Each tab also answers to a single key. */
   useEffect(() => {
@@ -68,8 +40,7 @@ export function Navigation() {
       const k = e.key.toLowerCase();
       const sec = SECTIONS.find((x) => x.key === k);
       if (!sec) return;
-      if (location.pathname === '/') scrollToSection(sec.id);
-      else router.push(`/#${sec.id}`);
+      router.push(sec.href);
       setFlashKey(k);
       clearTimeout(timer);
       timer = setTimeout(() => setFlashKey(''), 260);
@@ -81,25 +52,25 @@ export function Navigation() {
     };
   }, [router]);
 
-  const isOn = (id: string, k: number) => (onHome ? spy === k : id === 'blogs' && pathname.startsWith('/blog'));
+  const isOn = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className={s.hud}>
       <div className={s.in}>
-        <SectionLink id="hero" className={s.logo}>TYT</SectionLink>
+        <SectionLink id="hero" href="/" className={s.logo}>TYT</SectionLink>
         <nav aria-label="Sections">
-          {SECTIONS.map((sec, k) => {
-            const on = isOn(sec.id, k);
+          {SECTIONS.map((sec) => {
+            const on = isOn(sec.href);
             return (
-              <SectionLink
+              <Link
                 key={sec.id}
-                id={sec.id}
+                href={sec.href}
                 className={[on ? s.on : '', flashKey === sec.key ? s.flash : ''].filter(Boolean).join(' ')}
                 aria-current={on ? 'true' : undefined}
               >
                 <kbd>{sec.key.toUpperCase()}</kbd>
                 {sec.name}
-              </SectionLink>
+              </Link>
             );
           })}
         </nav>

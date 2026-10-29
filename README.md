@@ -45,21 +45,22 @@ bun run dev
 
 ### Content
 
-The front page is the whole site: hero, experience, blog, hobbies and contact are bands on `/`, and the nav tabs scroll between them. `/blog` is the full post list and `/blog/[slug]` the articles.
+The front page carries every section as a band on `/`, and the footer links scroll between them. Each section also has a page of its own, in the same colours: `/about`, `/experience`, `/blog` (with `/blog/[slug]` for articles), `/hobbies` and `/contact`. The nav tabs always go to those pages, and the tab for the page you are on is highlighted.
 
 - `lib/config.ts` - Base URL, author details, social links, SEO keywords
 - `data/site-data.json` - Experience timeline
 - `data/blog-data.json` - Blog posts (Markdown content)
 - `components/sections/hero.tsx` - Hero copy and photos
 - `components/field/off-clock-band.tsx` - Hobbies band
+- `components/field/hobbies-page.tsx` - The `/hobbies` page (poster shelf, bubbles, barracks)
 
 ### Styling
 
-The front page is styled by `components/field/field.module.css`. Blog articles use Tailwind with the CSS variables in `app/globals.css` (configured in `tailwind.config.ts`); the rendered Markdown is styled by `.article-content` there.
+The front page is styled by `components/field/field.module.css`; the extra pieces on the section pages are in `components/field/pages.module.css`. Blog articles use Tailwind with the CSS variables in `app/globals.css` (configured in `tailwind.config.ts`); the rendered Markdown is styled by `.article-content` there.
 
 ### Components
 
-- `components/field/` - The front page bands and their shared section links
+- `components/field/` - The front page bands (most also render their full page with `asPage`) and their shared section links
 - `components/sections/` - Hero
 - `components/blog/` - Article, table of contents and related-post card
 - `components/ui/` - Radix-based primitives
