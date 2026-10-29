@@ -1,4 +1,4 @@
-import { Hero } from '@/components/sections/hero';
+import { Hero } from '@/components/field/hero';
 import { AboutBody } from '@/components/field/about-body';
 import { createMetadata } from '@/lib/seo';
 import { getExperienceData } from '@/lib/data';

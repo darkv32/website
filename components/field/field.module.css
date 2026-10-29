@@ -19,7 +19,7 @@
 .hud nav a { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 12px; color: var(--f-muted); text-decoration: none; font-size: .9rem; transition: color .15s; }
 .hud nav a:hover, .hud nav a.on { color: var(--f-fg); }
 .hud nav a.on { box-shadow: inset 0 -2px 0 var(--f-accent); }
-.hud nav a kbd { font-family: var(--font-mono); font-size: .66rem; line-height: 1.45; padding: 0 5px; border: 1px solid var(--f-line2); border-radius: 3px; color: var(--f-muted); transition: all .15s; }
+.hud nav a kbd { font-family: var(--font-mono); font-size: .66rem; line-height: 1.45; padding: 0 5px; border: 1px solid var(--f-line2); border-radius: 3px; color: var(--f-muted); transition: color .15s, background-color .15s, border-color .15s; }
 .hud nav a:hover kbd, .hud nav a.on kbd { border-color: var(--f-accent); color: var(--f-accent); }
 .hud nav a.flash kbd { background: var(--f-accent); color: var(--f-accent-ink); border-color: var(--f-accent); }
 @media (hover: none) { .hud nav a kbd { display: none; } }

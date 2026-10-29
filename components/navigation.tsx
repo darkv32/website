@@ -4,7 +4,10 @@ import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties }
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
+import { clsx } from 'clsx';
 import { SITE_CONFIG } from '@/lib/config';
+import { isTypingTarget, watchScroll } from '@/lib/dom';
+import { clamp } from '@/lib/math';
 import { SECTIONS, SectionLink } from '@/components/field/section-link';
 import s from '@/components/field/field.module.css';
 
@@ -64,26 +67,18 @@ export function Navigation() {
   useEffect(() => {
     const bar = barRef.current;
     if (!bar) return;
-    const update = () => {
+    const { stop } = watchScroll(() => {
       const max = document.documentElement.scrollHeight - innerHeight;
-      bar.style.setProperty('--p', String(max > 4 ? Math.min(1, scrollY / max) : 0));
-    };
-    update();
-    addEventListener('scroll', update, { passive: true });
-    addEventListener('resize', update);
-    return () => {
-      removeEventListener('scroll', update);
-      removeEventListener('resize', update);
-    };
+      bar.style.setProperty('--p', String(max > 4 ? clamp(scrollY / max, 0, 1) : 0));
+    });
+    return stop;
   }, [pathname]);
 
   /* Each tab also answers to a single key. */
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
     const onKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      const t = e.target as HTMLElement | null;
-      if (t && (/INPUT|TEXTAREA|SELECT/.test(t.tagName) || t.isContentEditable)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || isTypingTarget(e.target)) return;
       const k = e.key.toLowerCase();
       const sec = SECTIONS.find((x) => x.key === k);
       if (!sec) return;
@@ -113,7 +108,7 @@ export function Navigation() {
                 key={sec.id}
                 href={sec.href}
                 style={{ '--i': i } as CSSProperties}
-                className={[on ? s.on : '', flashKey === sec.key ? s.flash : ''].filter(Boolean).join(' ')}
+                className={clsx(on && s.on, flashKey === sec.key && s.flash)}
                 aria-current={on ? 'true' : undefined}
               >
                 <kbd>{sec.key.toUpperCase()}</kbd>

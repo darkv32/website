@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, type RefObject } from 'react';
 import Image from 'next/image';
+import { prefersReducedMotion } from '@/lib/dom';
+import { clamp, lerp } from '@/lib/math';
 import s from './field.module.css';
 
 interface Zergling {
@@ -43,9 +45,6 @@ const STEP = 0.2;
 /* Where the rifle tip sits on the marine sprite, as a share of its size, and the resting angle of the sprite. */
 const MUZZLE = { x: 0.012, y: 0.336, rest: -0.297 };
 
-const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
-const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-
 /**
  * Contour lines that bend around the cursor, plus a marine and three zerglings on the hero floor.
  * Everything is drawn imperatively from one requestAnimationFrame loop that sleeps while the hero is off screen.
@@ -66,7 +65,7 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
     const cx = cv?.getContext('2d');
     if (!hero || !frameEl || !cv || !critters || !marine || !shots || !cx) return;
 
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reduce = prefersReducedMotion();
     const timers = new Set<ReturnType<typeof setTimeout>>();
 
     /* ---------- contour field ---------- */

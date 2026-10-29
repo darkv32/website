@@ -1,10 +1,12 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import Image from 'next/image';
+import { prefersReducedMotion } from '@/lib/dom';
 import s from './field.module.css';
 import p from './pages.module.css';
 import { ANIME, makeBubble, seededBubbles, trackBubbleBand, type Bubble } from './bubbles';
+import { TerranCard } from './terran-card';
 
 const DEFAULT_ORDER = ANIME.map((a) => a.name);
 const BY_NAME = Object.fromEntries(ANIME.map((a) => [a.name, a]));
@@ -29,6 +31,7 @@ function writeOrder(order: string[]) {
   listeners.forEach((f) => f());
 }
 function parseOrder(raw: string): string[] {
+  if (!raw) return DEFAULT_ORDER;
   try {
     const v: unknown = JSON.parse(raw);
     if (Array.isArray(v) && v.length === ANIME.length && v.every((n) => typeof n === 'string' && n in BY_NAME)) return v as string[];
@@ -55,6 +58,67 @@ interface Burst { id: number; x: number; y: number; r: number; drops: Array<{ st
 const MAX_MARINES = 40;
 const START = { minerals: 50, cap: 8, supply: 0 };
 interface Log { lead: string; rest?: string; blocked?: boolean }
+const IDLE_LOG: Log = { lead: 'Barracks idle.', rest: ' Mine some minerals.' };
+
+/** Its own component, so the income tick re-renders the barracks and not the whole page. */
+function Barracks() {
+  const [game, setGame] = useState(START);
+  const [log, setLog] = useState<Log>(IDLE_LOG);
+
+  /* a trickle of income, so the barracks is playable without a lot of clicking */
+  useEffect(() => {
+    const id = setInterval(() => { if (!document.hidden) setGame((g) => ({ ...g, minerals: g.minerals + 2 })); }, 2000);
+    return () => clearInterval(id);
+  }, []);
+
+  const blocked = game.supply >= game.cap;
+  const mine = () => {
+    setGame((g) => ({ ...g, minerals: g.minerals + 10 }));
+    setLog({ lead: '+10 minerals.', rest: ' The workers are doing the real work.' });
+  };
+  const train = () => {
+    if (game.minerals < 50 || blocked || game.supply >= MAX_MARINES) return;
+    const supply = game.supply + 1;
+    setGame({ ...game, minerals: game.minerals - 50, supply });
+    setLog(supply >= game.cap ? { lead: 'Supply blocked.', rest: ' Build a supply depot.', blocked: true } : { lead: 'Marine ready.', rest: ` ${supply} on the field.` });
+  };
+  const depot = () => {
+    if (game.minerals < 100) return;
+    setGame({ ...game, minerals: game.minerals - 100, cap: game.cap + 8 });
+    setLog({ lead: 'Supply depot complete.', rest: ` Cap is now ${game.cap + 8}.` });
+  };
+
+  return (
+    <div className={p.rax}>
+      <div className={p.hud2}>
+        <div><span className={s.label}>Minerals</span><span className={p.v}>{game.minerals}</span></div>
+        <div><span className={s.label}>Supply</span><span className={`${p.v} ${blocked ? p.blocked : ''}`}>{game.supply} / {game.cap}</span></div>
+        <div><span className={s.label}>Marines</span><span className={p.v}>{game.supply}</span></div>
+      </div>
+      <div className={p.acts}>
+        <button type="button" className={s.b} onClick={mine}>
+          Mine <small>+10</small>
+        </button>
+        <button type="button" className={s.b} disabled={game.minerals < 50 || blocked || game.supply >= MAX_MARINES} onClick={train}>
+          Train marine <small>50 · 1 supply</small>
+        </button>
+        <button type="button" className={s.b} disabled={game.minerals < 100 || game.cap >= MAX_MARINES} onClick={depot}>
+          Supply depot <small>100 · +8 cap</small>
+        </button>
+        <button type="button" className={p.mini} onClick={() => { setGame(START); setLog(IDLE_LOG); }}>Reset</button>
+      </div>
+      <div className={p.ground}>
+        {game.supply === 0 && <span className={p.groundEmpty}>No marines yet.</span>}
+        {Array.from({ length: game.supply }, (_, i) => (
+          <Image key={i} src="/field/marine.png" alt="A marine" width={56} height={58} />
+        ))}
+      </div>
+      <div className={p.log} aria-live="polite">
+        <b className={log.blocked ? p.blocked : undefined}>{log.lead}</b>{log.rest}
+      </div>
+    </div>
+  );
+}
 
 export function HobbiesPage() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -67,14 +131,11 @@ export function HobbiesPage() {
   const [jelly, setJelly] = useState(0);
 
   const raw = useSyncExternalStore(subscribeOrder, readOrder, () => '');
-  const order = parseOrder(raw);
+  const order = useMemo(() => parseOrder(raw), [raw]);
   const [dragName, setDragName] = useState('');
   const [caption, setCaption] = useState('');
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const focusName = useRef('');
-
-  const [game, setGame] = useState(START);
-  const [log, setLog] = useState<Log>({ lead: 'Barracks idle.', rest: ' Mine some minerals.' });
 
   const later = useCallback((fn: () => void, ms: number) => {
     const id = setTimeout(() => { timers.current.delete(id); fn(); }, ms);
@@ -91,12 +152,6 @@ export function HobbiesPage() {
       stopTracking();
       pending.forEach(clearTimeout);
     };
-  }, []);
-
-  /* a trickle of income, so the barracks is playable without a lot of clicking */
-  useEffect(() => {
-    const id = setInterval(() => { if (!document.hidden) setGame((g) => ({ ...g, minerals: g.minerals + 2 })); }, 2000);
-    return () => clearInterval(id);
   }, []);
 
   /* keep keyboard focus on a poster after it moves */
@@ -116,7 +171,7 @@ export function HobbiesPage() {
     const rad = r.width / 2;
     setBubbles((prev) => prev.filter((x) => x.id !== b.id));
     setPopped((n) => n + 1);
-    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!prefersReducedMotion()) {
       const id = nextId.current++;
       const n = 8 + Math.round(rad / 4);
       const drops = Array.from({ length: n }, (_, i) => {
@@ -149,20 +204,6 @@ export function HobbiesPage() {
   };
   const shuffle = () => writeOrder(shuffled(order));
   const isDefault = order.join('|') === DEFAULT_ORDER.join('|');
-
-  /* ---------- barracks ---------- */
-  const blocked = game.supply >= game.cap;
-  const train = () => {
-    if (game.minerals < 50 || blocked || game.supply >= MAX_MARINES) return;
-    const supply = game.supply + 1;
-    setGame({ ...game, minerals: game.minerals - 50, supply });
-    setLog(supply >= game.cap ? { lead: 'Supply blocked.', rest: ' Build a supply depot.', blocked: true } : { lead: 'Marine ready.', rest: ` ${supply} on the field.` });
-  };
-  const depot = () => {
-    if (game.minerals < 100) return;
-    setGame({ ...game, minerals: game.minerals - 100, cap: game.cap + 8 });
-    setLog({ lead: 'Supply depot complete.', rest: ` Cap is now ${game.cap + 8}.` });
-  };
 
   return (
     <section ref={sectionRef} id="off" className={`${s.band} ${s.bandDeep} ${s.sec} ${p.bandPage}`}>
@@ -221,7 +262,7 @@ export function HobbiesPage() {
                     onDragStart={(e) => { setDragName(name); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', name); }}
                     onDragEnd={() => setDragName('')}
                     onPointerMove={(e) => {
-                      if (e.pointerType === 'touch' || dragName || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                      if (e.pointerType === 'touch' || dragName || prefersReducedMotion()) return;
                       const el = e.currentTarget;
                       const r = el.getBoundingClientRect();
                       const x = (e.clientX - r.left) / r.width;
@@ -260,42 +301,8 @@ export function HobbiesPage() {
             <p>Main race: Terran. Here is a very small barracks.</p>
           </div>
           <div className={p.scGrid}>
-            <div className={s.race}>
-              <span className={s.ic} role="img" aria-label="Terran logo" />
-              <div>
-                <span className={s.label}>Main race</span>
-                <h3>Terran</h3>
-                <span className={s.sc2}>StarCraft II</span>
-              </div>
-            </div>
-            <div className={p.rax}>
-              <div className={p.hud2}>
-                <div><span className={s.label}>Minerals</span><span className={p.v}>{game.minerals}</span></div>
-                <div><span className={s.label}>Supply</span><span className={`${p.v} ${blocked ? p.blocked : ''}`}>{game.supply} / {game.cap}</span></div>
-                <div><span className={s.label}>Marines</span><span className={p.v}>{game.supply}</span></div>
-              </div>
-              <div className={p.acts}>
-                <button type="button" className={s.b} onClick={() => { setGame({ ...game, minerals: game.minerals + 10 }); setLog({ lead: '+10 minerals.', rest: ' The workers are doing the real work.' }); }}>
-                  Mine <small>+10</small>
-                </button>
-                <button type="button" className={s.b} disabled={game.minerals < 50 || blocked || game.supply >= MAX_MARINES} onClick={train}>
-                  Train marine <small>50 · 1 supply</small>
-                </button>
-                <button type="button" className={s.b} disabled={game.minerals < 100 || game.cap >= MAX_MARINES} onClick={depot}>
-                  Supply depot <small>100 · +8 cap</small>
-                </button>
-                <button type="button" className={p.mini} onClick={() => { setGame(START); setLog({ lead: 'Barracks idle.', rest: ' Mine some minerals.' }); }}>Reset</button>
-              </div>
-              <div className={p.ground}>
-                {game.supply === 0 && <span className={p.groundEmpty}>No marines yet.</span>}
-                {Array.from({ length: game.supply }, (_, i) => (
-                  <Image key={i} src="/field/marine.png" alt="A marine" width={56} height={58} />
-                ))}
-              </div>
-              <div className={p.log} aria-live="polite">
-                <b className={log.blocked ? p.blocked : undefined}>{log.lead}</b>{log.rest}
-              </div>
-            </div>
+            <TerranCard />
+            <Barracks />
           </div>
         </div>
       </div>

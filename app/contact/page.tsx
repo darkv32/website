@@ -1,4 +1,5 @@
 import { ContactBand } from '@/components/field/contact-band';
+import { Composer, TimeStrip } from '@/components/field/contact-extras';
 import { createMetadata } from '@/lib/seo';
 
 export const metadata = createMetadata({
@@ -9,5 +10,10 @@ export const metadata = createMetadata({
 });
 
 export default function ContactPage() {
-  return <ContactBand asPage />;
+  return (
+    <ContactBand asPage>
+      <TimeStrip />
+      <Composer />
+    </ContactBand>
+  );
 }

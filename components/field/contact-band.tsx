@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
-import { Toaster } from '@/components/ui/toaster';
+import { LazyToaster } from '@/components/ui/lazy-toaster';
 import { copyText } from '@/lib/clipboard';
 import { SITE_CONFIG } from '@/lib/config';
-import { Composer, TimeStrip } from './contact-extras';
+import { prefersReducedMotion } from '@/lib/dom';
 import s from './field.module.css';
 import p from './pages.module.css';
 
@@ -19,9 +19,9 @@ const GREETINGS = ['hi.', 'hello.', '你好.', 'hey.', 'halo.', 'こんにちは
 
 /**
  * The last band of the front page. With `asPage` it is the whole Contact page: the greeting cycles through languages when clicked,
- * and a clock and a draft composer follow the ruled lines.
+ * and `children` (the clock and the draft composer) follow the ruled lines. They are passed in so the front page never loads them.
  */
-export function ContactBand({ asPage = false }: { asPage?: boolean }) {
+export function ContactBand({ asPage = false, children }: { asPage?: boolean; children?: ReactNode }) {
   const [greet, setGreet] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const hiRef = useRef<HTMLButtonElement>(null);
@@ -31,7 +31,7 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
     const section = sectionRef.current;
     const hi = hiRef.current;
     if (!section || !hi) return;
-    if (matchMedia('(hover: none)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (matchMedia('(hover: none)').matches || prefersReducedMotion()) return;
     const onMove = (e: PointerEvent) => {
       const r = hi.getBoundingClientRect();
       const dx = e.clientX - (r.left + r.width / 2);
@@ -109,16 +109,11 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
           )}
           </div>
         </div>
-        {asPage && (
-          <>
-            <TimeStrip />
-            <Composer />
-          </>
-        )}
+        {asPage && children}
       </div>
     </section>
-    {/* The only page content that raises toasts, so the toast code loads here and nowhere else. */}
-    <Toaster />
+    {/* The only page content that raises toasts, and the toast code loads only once one is raised. */}
+    <LazyToaster />
     </>
   );
 }

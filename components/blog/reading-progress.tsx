@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { watchScroll } from '@/lib/dom';
+import { clamp } from '@/lib/math';
 
 /** A bar across the top of the page that fills as the element with `targetId` scrolls through the viewport. It writes to the DOM directly, so scrolling never re-renders React. */
 export function ReadingProgress({ targetId }: { targetId: string }) {
@@ -11,23 +13,12 @@ export function ReadingProgress({ targetId }: { targetId: string }) {
     const bar = barRef.current;
     if (!target || !bar) return;
 
-    let queued = false;
-    const update = () => {
-      queued = false;
+    const { stop } = watchScroll(() => {
       const rect = target.getBoundingClientRect();
-      const progress = Math.min(1, Math.max(0, (innerHeight - rect.top) / rect.height));
+      const progress = clamp((innerHeight - rect.top) / rect.height, 0, 1);
       bar.style.transform = `scaleX(${progress.toFixed(4)})`;
-    };
-    const queue = () => {
-      if (!queued) { queued = true; requestAnimationFrame(update); }
-    };
-    addEventListener('scroll', queue, { passive: true });
-    addEventListener('resize', queue);
-    queue();
-    return () => {
-      removeEventListener('scroll', queue);
-      removeEventListener('resize', queue);
-    };
+    });
+    return stop;
   }, [targetId]);
 
   return (

@@ -1,4 +1,4 @@
-import { Hero } from '@/components/sections/hero';
+import { Hero } from '@/components/field/hero';
 import { ExperienceBand } from '@/components/field/experience-band';
 import { BlogBand } from '@/components/field/blog-band';
 import { OffClockBand } from '@/components/field/off-clock-band';

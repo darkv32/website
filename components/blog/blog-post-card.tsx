@@ -9,7 +9,7 @@ import { formatDate, type BlogPost } from '@/lib/data';
 /** Card for a related post at the foot of an article. */
 export function BlogPostCard({ post }: { post: BlogPost }) {
   return (
-    <Card className="group hover:shadow-2xl hover:scale-[1.02] transition-all duration-75 border-2 border-primary/30 shadow-md overflow-hidden flex flex-col">
+    <Card className="group hover:shadow-2xl hover:scale-[1.02] transition-[transform,box-shadow] duration-75 border-2 border-primary/30 shadow-md overflow-hidden flex flex-col">
       <div className="aspect-video overflow-hidden relative">
         <Image
           src={post.featuredImage}

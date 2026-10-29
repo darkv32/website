@@ -50,7 +50,7 @@ The front page carries every section as a band on `/`, and the footer links scro
 - `lib/config.ts` - Base URL, author details, social links, SEO keywords. `robots.txt`, the web manifest and the default share image are generated from it
 - `data/site-data.json` - Experience timeline
 - `data/blog-data.json` - Blog posts (Markdown content)
-- `components/sections/hero.tsx` - Hero copy and photos
+- `components/field/hero.tsx` - Hero copy and photos
 - `components/field/off-clock-band.tsx` - Hobbies band
 - `components/field/hobbies-page.tsx` - The `/hobbies` page (poster shelf, bubbles, barracks)
 
@@ -61,9 +61,9 @@ The front page is styled by `components/field/field.module.css`; the extra piece
 ### Components
 
 - `components/field/` - The front page bands (most also render their full page with `asPage`) and their shared section links
-- `components/sections/` - Hero
 - `components/blog/` - Article, table of contents and related-post card
-- `components/ui/` - Radix-based primitives
+- `components/ui/` - Radix-based primitives. The toaster is mounted by `lazy-toaster.tsx` the first time a toast is raised, so Radix Toast is not in the initial bundle
+- `lib/` - Config, data access, SEO, and small shared helpers: `dom.ts` (key-guard, reduced-motion check, frame-coalesced scroll watcher) and `math.ts` (`clamp`, `lerp`)
 
 ## 🚀 Deployment
 

@@ -2,6 +2,7 @@
 
 import { useState, useSyncExternalStore } from 'react';
 import { ArrowRight } from 'lucide-react';
+import { clsx } from 'clsx';
 import { toast } from '@/hooks/use-toast';
 import { copyText } from '@/lib/clipboard';
 import { SITE_CONFIG } from '@/lib/config';
@@ -57,7 +58,7 @@ export function TimeStrip() {
             <i
               key={h}
               data-t={`${pad(h)}:00 SGT`}
-              className={[h >= 9 && h < 18 && p.day, h === sgHour && p.now, h === youHour && behind !== 0 && p.you].filter(Boolean).join(' ')}
+              className={clsx(h >= 9 && h < 18 && p.day, h === sgHour && p.now, h === youHour && behind !== 0 && p.you)}
             />
           ))}
         </div>

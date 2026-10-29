@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-});
-
 const nextConfig = {
   images: {
     // The first format the browser accepts wins, so AVIF has to come before WebP to ever be served
@@ -26,4 +22,7 @@ const nextConfig = {
   },
 };
 
-module.exports = withBundleAnalyzer(nextConfig);
+// The analyzer is a dev dependency, so it is only loaded for `bun run analyze`.
+module.exports = process.env.ANALYZE === 'true'
+  ? require('@next/bundle-analyzer')({ enabled: true })(nextConfig)
+  : nextConfig;

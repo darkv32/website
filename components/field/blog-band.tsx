@@ -1,9 +1,11 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Dices } from 'lucide-react';
+import { clsx } from 'clsx';
 import type { BlogSummary } from '@/lib/data';
+import { isTypingTarget } from '@/lib/dom';
 import { Reveal } from './reveal';
 import s from './field.module.css';
 import p from './pages.module.css';
@@ -71,8 +73,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
       const el = searchRef.current;
       if (!el || e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === '/' && document.activeElement !== el) {
-        const t = e.target as HTMLElement | null;
-        if (t && (/INPUT|TEXTAREA|SELECT/.test(t.tagName) || t.isContentEditable)) return;
+        if (isTypingTarget(e.target)) return;
         e.preventDefault();
         el.focus();
       } else if (e.key === 'Escape' && document.activeElement === el) {
@@ -83,9 +84,16 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
     return () => removeEventListener('keydown', onKey);
   }, [asPage]);
 
-  const categories = Object.entries(
-    posts.reduce<Record<string, number>>((acc, post) => ({ ...acc, [post.category]: (acc[post.category] ?? 0) + 1 }), {}),
-  ).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+  /* These depend only on the posts, so typing in the search box does not redo them. */
+  const { categories, timeline, bySlug } = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const post of posts) counts.set(post.category, (counts.get(post.category) ?? 0) + 1);
+    return {
+      categories: [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])),
+      timeline: asPage && posts.length ? layoutTimeline(posts) : null,
+      bySlug: new Map(posts.map((post) => [post.slug, post])),
+    };
+  }, [posts, asPage]);
 
   const q = asPage ? query.trim().toLowerCase() : '';
   const matching = posts
@@ -93,6 +101,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
     .filter((post) => !q || `${post.title} ${post.excerpt} ${post.category}`.toLowerCase().includes(q));
   const ordered = sort === 'short' ? [...matching].sort((a, b) => a.readTime - b.readTime || b.publishedAt.localeCompare(a.publishedAt)) : matching;
   const visible = limit ? ordered.slice(0, limit) : ordered;
+  const visibleSlugs = new Set(visible.map((post) => post.slug));
   const noun = (filter === 'all' ? '' : filter + ' ') + (matching.length === 1 ? 'post' : 'posts');
   const Heading = asPage ? 'h1' : 'h2';
   const asList = asPage && view === 'list';
@@ -107,7 +116,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
       setFlash('');
       requestAnimationFrame(() => setFlash(slug));
     };
-    if (visible.some((post) => post.slug === slug)) go();
+    if (visibleSlugs.has(slug)) go();
     else { clearAll(); setTimeout(go, 80); }
   };
 
@@ -134,8 +143,6 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
     </>
   );
 
-  const timeline = asPage && posts.length ? layoutTimeline(posts) : null;
-  const bySlug = new Map(posts.map((post) => [post.slug, post]));
   const tlPost = bySlug.get(tlHover);
 
   return (
@@ -161,7 +168,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
                     <button
                       key={d.slug}
                       type="button"
-                      className={`${p.tlDot} ${visible.some((v) => v.slug === d.slug) ? '' : p.off}`}
+                      className={clsx(p.tlDot, !visibleSlugs.has(d.slug) && p.off)}
                       style={{ '--x': `${d.x.toFixed(2)}%`, '--row': d.row, '--n': Math.round(d.x) } as CSSProperties}
                       aria-label={`${post.title}, ${post.publishedAt}`}
                       onMouseEnter={() => setTlHover(d.slug)}
@@ -250,7 +257,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
                   <Link
                     id={asPage ? `post-${post.slug}` : undefined}
                     href={`/blog/${post.slug}`}
-                    className={[s.post, animate && s.pop, flash === post.slug && s.flash].filter(Boolean).join(' ')}
+                    className={clsx(s.post, animate && s.pop, flash === post.slug && s.flash)}
                     style={animate && asPage ? { animationDelay: `${Math.min(i, 8) * 30}ms` } : undefined}
                   >
                     <span className={s.top}>

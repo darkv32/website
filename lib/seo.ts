@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import type { BlogPost } from './data';
+import { getExperienceData, type BlogPost } from './data';
 import { SITE_CONFIG, getFullUrl } from './config';
 
 export interface SEOConfig {
@@ -93,6 +93,8 @@ export function generateWebsiteData() {
 }
 
 export function generatePersonData() {
+  const role = getExperienceData().timeline.find((r) => r.current);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -106,10 +108,10 @@ export function generatePersonData() {
       addressLocality: site.location,
     },
     sameAs,
-    jobTitle: 'Senior Engineer',
-    worksFor: {
+    jobTitle: role?.title,
+    worksFor: role && {
       '@type': 'Organization',
-      name: 'RFCOM Technologies',
+      name: role.company,
     },
     knowsAbout: [
       'Data Engineering',

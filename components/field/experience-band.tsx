@@ -2,7 +2,10 @@
 
 import { Fragment, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import Link from 'next/link';
+import { clsx } from 'clsx';
 import type { Role } from '@/lib/data';
+import { watchScroll } from '@/lib/dom';
+import { clamp } from '@/lib/math';
 import { Reveal } from './reveal';
 import s from './field.module.css';
 import p from './pages.module.css';
@@ -23,6 +26,10 @@ const nowYear = () => {
   return Math.round((d.getFullYear() + (d.getMonth() + d.getDate() / 31) / 12) * 100) / 100;
 };
 const subscribeNever = () => () => {};
+/* Fixed so the prerendered timeline and the first client render agree; the real date replaces it right after hydration. */
+const PRERENDER_NOW = 2026.83;
+
+const roleKey = (r: Role) => `${r.company}-${r.title}-${r.period}`;
 
 const spanClass = (kind: string) => (kind === 'Education' ? p.edu : kind === 'Programme' ? p.prog : '');
 
@@ -48,7 +55,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
   const [kind, setKind] = useState<(typeof KINDS)[number]>('All');
   const [hover, setHover] = useState(-1);
   const [reached, setReached] = useState<boolean[]>([]);
-  const now = useSyncExternalStore(subscribeNever, nowYear, () => 2026.83);
+  const now = useSyncExternalStore(subscribeNever, nowYear, () => PRERENDER_NOW);
 
   const currentIdx = Math.max(0, roles.findIndex((r) => r.current));
   const current = roles[currentIdx];
@@ -71,12 +78,10 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
     const title = row.querySelector('strong');
     if (!title) return;
 
-    let queued = false;
     const update = () => {
-      queued = false;
       const r = list.getBoundingClientRect();
       const line = innerHeight * 0.62;
-      list.style.setProperty('--p', Math.max(0, Math.min(1, (line - r.top) / r.height)).toFixed(3));
+      list.style.setProperty('--p', clamp((line - r.top) / r.height, 0, 1).toFixed(3));
       const next = rowRefs.current.map((li) => !!li && li.getBoundingClientRect().top + 32 < line);
       setReached((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
 
@@ -93,21 +98,15 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
       path.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} C${(sx + dx * 0.55).toFixed(1)} ${sy.toFixed(1)} ${(ex - dx * 0.45).toFixed(1)} ${ey.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`);
       arrow.dataset.show = tr.top > 76 && tr.top < innerHeight - 40 ? '1' : '0';
     };
-    const queue = () => {
-      if (!queued) { queued = true; requestAnimationFrame(update); }
-    };
-    addEventListener('scroll', queue, { passive: true });
-    addEventListener('resize', queue);
+    const { queue, stop } = watchScroll(update);
     const ro = new ResizeObserver(queue);
     ro.observe(split);
     document.fonts?.ready.then(queue);
-    queue();
     /* filters and expanding rows move the trail, so measure again after them */
     const mo = new MutationObserver(queue);
     mo.observe(list, { attributes: true, attributeFilter: ['class'], subtree: true });
     return () => {
-      removeEventListener('scroll', queue);
-      removeEventListener('resize', queue);
+      stop();
       ro.disconnect();
       mo.disconnect();
     };
@@ -227,7 +226,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                 {roles.map((r, i) => {
                   const off = !kindOk(r) || !toolOk(r);
                   return (
-                    <Fragment key={`${r.company}-${r.title}-${r.period}`}>
+                    <Fragment key={roleKey(r)}>
                       <div className={`${p.gLab} ${off ? p.off : ''}`} style={{ '--i': i } as CSSProperties}>{r.short}</div>
                       <div className={p.gTrack}>
                         {r.spans.map(([from, b], k) => {
@@ -236,7 +235,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                           <button
                             key={k}
                             type="button"
-                            className={[p.seg, spanClass(r.kind), hover === i ? p.on : '', off ? p.off : ''].filter(Boolean).join(' ')}
+                            className={clsx(p.seg, spanClass(r.kind), hover === i && p.on, off && p.off)}
                             style={{ left: pct(a), width: `${(((b ?? now) - a) / (y1 - y0)) * 100}%`, '--i': i } as CSSProperties}
                             aria-label={`${r.title}, ${r.company}, ${r.period}`}
                             onMouseEnter={() => setHover(i)}
@@ -270,10 +269,10 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
               const isOpen = open.includes(i);
               const hidden = asPage && !kindOk(role);
               const dim = !hidden && !toolOk(role);
-              const cls = [s.row, canOpen && s.expandable, isOpen && s.open, dim && s.dim, hidden && s.gone, asPage && hover === i && s.hl, reached[i] && s.reached].filter(Boolean).join(' ');
+              const cls = clsx(s.row, canOpen && s.expandable, isOpen && s.open, dim && s.dim, hidden && s.gone, asPage && hover === i && s.hl, reached[i] && s.reached);
               return (
                 <li
-                  key={`${role.company}-${role.title}-${role.period}`}
+                  key={roleKey(role)}
                   ref={(el) => { rowRefs.current[i] = el; }}
                   className={cls}
                   onMouseEnter={asPage ? () => setHover(i) : undefined}
@@ -311,7 +310,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                       <button
                         key={t}
                         type="button"
-                        className={[s.tag, tool === toolKey(t) && s.hl, asPage && pinned === toolKey(t) && s.pin].filter(Boolean).join(' ')}
+                        className={clsx(s.tag, tool === toolKey(t) && s.hl, asPage && pinned === toolKey(t) && s.pin)}
                         aria-pressed={asPage ? pinned === toolKey(t) : undefined}
                         onMouseEnter={() => setTool(toolKey(t))}
                         onMouseLeave={() => setTool('')}

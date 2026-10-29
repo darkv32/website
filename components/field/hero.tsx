@@ -4,10 +4,12 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import Image from 'next/image';
 import Link from 'next/link';
 import { FileText, Github, Linkedin, ArrowUpRight } from 'lucide-react';
-import { HeroField } from '@/components/field/hero-field';
+import { HeroField } from './hero-field';
 import { SITE_CONFIG } from '@/lib/config';
-import s from '@/components/field/field.module.css';
-import p from '@/components/field/pages.module.css';
+import { isTypingTarget, prefersReducedMotion } from '@/lib/dom';
+import { clamp } from '@/lib/math';
+import s from './field.module.css';
+import p from './pages.module.css';
 
 const SLIDE_MS = 6500;
 
@@ -35,7 +37,7 @@ export function Hero({ page = false }: { page?: boolean }) {
 
   /* Auto-advance. Depending on `current` restarts the timer whenever a tick is clicked. */
   useEffect(() => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (prefersReducedMotion()) return;
     const id = setInterval(() => {
       if (!pausedRef.current && !document.hidden) next();
     }, SLIDE_MS);
@@ -46,9 +48,7 @@ export function Hero({ page = false }: { page?: boolean }) {
   useEffect(() => {
     if (!page) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey || scrollY > innerHeight * 0.6) return;
-      const t = e.target as HTMLElement | null;
-      if (t && (/INPUT|TEXTAREA|SELECT/.test(t.tagName) || t.isContentEditable)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey || scrollY > innerHeight * 0.6 || isTypingTarget(e.target)) return;
       if (e.key === 'ArrowRight') next();
       else if (e.key === 'ArrowLeft') prev();
     };
@@ -131,6 +131,8 @@ export function Hero({ page = false }: { page?: boolean }) {
                   alt={`Tang Yetong ${f.alt}`}
                   fill
                   preload={i === 0}
+                  /* Every photo is stacked in view, so none counts as lazy; keep the hidden ones from competing with the first. */
+                  fetchPriority={i === 0 ? undefined : 'low'}
                   sizes="(max-width: 860px) 340px, (max-width: 1200px) 380px, 630px"
                 />
               ))}
@@ -170,7 +172,3 @@ export function Hero({ page = false }: { page?: boolean }) {
 
 /** Sets the order an item arrives in during the hero's entrance. */
 const order = (i: number) => ({ '--i': i }) as CSSProperties;
-
-function clamp(v: number, a: number, b: number) {
-  return Math.max(a, Math.min(b, v));
-}
