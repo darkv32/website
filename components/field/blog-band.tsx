@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Dices } from 'lucide-react';
 import s from './field.module.css';
@@ -37,6 +37,29 @@ function highlight(text: string, q: string): ReactNode {
   );
 }
 
+const stamp = (iso: string) => Date.parse(iso);
+const pickOne = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)];
+/** Dots closer than this share of the axis go on the next row up. */
+const DOT_GAP = 1.5;
+
+/** Where each post sits on the time axis (0-100) and which row it stacks on, plus the year ticks. Pure, so server and client agree. */
+function layoutTimeline(posts: BlogBandPost[]) {
+  const years = posts.map((post) => +post.publishedAt.slice(0, 4));
+  const firstYear = Math.min(...years);
+  const lastYear = Math.max(...years);
+  const start = stamp(`${firstYear}-01-01`);
+  const span = stamp(`${lastYear + 1}-01-01`) - start;
+  const dots: Array<{ slug: string; x: number; row: number }> = [];
+  [...posts].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt)).forEach((post) => {
+    const x = ((stamp(post.publishedAt) - start) / span) * 100;
+    let row = 0;
+    while (dots.some((d) => d.row === row && Math.abs(d.x - x) < DOT_GAP)) row++;
+    dots.push({ slug: post.slug, x, row });
+  });
+  const ticks = Array.from({ length: lastYear - firstYear + 2 }, (_, i) => ({ year: firstYear + i, x: ((stamp(`${firstYear + i}-01-01`) - start) / span) * 100 }));
+  return { dots, rows: Math.max(...dots.map((d) => d.row)) + 1, ticks };
+}
+
 /** Filterable grid of post cards. The count and the "view all" button speak about every post and follow the filter. */
 export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
   const [filter, setFilter] = useState('all');
@@ -45,6 +68,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
   const [sort, setSort] = useState<'new' | 'short'>('new');
   const [view, setView] = useState<'grid' | 'list'>('grid');
   const [flash, setFlash] = useState('');
+  const [tlHover, setTlHover] = useState('');
   const searchRef = useRef<HTMLInputElement>(null);
 
   /* "/" jumps to the search box, Escape leaves it */
@@ -83,14 +107,25 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
 
   const clearAll = () => { setFilter('all'); setQuery(''); setAnimate(true); };
 
-  /* surprise me: scroll to a random visible card and flash it */
+  /* scroll to a card and flash it; if filters are hiding it, clear them first */
+  const jumpTo = (slug: string) => {
+    const go = () => {
+      document.getElementById(`post-${slug}`)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      setFlash('');
+      requestAnimationFrame(() => setFlash(slug));
+    };
+    if (visible.some((post) => post.slug === slug)) go();
+    else { clearAll(); setTimeout(go, 80); }
+  };
+
+  /* surprise me: a random visible card */
   const surprise = () => {
     if (!visible.length) return clearAll();
-    const pick = visible[Math.floor(Math.random() * visible.length)];
-    document.getElementById(`post-${pick.slug}`)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
-    setFlash('');
-    requestAnimationFrame(() => setFlash(pick.slug));
+    jumpTo(pickOne(visible).slug);
   };
+
+  const timeline = asPage && posts.length ? layoutTimeline(posts) : null;
+  const tlPost = posts.find((post) => post.slug === tlHover);
 
   return (
     <section id="blogs" className={`${s.band} ${s.bandBlog} ${s.sec} ${s.blogBand}`}>
@@ -100,6 +135,39 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
             <Heading className={s.h2}>Blog</Heading>
             <p>Writing on Bitcoin wallets, Android and what an internship is actually like.</p>
           </div>
+          {timeline && (
+            <div className={p.tl}>
+              <div className={p.tlHead}>
+                <span>Every post, by date</span>
+                <span className={p.tlRead} aria-live="polite">
+                  {tlPost ? <><b>{tlPost.title}</b> · {tlPost.publishedAt} · {tlPost.category}</> : 'Hover a square, click to jump to the post'}
+                </span>
+              </div>
+              <div className={p.tlTrack} style={{ '--rows': timeline.rows } as CSSProperties}>
+                {timeline.dots.map((d) => {
+                  const post = posts.find((x) => x.slug === d.slug);
+                  if (!post) return null;
+                  return (
+                    <button
+                      key={d.slug}
+                      type="button"
+                      className={`${p.tlDot} ${visible.some((v) => v.slug === d.slug) ? '' : p.off}`}
+                      style={{ '--x': `${d.x.toFixed(2)}%`, '--row': d.row } as CSSProperties}
+                      aria-label={`${post.title}, ${post.publishedAt}`}
+                      onMouseEnter={() => setTlHover(d.slug)}
+                      onMouseLeave={() => setTlHover('')}
+                      onFocus={() => setTlHover(d.slug)}
+                      onBlur={() => setTlHover('')}
+                      onClick={() => jumpTo(d.slug)}
+                    />
+                  );
+                })}
+              </div>
+              <div className={p.tlAxis} aria-hidden="true">
+                {timeline.ticks.map((t) => <span key={t.year} style={{ left: `${t.x.toFixed(2)}%` }}>{t.year}</span>)}
+              </div>
+            </div>
+          )}
           {!asPage && (
             <div className={s.chips} role="group" aria-label="Filter posts">
               {[['all', posts.length] as const, ...categories].map(([cat, n]) => (

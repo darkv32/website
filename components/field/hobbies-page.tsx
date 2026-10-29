@@ -98,6 +98,7 @@ export function HobbiesPage() {
   const [bubbles, setBubbles] = useState(FIRST_BUBBLES);
   const [bursts, setBursts] = useState<Burst[]>([]);
   const [popped, setPopped] = useState(0);
+  const [jelly, setJelly] = useState(0);
 
   const raw = useSyncExternalStore(subscribeOrder, readOrder, () => '');
   const order = parseOrder(raw);
@@ -214,8 +215,17 @@ export function HobbiesPage() {
           </div>
         ))}
       </div>
-      <div className={`${s.in} ${p.inner}`}>
-        <div className={`${s.secHead} ${s.big} ${p.noHit}`}>
+      <button type="button" className={p.jelly} aria-label="Jellyfish. Click to make it pulse." onClick={() => setJelly((n) => n + 1)}>
+        <svg className={jelly ? (jelly % 2 ? p.jetA : p.jetB) : undefined} viewBox="0 0 90 130" aria-hidden="true" focusable="false">
+          <path className={p.jTent} d="M26 62 C20 82 32 92 24 116" />
+          <path className={p.jTent} d="M45 64 C41 84 51 96 45 124" />
+          <path className={p.jTent} d="M64 62 C70 82 58 92 66 114" />
+          <path className={p.jBell} d="M8 56 C8 22 28 6 45 6 C62 6 82 22 82 56 C82 63 70 66 45 66 C20 66 8 63 8 56Z" />
+          <path className={p.jGlint} d="M22 50 C24 30 34 18 45 16" />
+        </svg>
+      </button>
+      <div className={s.in}>
+        <div className={`${s.secHead} ${s.big}`}>
           <h1 className={s.h2}>Off the clock</h1>
           <p>A few things I enjoy away from the keyboard. Everything below is meant to be poked.</p>
           <span className={p.popCount}>Pop a bubble. <b>{popped}</b> so far{popped >= 10 ? '. Easy there.' : '.'}</span>
