@@ -7,13 +7,12 @@ import { FileText, Github, Linkedin, ArrowUpRight } from 'lucide-react';
 import { HeroField } from './hero-field';
 import { SITE_CONFIG } from '@/lib/config';
 import { isTypingTarget, prefersReducedMotion } from '@/lib/dom';
-import { clamp } from '@/lib/math';
 import s from './field.module.css';
 import p from './pages.module.css';
 
 const SLIDE_MS = 6500;
 
-/* faceY is where the face sits in each photo, as a share of its height. The crop is centred on it for whatever shape the frame is. */
+/* faceY is where the face sits in each photo, as a share of its height. The CSS centres the crop on it for whatever shape the frame is. */
 const frames = [
   { src: '/field/p1.jpg', label: 'Bow Lake', alt: 'standing by a turquoise lake in the Canadian Rockies', faceY: 0.5 },
   { src: '/field/p2.jpg', label: 'Glacier edge', alt: 'in front of a glacier and gravel flats', faceY: 0.54 },
@@ -28,7 +27,6 @@ const frames = [
 export function Hero({ page = false }: { page?: boolean }) {
   const heroRef = useRef<HTMLElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
-  const imgRefs = useRef<Array<HTMLImageElement | null>>([]);
   const pausedRef = useRef(false);
   const [current, setCurrent] = useState(0);
 
@@ -55,26 +53,6 @@ export function Hero({ page = false }: { page?: boolean }) {
     addEventListener('keydown', onKey);
     return () => removeEventListener('keydown', onKey);
   }, [page, next, prev]);
-
-  /* Centre each crop on the face for the current frame shape (portrait below 1200px, landscape above). */
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-    const recrop = () => {
-      const r = frame.getBoundingClientRect();
-      if (!r.width) return;
-      const wf = clamp(0.75 * r.height / r.width, 0.05, 1);
-      imgRefs.current.forEach((img, i) => {
-        if (!img) return;
-        const pos = wf >= 0.999 ? 0.5 : clamp((frames[i].faceY - wf / 2) / (1 - wf), 0, 1);
-        img.style.setProperty('--py', (pos * 100).toFixed(1) + '%');
-      });
-    };
-    recrop();
-    const ro = new ResizeObserver(recrop);
-    ro.observe(frame);
-    return () => ro.disconnect();
-  }, []);
 
   return (
     <section ref={heroRef} id="hero" className={page ? `${s.hero} ${p.heroTall}` : s.hero}>
@@ -125,8 +103,8 @@ export function Hero({ page = false }: { page?: boolean }) {
               {frames.map((f, i) => (
                 <Image
                   key={f.src}
-                  ref={(el) => { imgRefs.current[i] = el; }}
                   className={i === current ? s.on : undefined}
+                  style={{ '--face': f.faceY } as CSSProperties}
                   src={f.src}
                   alt={`Tang Yetong ${f.alt}`}
                   fill
