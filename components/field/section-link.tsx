@@ -4,13 +4,14 @@ import type { ComponentProps } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-/** The five sections, in order. `key` is the single-key shortcut and `href` the section's own page. */
+/** The sections, in order. `key` is the single-key shortcut and `href` the section's own page. */
 export const SECTIONS = [
   { id: 'hero', name: 'About', key: 'a', href: '/about' },
   { id: 'experience', name: 'Experience', key: 'e', href: '/experience' },
   { id: 'blogs', name: 'Blog', key: 'b', href: '/blog' },
   { id: 'off', name: 'Hobbies', key: 'h', href: '/hobbies' },
   { id: 'contact', name: 'Contact', key: 'c', href: '/contact' },
+  { id: 'guestbook', name: 'Guestbook', key: 'g', href: '/guestbook' },
 ] as const;
 
 /**
@@ -28,9 +29,11 @@ export function SectionLink({ id, href, onClick, ...props }: { id: string; href?
       onClick={(e) => {
         onClick?.(e);
         const modified = e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0;
-        if (onHome && !modified && !e.defaultPrevented) {
+        /* Only sections that are bands on the front page scroll; the rest (the guestbook) just navigate. */
+        const band = onHome && !modified && !e.defaultPrevented ? document.getElementById(id) : null;
+        if (band) {
           e.preventDefault();
-          document.getElementById(id)?.scrollIntoView({ block: 'start' });
+          band.scrollIntoView({ block: 'start' });
         }
       }}
     />
