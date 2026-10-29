@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getSiteData } from './data';
+import type { BlogPost } from './data';
 import { SITE_CONFIG, getFullUrl } from './config';
 
 export interface SEOConfig {
@@ -14,21 +14,20 @@ export interface SEOConfig {
   author?: string;
 }
 
+const { site, social } = SITE_CONFIG;
+const sameAs = [social.github, social.linkedin, social.twitter];
+
 export function generateMetadata(config: SEOConfig): Metadata {
-  const { site } = getSiteData();
   const fullUrl = config.url ? getFullUrl(config.url) : SITE_CONFIG.baseUrl;
   const imageUrl = config.image ? getFullUrl(config.image) : getFullUrl('/og-image.jpg');
 
   return {
-    title: {
-      default: config.title,
-      template: '%s | Tang Yetong'
-    },
+    title: config.title,
     description: config.description,
     keywords: config.keywords || [...SITE_CONFIG.seo.defaultKeywords],
-    authors: [{ name: config.author || site.author.name }],
-    creator: site.author.name,
-    publisher: site.author.name,
+    authors: [{ name: config.author || site.author }],
+    creator: site.author,
+    publisher: site.author,
     metadataBase: new URL(SITE_CONFIG.baseUrl),
     alternates: {
       canonical: fullUrl,
@@ -55,7 +54,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       card: 'summary_large_image',
       title: config.title,
       description: config.description,
-      creator: '@tangyetong',
+      creator: social.twitterHandle,
       images: [imageUrl],
     },
     robots: {
@@ -81,128 +80,91 @@ export function generateMetadata(config: SEOConfig): Metadata {
         { url: '/logo-white.png', sizes: '180x180', type: 'image/png' },
       ],
     },
-    other: {
-      'theme-color': SITE_CONFIG.seo.themeColor,
-      'color-scheme': 'light dark',
+  };
+}
+
+export function generateWebsiteData() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.title,
+    description: site.description,
+    url: SITE_CONFIG.baseUrl,
+    author: {
+      '@type': 'Person',
+      name: site.author,
+      email: site.email,
+      url: SITE_CONFIG.baseUrl,
+      sameAs,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: site.author,
     },
   };
 }
 
-export function generateStructuredData(type: 'website' | 'person' | 'article', data: any) {
-  const { site } = getSiteData();
-
-  switch (type) {
-    case 'website':
-      return {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: site.title,
-        description: site.description,
-        url: SITE_CONFIG.baseUrl,
-        author: {
-          '@type': 'Person',
-          name: site.author.name,
-          email: site.author.email,
-          url: SITE_CONFIG.baseUrl,
-          sameAs: [
-            site.author.social.github,
-            site.author.social.linkedin,
-            site.author.social.twitter,
-          ],
-        },
-        publisher: {
-          '@type': 'Person',
-          name: site.author.name,
-        },
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: `${SITE_CONFIG.baseUrl}/blog?search={search_term_string}`,
-          'query-input': 'required name=search_term_string',
-        },
-      };
-
-    case 'person':
-      return {
-        '@context': 'https://schema.org',
-        '@type': 'Person',
-        name: site.author.name,
-        email: site.author.email,
-        url: SITE_CONFIG.baseUrl,
-        image: site.author.avatar,
-        description: site.author.bio,
-        address: {
-          '@type': 'PostalAddress',
-          addressLocality: site.author.location,
-        },
-        sameAs: [
-          site.author.social.github,
-          site.author.social.linkedin,
-          site.author.social.twitter,
-        ],
-        jobTitle: 'Software Engineer',
-        worksFor: {
-          '@type': 'Organization',
-          name: 'RFCOM Technologies',
-        },
-        knowsAbout: [
-          'Data Engineering',
-          'Android Development',
-          'Blockchain Technology',
-          'Python',
-          'Kotlin',
-          'SQL',
-          'Bitcoin Development',
-        ],
-      };
-
-    case 'article':
-      return {
-        '@context': 'https://schema.org',
-        '@type': 'Article',
-        headline: data.title,
-        description: data.excerpt,
-        image: data.featuredImage,
-        author: {
-          '@type': 'Person',
-          name: data.author.name,
-          url: SITE_CONFIG.baseUrl,
-        },
-        publisher: {
-          '@type': 'Person',
-          name: site.author.name,
-          url: SITE_CONFIG.baseUrl,
-        },
-        datePublished: data.publishedAt,
-        dateModified: data.updatedAt,
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id': `${SITE_CONFIG.baseUrl}/blog/${data.slug}`,
-        },
-        keywords: data.tags.join(', '),
-        articleSection: data.category,
-        wordCount: data.content.split(' ').length,
-      };
-
-    default:
-      return null;
-  }
-}
-
-export function generateBreadcrumbData(items: Array<{ name: string; url: string }>) {
+export function generatePersonData() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: getFullUrl(item.url),
-    })),
+    '@type': 'Person',
+    name: site.author,
+    email: site.email,
+    url: SITE_CONFIG.baseUrl,
+    image: getFullUrl(site.avatar),
+    description: site.bio,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: site.location,
+    },
+    sameAs,
+    jobTitle: 'Software Engineer',
+    worksFor: {
+      '@type': 'Organization',
+      name: 'RFCOM Technologies',
+    },
+    knowsAbout: [
+      'Data Engineering',
+      'Android Development',
+      'Blockchain Technology',
+      'Python',
+      'Kotlin',
+      'SQL',
+      'Bitcoin Development',
+    ],
+  };
+}
+
+export function generateArticleData(post: BlogPost) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.featuredImage,
+    author: {
+      '@type': 'Person',
+      name: post.author.name,
+      url: SITE_CONFIG.baseUrl,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: site.author,
+      url: SITE_CONFIG.baseUrl,
+    },
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': getFullUrl(`/blog/${post.slug}`),
+    },
+    keywords: post.tags.join(', '),
+    articleSection: post.category,
+    wordCount: post.content.split(/\s+/).length,
   };
 }
 
 export function generateOrganizationData() {
-  const { site } = getSiteData();
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
@@ -212,10 +174,6 @@ export function generateOrganizationData() {
       '@type': 'ImageObject',
       url: getFullUrl('/logo-white.png'),
     },
-    sameAs: [
-      site.author.social.github,
-      site.author.social.linkedin,
-      site.author.social.twitter,
-    ],
+    sameAs,
   };
-} 
+}

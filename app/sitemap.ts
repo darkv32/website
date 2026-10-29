@@ -1,12 +1,9 @@
 import { MetadataRoute } from 'next';
-import { getAllBlogPosts, getSiteData } from '@/lib/data';
+import { getAllBlogPosts } from '@/lib/data';
 import { SITE_CONFIG, getFullUrl } from '@/lib/config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const { site } = getSiteData();
-  const blogPosts = getAllBlogPosts();
-
-  // Static pages
+  // The front page carries every section; /blog is the full post list
   const staticPages = [
     {
       url: SITE_CONFIG.baseUrl,
@@ -15,33 +12,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: getFullUrl('/about'),
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
-      url: getFullUrl('/experience'),
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.8,
-    },
-    {
       url: getFullUrl('/blog'),
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
     },
-    {
-      url: getFullUrl('/contact'),
-      lastModified: new Date(),
-      changeFrequency: 'monthly' as const,
-      priority: 0.7,
-    },
   ];
 
-  // Blog post pages
-  const blogPages = blogPosts.map((post) => ({
+  const blogPages = getAllBlogPosts().map((post) => ({
     url: getFullUrl(`/blog/${post.slug}`),
     lastModified: new Date(post.updatedAt),
     changeFrequency: 'monthly' as const,
@@ -49,4 +27,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [...staticPages, ...blogPages];
-} 
+}

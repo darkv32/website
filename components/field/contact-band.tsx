@@ -1,12 +1,15 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { FileText, Github, Linkedin, Mail, ArrowUpRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { SITE_CONFIG } from '@/lib/config';
 import s from './field.module.css';
 
 const EMAIL = SITE_CONFIG.site.email;
+const GITHUB = SITE_CONFIG.social.github;
+const LINKEDIN = SITE_CONFIG.social.linkedin;
+
+const display = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
 export function ContactBand() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -52,31 +55,34 @@ export function ContactBand() {
   };
 
   return (
-    <section ref={sectionRef} className={`${s.band} ${s.bandPaper} ${s.sec} ${s.contact}`}>
+    <section ref={sectionRef} id="contact" className={`${s.band} ${s.bandPaper} ${s.sec} ${s.contact}`}>
       <div className={s.in}>
-        <h1 className={s.say}>
-          Say <button ref={hiRef} type="button" className={s.hi} onClick={copy} title="Click to copy my email">hi.</button>
-        </h1>
-        <div className={s.btnrow}>
-          <button type="button" className={`${s.b} ${s.primary}`} onClick={copy}>
-            <Mail />
-            <span ref={addrRef} className={s.addr}>{EMAIL}</span>
-            <span className={s.meta}>Copy</span>
-          </button>
-          <a className={s.b} href={SITE_CONFIG.social.github} target="_blank" rel="noopener noreferrer">
-            <Github />
-            GitHub
-            <ArrowUpRight className={s.ext} />
-          </a>
-          <a className={s.b} href={SITE_CONFIG.social.linkedin} target="_blank" rel="noopener noreferrer">
-            <Linkedin />
-            LinkedIn
-            <ArrowUpRight className={s.ext} />
-          </a>
-          <a className={s.b} href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-            <FileText />
-            Resume<span className={s.meta}>PDF</span>
-          </a>
+        <div className={s.sayGrid}>
+          <h2 className={s.say}>
+            Say <button ref={hiRef} type="button" className={s.hi} onClick={copy} title="Click to copy my email">hi.</button>
+          </h2>
+          <div className={s.lines}>
+            <button type="button" className={s.ln} onClick={copy}>
+              <span className={s.k}>Email</span>
+              <span ref={addrRef} className={`${s.v} ${s.addr}`}>{EMAIL}</span>
+              <span className={s.ar}>COPY</span>
+            </button>
+            <a className={s.ln} href={GITHUB} target="_blank" rel="noopener noreferrer">
+              <span className={s.k}>GitHub</span>
+              <span className={s.v}>{display(GITHUB)}</span>
+              <span className={s.ar}>↗</span>
+            </a>
+            <a className={s.ln} href={LINKEDIN} target="_blank" rel="noopener noreferrer">
+              <span className={s.k}>LinkedIn</span>
+              <span className={s.v}>{display(LINKEDIN).replace(/^linkedin\.com\//, '')}</span>
+              <span className={s.ar}>↗</span>
+            </a>
+            <a className={s.ln} href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+              <span className={s.k}>Resume</span>
+              <span className={s.v}>resume.pdf</span>
+              <span className={s.ar}>PDF</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

@@ -45,29 +45,24 @@ bun run dev
 
 ### Content
 
-Most site content lives in data files rather than components:
+The front page is the whole site: hero, experience, blog, hobbies and contact are bands on `/`, and the nav tabs scroll between them. `/blog` is the full post list and `/blog/[slug]` the articles.
 
-- `data/site-data.json` - Site metadata, hero, about, skills, projects and contact info
-- `data/blog-data.json` - Blog posts
-- `lib/config.ts` - Base URL, contact details, SEO keywords and social links
-
-Some pages still hold their content inline:
-
-- `components/pages/experience-detail.tsx` - Full work experience list
-- `components/pages/about-detail.tsx` and `components/sections/about.tsx` - About copy
-- `components/sections/featured-experience.tsx` - Landing page experience highlights
-- `app/layout.tsx` - Default SEO metadata
+- `lib/config.ts` - Base URL, author details, social links, SEO keywords
+- `data/site-data.json` - Experience timeline
+- `data/blog-data.json` - Blog posts (Markdown content)
+- `components/sections/hero.tsx` - Hero copy and photos
+- `components/field/off-clock-band.tsx` - Hobbies band
 
 ### Styling
 
-The design system uses CSS variables defined in `app/globals.css`, with Tailwind configured in `tailwind.config.ts`.
+The front page is styled by `components/field/field.module.css`. Blog articles use Tailwind with the CSS variables in `app/globals.css` (configured in `tailwind.config.ts`); the rendered Markdown is styled by `.article-content` there.
 
 ### Components
 
+- `components/field/` - The front page bands and their shared section links
+- `components/sections/` - Hero
+- `components/blog/` - Article, table of contents and related-post card
 - `components/ui/` - Radix-based primitives
-- `components/sections/` - Landing page sections
-- `components/pages/` - Page-level content for About, Experience, Contact and Blog
-- `components/blog/` - Blog and card components
 
 ## 🚀 Deployment
 

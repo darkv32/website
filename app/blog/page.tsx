@@ -23,5 +23,5 @@ export default function BlogPage() {
     readTime,
   }));
 
-  return <BlogBand posts={posts} />;
+  return <BlogBand posts={posts} asPage />;
 }

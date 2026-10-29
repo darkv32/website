@@ -1,18 +1,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap
 Sitemap: https://personalwebsite-theta-sand.vercel.app/sitemap.xml
-
-# Crawl-delay
-Crawl-delay: 1
-
-# Disallow admin or private areas (if any)
-Disallow: /api/
-Disallow: /_next/
-Disallow: /admin/
-
-# Allow important files
-Allow: /logo-white.png
-Allow: /logo-black.png
-Allow: /manifest.json 

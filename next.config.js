@@ -4,7 +4,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const nextConfig = {
-  // output: 'export', // Temporarily disabled for testing
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -19,12 +18,16 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-  },
-  compress: true,
   poweredByHeader: false,
-  generateEtags: false,
+  // The old tab pages are now bands on the front page
+  async redirects() {
+    return [
+      { source: '/about', destination: '/', permanent: true },
+      { source: '/experience', destination: '/#experience', permanent: true },
+      { source: '/hobbies', destination: '/#off', permanent: true },
+      { source: '/contact', destination: '/#contact', permanent: true },
+    ];
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

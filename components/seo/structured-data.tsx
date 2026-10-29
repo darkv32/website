@@ -1,42 +1,28 @@
-'use client';
-
-import Script from 'next/script';
 import { getFullUrl } from '@/lib/config';
 
-interface StructuredDataProps {
-  data: any;
-  type?: 'application/ld+json' | 'application/json';
-}
-
-export function StructuredData({ data, type = 'application/ld+json' }: StructuredDataProps) {
-  if (!data) return null;
-
+/** One JSON-LD block. `<` is escaped so post content can never close the script tag. */
+export function StructuredData({ data }: { data: object }) {
   return (
-    <Script
-      id="structured-data"
-      type={type}
-      dangerouslySetInnerHTML={{
-        __html: JSON.stringify(data),
-      }}
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
     />
   );
 }
 
-interface BreadcrumbDataProps {
-  items: Array<{ name: string; url: string }>;
+export function BreadcrumbData({ items }: { items: Array<{ name: string; url: string }> }) {
+  return (
+    <StructuredData
+      data={{
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: items.map((item, index) => ({
+          '@type': 'ListItem',
+          position: index + 1,
+          name: item.name,
+          item: getFullUrl(item.url),
+        })),
+      }}
+    />
+  );
 }
-
-export function BreadcrumbData({ items }: BreadcrumbDataProps) {
-  const breadcrumbData = {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
-      position: index + 1,
-      name: item.name,
-      item: getFullUrl(item.url),
-    })),
-  };
-
-  return <StructuredData data={breadcrumbData} />;
-} 

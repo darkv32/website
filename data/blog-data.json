@@ -12,7 +12,6 @@
       "category": "academic",
       "tags": ["CS2103", "University", "Project"],
       "readTime": 1,
-      "views": 150,
       "featured": false,
       "status": "published",
       "seo": {
@@ -33,7 +32,6 @@
       "category": "mobile",
       "tags": ["React Native", "BLE", "Expo", "Debugging"],
       "readTime": 3,
-      "views": 420,
       "featured": false,
       "status": "published",
       "seo": {
@@ -54,7 +52,6 @@
       "category": "blockchain",
       "tags": ["Bitcoin", "Open Source", "BDK-Kotlin", "Android"],
       "readTime": 5,
-      "views": 850,
       "featured": true,
       "status": "published",
       "seo": {
@@ -75,7 +72,6 @@
       "category": "blockchain",
       "tags": ["SoB", "Internship", "Bitcoin", "Padawan Wallet"],
       "readTime": 8,
-      "views": 1200,
       "featured": true,
       "status": "published",
       "seo": {
@@ -96,7 +92,6 @@
       "category": "career",
       "tags": ["GovTech", "Internship", "AWS", "CloudWatch", "React"],
       "readTime": 10,
-      "views": 950,
       "featured": true,
       "status": "published",
       "seo": {
@@ -117,7 +112,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "RBF", "Tutorial"],
       "readTime": 4,
-      "views": 320,
       "featured": false,
       "status": "published",
       "seo": {
@@ -138,7 +132,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "RBF", "Transactions"],
       "readTime": 3,
-      "views": 280,
       "featured": false,
       "status": "published",
       "seo": {
@@ -159,7 +152,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "Electrum", "Privacy"],
       "readTime": 3,
-      "views": 240,
       "featured": false,
       "status": "published",
       "seo": {
@@ -180,7 +172,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "Transactions", "Multiple Recipients"],
       "readTime": 4,
-      "views": 310,
       "featured": false,
       "status": "published",
       "seo": {
@@ -201,7 +192,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "Transactions", "Tutorial"],
       "readTime": 5,
-      "views": 380,
       "featured": false,
       "status": "published",
       "seo": {
@@ -222,7 +212,6 @@
       "category": "blockchain",
       "tags": ["BDK-Kotlin", "Bitcoin", "Testnet", "Wallet Creation"],
       "readTime": 6,
-      "views": 450,
       "featured": false,
       "status": "published",
       "seo": {
@@ -230,40 +219,6 @@
         "metaDescription": "Complete tutorial on creating a Bitcoin testnet wallet using BDK-Kotlin library for Android development.",
         "keywords": ["BDK-Kotlin", "Bitcoin", "Testnet", "Wallet", "Android", "Blockchain"]
       }
-    }
-  ],
-  "categories": [
-    {
-      "id": "1",
-      "name": "Blockchain",
-      "slug": "blockchain",
-      "description": "Bitcoin development, cryptocurrency, and blockchain technology",
-      "color": "text-yellow-500",
-      "postCount": 7
-    },
-    {
-      "id": "2",
-      "name": "Mobile Development",
-      "slug": "mobile",
-      "description": "React Native, Android, and mobile app development",
-      "color": "text-green-500",
-      "postCount": 1
-    },
-    {
-      "id": "3",
-      "name": "Career",
-      "slug": "career",
-      "description": "Internships, professional experiences, and career insights",
-      "color": "text-blue-500",
-      "postCount": 1
-    },
-    {
-      "id": "4",
-      "name": "Academic",
-      "slug": "academic",
-      "description": "University projects and academic work",
-      "color": "text-purple-500",
-      "postCount": 1
     }
   ]
 } 

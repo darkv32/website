@@ -2,9 +2,8 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogArticle } from '@/components/blog/blog-article';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data';
-import { generateMetadata as generateSEOMetadata, generateStructuredData } from '@/lib/seo';
-import { StructuredData } from '@/components/seo/structured-data';
-import { BreadcrumbData } from '@/components/seo/structured-data';
+import { generateMetadata as generateSEOMetadata, generateArticleData } from '@/lib/seo';
+import { StructuredData, BreadcrumbData } from '@/components/seo/structured-data';
 
 interface BlogPostPageProps {
   params: Promise<{
@@ -13,8 +12,7 @@ interface BlogPostPageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllBlogPosts();
-  return posts.map((post) => ({
+  return getAllBlogPosts().map((post) => ({
     slug: post.slug,
   }));
 }
@@ -50,7 +48,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     notFound();
   }
 
-  const articleData = generateStructuredData('article', post);
   const breadcrumbItems = [
     { name: 'Home', url: '/' },
     { name: 'Blog', url: '/blog' },
@@ -60,7 +57,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <>
       <BlogArticle post={post} />
-      <StructuredData data={articleData} />
+      <StructuredData data={generateArticleData(post)} />
       <BreadcrumbData items={breadcrumbItems} />
     </>
   );

@@ -1,104 +1,4 @@
 {
-  "site": {
-    "title": "Tang Yetong - Full Stack Developer | Technical Blog & Portfolio",
-    "description": "Full Stack Developer with a background in data analytics at Fivetran, plus expertise in Android development and blockchain technology. Technical blog covering Bitcoin development, mobile apps, and software engineering insights.",
-    "author": {
-      "name": "Tang Yetong",
-      "avatar": "/portrait/portrait-1.jpg",
-      "bio": "Full Stack Developer and former Data Analyst Intern at Fivetran with a background in government digital services and blockchain technology.",
-      "location": "Singapore",
-      "email": "ytyt0792@gmail.com",
-      "timezone": "SGT (UTC+8)",
-      "social": {
-        "github": "https://github.com/darkv32",
-        "linkedin": "https://linkedin.com/in/tangyetong",
-        "twitter": "@tangyetong"
-      }
-    },
-    "navigation": [
-      { "name": "Home", "href": "/" },
-      { "name": "About", "href": "/about" },
-      { "name": "Experience", "href": "/experience" },
-      { "name": "Blog", "href": "/blog" },
-      { "name": "Hobbies", "href": "/hobbies" },
-      { "name": "Contact", "href": "/contact" }
-    ]
-  },
-  "hero": {
-    "roles": [
-      "Full Stack Developer",
-      "Data Analyst",
-      "Android Engineer",
-      "Blockchain Developer"
-    ],
-    "description": "Full Stack Developer that dabbles in Data Analytics. Previously built scalable pipelines at Fivetran, digital services at GovTech, and contributed to the Bitcoin ecosystem.",
-    "socialLinks": [
-      {
-        "href": "https://github.com/darkv32",
-        "icon": "Github",
-        "label": "GitHub"
-      },
-      {
-        "href": "https://linkedin.com/in/tangyetong",
-        "icon": "Linkedin",
-        "label": "LinkedIn"
-      },
-      {
-        "href": "mailto:ytyt0792@gmail.com",
-        "icon": "Mail",
-        "label": "Email"
-      }
-    ]
-  },
-  "about": {
-    "description": "Full Stack Developer and former Data Analyst Intern at Fivetran with a passion for building scalable solutions and driving innovation through technology.",
-    "values": [
-      {
-        "icon": "Target",
-        "title": "Data-Driven Excellence",
-        "description": "Delivering high-quality data solutions that drive business insights and decision-making.",
-        "color": "text-blue-500"
-      },
-      {
-        "icon": "Users",
-        "title": "Collaborative Innovation",
-        "description": "Teamwork and cross-functional collaboration to solve complex engineering challenges.",
-        "color": "text-green-500"
-      },
-      {
-        "icon": "Heart",
-        "title": "Continuous Learning",
-        "description": "Staying current with emerging technologies and contributing to the tech community.",
-        "color": "text-purple-500"
-      }
-    ],
-    "expertise": [
-      {
-        "icon": "Database",
-        "title": "Data Engineering",
-        "description": "Built scalable data pipelines and analytics solutions at Fivetran",
-        "technologies": ["Python", "SQL", "ETL", "Data Pipelines"],
-        "color": "text-blue-500",
-        "bgColor": "bg-blue-500/10"
-      },
-      {
-        "icon": "Smartphone",
-        "title": "Mobile Development",
-        "description": "Android applications with Bluetooth LE and enterprise integrations",
-        "technologies": ["Kotlin", "Android", "React Native", "BLE"],
-        "color": "text-green-500",
-        "bgColor": "bg-green-500/10"
-      },
-      {
-        "icon": "Code",
-        "title": "Full Stack Development",
-        "description": "Web applications and government digital services",
-        "technologies": ["TypeScript", "React", "Node.js", "AWS"],
-        "color": "text-purple-500",
-        "bgColor": "bg-purple-500/10"
-      }
-    ]
-  },
   "experience": {
     "timeline": [
       {
@@ -110,22 +10,6 @@
         "summary": "Enterprise software for the hospitality industry.",
         "details": [],
         "tools": []
-      },
-      {
-        "title": "Computer Science",
-        "company": "National University of Singapore",
-        "period": "2022 – 2026",
-        "current": false,
-        "kind": "Education",
-        "summary": "Software engineering, algorithms and systems.",
-        "details": [
-          "Focus on software engineering, data structures, algorithms and system design",
-          "Active member of the NUS Hackers community"
-        ],
-        "tools": [
-          "Algorithms",
-          "Systems"
-        ]
       },
       {
         "title": "Data Analyst Intern",
@@ -143,6 +27,22 @@
           "Python",
           "SQL",
           "ETL"
+        ]
+      },
+      {
+        "title": "Computer Science",
+        "company": "National University of Singapore",
+        "period": "2022 – 2026",
+        "current": false,
+        "kind": "Education",
+        "summary": "Software engineering, algorithms and systems.",
+        "details": [
+          "Focus on software engineering, data structures, algorithms and system design",
+          "Active member of the NUS Hackers community"
+        ],
+        "tools": [
+          "Algorithms",
+          "Systems"
         ]
       },
       {
@@ -164,6 +64,23 @@
         ]
       },
       {
+        "title": "Summer of Bitcoin Intern",
+        "company": "Bitcoin Dev Kit",
+        "period": "Jun – Aug 2022",
+        "current": false,
+        "kind": "Programme",
+        "summary": "BDK-Kotlin and the Padawan testnet wallet.",
+        "details": [
+          "Contributed to Bitcoin development projects and wallet applications",
+          "Wrote a series of BDK-Kotlin how-to guides on this blog"
+        ],
+        "tools": [
+          "Kotlin",
+          "BDK",
+          "Bitcoin"
+        ]
+      },
+      {
         "title": "Android Developer",
         "company": "RFCOM Technologies",
         "period": "2018 & Apr – Dec 2022",
@@ -182,23 +99,6 @@
         ]
       },
       {
-        "title": "Summer of Bitcoin Intern",
-        "company": "Bitcoin Dev Kit",
-        "period": "Jun – Aug 2022",
-        "current": false,
-        "kind": "Programme",
-        "summary": "BDK-Kotlin and the Padawan testnet wallet.",
-        "details": [
-          "Contributed to Bitcoin development projects and wallet applications",
-          "Wrote a series of BDK-Kotlin how-to guides on this blog"
-        ],
-        "tools": [
-          "Kotlin",
-          "BDK",
-          "Bitcoin"
-        ]
-      },
-      {
         "title": "Software Engineer Intern",
         "company": "Travel Prologue",
         "period": "Jan – Mar 2020",
@@ -214,240 +114,6 @@
           "JavaScript"
         ]
       }
-    ],
-    "highlights": [
-      {
-        "title": "Software Engineer",
-        "company": "RFCOM Technologies",
-        "period": "Jun 2026 - Present",
-        "description": "Full-time software engineer at RFCOM Technologies, returning after earlier contract work on Android and Bluetooth LE applications for the hospitality industry.",
-        "technologies": [],
-        "achievements": []
-      },
-      {
-        "title": "Data Analyst Intern",
-        "company": "Fivetran",
-        "period": "Sep 2024 - Jul 2025",
-        "description": "Optimized data pipelines and built analytics solutions for enterprise clients",
-        "technologies": ["Python", "SQL", "ETL", "Data Analytics"],
-        "achievements": [
-          "Built scalable data pipelines for enterprise clients",
-          "Optimized data processing workflows",
-          "Developed analytics dashboards and reports"
-        ]
-      },
-      {
-        "title": "Software Engineer Intern",
-        "company": "GovTech Singapore",
-        "period": "May - Aug 2022 & May - Aug 2023",
-        "description": "Contributed to government digital transformation initiatives",
-        "technologies": ["React", "AWS", "CloudWatch", "Node.js"],
-        "achievements": [
-          "Built citizen-facing applications",
-          "Implemented cloud solutions on AWS",
-          "Handled data collection and analytics for Key Results"
-        ]
-      },
-      {
-        "title": "Android Developer",
-        "company": "RFCOM Technologies",
-        "period": "2018 & 2022",
-        "description": "Built enterprise solutions for the hospitality industry",
-        "technologies": ["Kotlin", "Android", "Bluetooth LE", "Java"],
-        "achievements": [
-          "Developed Android apps with Bluetooth LE integration",
-          "Created enterprise solutions for hospitality sector",
-          "Implemented secure payment processing systems"
-        ]
-      }
-    ],
-    "organizations": [
-      "NUS Hackers",
-      "Summer of Bitcoin",
-      "Bitcoin Development Kit",
-      "Padawan Wallet"
-    ],
-    "achievements": [
-      {
-        "title": "Summer of Bitcoin 2022",
-        "organization": "Bitcoin Development Kit",
-        "year": "2022",
-        "description": "Contributed to Bitcoin development projects and cryptocurrency wallet applications"
-      },
-      {
-        "title": "NUS Computer Science",
-        "organization": "National University of Singapore",
-        "year": "2022-2026",
-        "description": "Undergraduate degree in Computer Science"
-      }
-    ]
-  },
-  "projects": {
-    "featured": [
-      {
-        "id": "1",
-        "title": "Padawan Wallet",
-        "description": "Bitcoin testnet wallet for learning and education",
-        "technologies": ["Kotlin", "BDK-Kotlin", "Bitcoin", "Android"],
-        "github": "https://github.com/thunderbiscuit/padawan-wallet",
-        "live": "https://github.com/thunderbiscuit/padawan-wallet",
-        "featured": true
-      },
-      {
-        "id": "2",
-        "title": "Personal Website",
-        "description": "Portfolio and technical blog built with Next.js",
-        "technologies": ["Next.js", "TypeScript", "Tailwind CSS", "React"],
-        "github": "https://github.com/darkv32/personal-website",
-        "live": "https://personalwebsite-theta-sand.vercel.app",
-        "featured": true
-      },
-      {
-        "id": "3",
-        "title": "Data Pipeline Optimization",
-        "description": "Enterprise data pipeline solutions built at Fivetran",
-        "technologies": ["Python", "SQL", "ETL", "Data Analytics"],
-        "github": "#",
-        "live": "#",
-        "featured": true
-      }
-    ],
-    "categories": [
-      { "value": "all", "label": "All Projects" },
-      { "value": "blockchain", "label": "Blockchain" },
-      { "value": "mobile", "label": "Mobile Development" },
-      { "value": "web", "label": "Web Development" },
-      { "value": "data", "label": "Data Engineering" }
-    ]
-  },
-  "skills": {
-    "categories": [
-      {
-        "id": "1",
-        "name": "Programming Languages",
-        "icon": "Code",
-        "skills": [
-          { "name": "Python", "level": 90 },
-          { "name": "Kotlin", "level": 85 },
-          { "name": "TypeScript", "level": 80 },
-          { "name": "JavaScript", "level": 75 },
-          { "name": "Java", "level": 70 }
-        ]
-      },
-      {
-        "id": "2",
-        "name": "Data & Analytics",
-        "icon": "Database",
-        "skills": [
-          { "name": "SQL", "level": 90 },
-          { "name": "ETL", "level": 85 },
-          { "name": "Data Pipelines", "level": 80 },
-          { "name": "Analytics", "level": 75 }
-        ]
-      },
-      {
-        "id": "3",
-        "name": "Mobile Development",
-        "icon": "Smartphone",
-        "skills": [
-          { "name": "Android", "level": 85 },
-          { "name": "React Native", "level": 80 },
-          { "name": "Bluetooth LE", "level": 75 },
-          { "name": "Mobile UI/UX", "level": 70 }
-        ]
-      },
-      {
-        "id": "4",
-        "name": "Web Development",
-        "icon": "Globe",
-        "skills": [
-          { "name": "React", "level": 85 },
-          { "name": "Next.js", "level": 80 },
-          { "name": "Node.js", "level": 75 },
-          { "name": "Tailwind CSS", "level": 80 }
-        ]
-      },
-      {
-        "id": "5",
-        "name": "Cloud & DevOps",
-        "icon": "Cloud",
-        "skills": [
-          { "name": "AWS", "level": 80 },
-          { "name": "CloudWatch", "level": 75 },
-          { "name": "Docker", "level": 70 },
-          { "name": "CI/CD", "level": 70 }
-        ]
-      },
-      {
-        "id": "6",
-        "name": "Blockchain",
-        "icon": "Bitcoin",
-        "skills": [
-          { "name": "Bitcoin Development", "level": 80 },
-          { "name": "BDK-Kotlin", "level": 85 },
-          { "name": "Cryptocurrency", "level": 75 },
-          { "name": "Blockchain", "level": 70 }
-        ]
-      }
-    ],
-    "highlights": [
-      {
-        "title": "5+ Years Experience",
-        "description": "Professional software development experience"
-      },
-      {
-        "title": "40+ Technologies",
-        "description": "Mastered across different domains"
-      },
-      {
-        "title": "30+ Projects",
-        "description": "Completed successfully"
-      },
-      {
-        "title": "8 Skill Categories",
-        "description": "Comprehensive technical expertise"
-      }
-    ]
-  },
-  "contact": {
-    "info": [
-      {
-        "title": "Email",
-        "value": "ytyt0792@gmail.com",
-        "description": "Primary contact method",
-        "href": "mailto:ytyt0792@gmail.com",
-        "icon": "Mail"
-      },
-      {
-        "title": "Location",
-        "value": "Singapore",
-        "description": "Based in Singapore",
-        "href": "#",
-        "icon": "MapPin"
-      },
-      {
-        "title": "Timezone",
-        "value": "SGT (UTC+8)",
-        "description": "Singapore Time",
-        "href": "#",
-        "icon": "Clock"
-      }
-    ],
-    "socialLinks": [
-      {
-        "name": "GitHub",
-        "href": "https://github.com/darkv32",
-        "description": "Open source contributions and projects",
-        "icon": "Github",
-        "color": "text-gray-600 hover:text-gray-900"
-      },
-      {
-        "name": "LinkedIn",
-        "href": "https://linkedin.com/in/tangyetong",
-        "description": "Professional network and experience",
-        "icon": "Linkedin",
-        "color": "text-blue-600 hover:text-blue-700"
-      }
     ]
   }
-} 
+}

@@ -59,7 +59,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={heroRef} className={s.hero}>
+    <section ref={heroRef} id="hero" className={s.hero}>
       <HeroField heroRef={heroRef} frameRef={frameRef} />
 
       <div className={s.in}>
