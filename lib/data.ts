@@ -1,6 +1,5 @@
 import siteData from '../data/site-data.json';
 import blogData from '../data/blog-data.json';
-import { SITE_CONFIG } from './config';
 
 export interface Role {
   title: string;
@@ -24,16 +23,6 @@ export interface BlogPost {
   excerpt: string;
   content: string;
   featuredImage: string;
-  author: {
-    name: string;
-    avatar: string;
-    bio: string;
-    social: {
-      twitter: string;
-      linkedin: string;
-      github: string;
-    };
-  };
   publishedAt: string;
   updatedAt: string;
   category: string;
@@ -42,32 +31,33 @@ export interface BlogPost {
   featured: boolean;
   status: 'draft' | 'published' | 'archived';
   seo: {
-    metaTitle?: string;
-    metaDescription?: string;
-    keywords?: string[];
-    ogImage?: string;
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string[];
   };
 }
 
+/** What a list of posts needs; keeps the article text out of client components. */
+export type BlogSummary = Pick<BlogPost, 'slug' | 'title' | 'excerpt' | 'publishedAt' | 'category' | 'readTime'>;
+
 export const getExperienceData = (): { timeline: Role[] } => siteData.experience as { timeline: Role[] };
 
-const author: BlogPost['author'] = {
-  name: SITE_CONFIG.site.author,
-  avatar: SITE_CONFIG.site.avatar,
-  bio: SITE_CONFIG.site.bio,
-  social: {
-    twitter: SITE_CONFIG.social.twitter,
-    linkedin: SITE_CONFIG.social.linkedin,
-    github: SITE_CONFIG.social.github,
-  },
-};
-
-const published = (blogData.posts as Array<Omit<BlogPost, 'author'>>)
+const published = (blogData.posts as BlogPost[])
   .filter((post) => post.status === 'published')
-  .map((post): BlogPost => ({ ...post, author }))
   .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
 export const getAllBlogPosts = (): BlogPost[] => published;
+
+/** Every published post as a summary, newest first. Dates are cut to YYYY-MM-DD. */
+export const getBlogSummaries = (): BlogSummary[] =>
+  published.map(({ slug, title, excerpt, publishedAt, category, readTime }) => ({
+    slug,
+    title,
+    excerpt,
+    publishedAt: publishedAt.slice(0, 10),
+    category,
+    readTime,
+  }));
 
 export const getBlogPostBySlug = (slug: string): BlogPost | undefined =>
   published.find((post) => post.slug === slug);

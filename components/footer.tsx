@@ -18,7 +18,7 @@ export function Footer() {
         <button
           type="button"
           className={s.top}
-          onClick={() => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })}
+          onClick={() => scrollTo({ top: 0 })}
         >
           Back to top <span aria-hidden="true">&uarr;</span>
         </button>

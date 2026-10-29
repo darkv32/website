@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import type { Role } from '@/lib/data';
@@ -11,7 +11,7 @@ import p from './pages.module.css';
 
 const FACTS: Array<{ k: string; href: string; v: ReactNode }> = [
   { k: 'Based in', href: '/contact', v: <><b>{SITE_CONFIG.site.location}</b> &middot; SGT, UTC+8</> },
-  { k: 'Now', href: '/experience', v: <><b>Software Engineer</b> at RFCOM Technologies</> },
+  { k: 'Now', href: '/experience', v: <><b>Senior Engineer</b> at RFCOM Technologies</> },
   { k: 'Before', href: '/experience', v: 'Fivetran · GovTech · Bitcoin Dev Kit · RFCOM (Android)' },
   { k: 'Studied', href: '/experience', v: <><b>Computer Science</b>, National University of Singapore</> },
   { k: 'Writes', href: '/blog', v: 'Bitcoin wallets, Android, what an internship is really like' },
@@ -35,7 +35,7 @@ export function AboutBody({ roles }: { roles: Role[] }) {
             </div>
             <div className={`${s.lines} ${p.facts}`}>
               {FACTS.map((f) => (
-                <Link key={f.k} href={f.href} className={s.ln}>
+                <Link key={f.k} href={f.href} className={s.ln} style={{ '--i': FACTS.indexOf(f) } as CSSProperties}>
                   <span className={s.k}>{f.k}</span>
                   <span className={s.v}>{f.v}</span>
                   <span className={s.ar}>↗</span>

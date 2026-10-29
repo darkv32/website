@@ -2,12 +2,12 @@
   "experience": {
     "timeline": [
       {
-        "title": "Software Engineer",
+        "title": "Senior Engineer",
         "company": "RFCOM Technologies",
         "period": "Jun 2026 – Now",
         "current": true,
         "kind": "Work",
-        "summary": "Enterprise software for the hospitality industry.",
+        "summary": "Mobile apps and payment systems that hotels and their guests use every day.",
         "details": [],
         "short": "RFCOM",
         "spans": [[2026.42,null]],
@@ -127,6 +127,18 @@
           "SQL",
           "JavaScript"
         ]
+      },
+      {
+        "title": "Secondary School",
+        "company": "NUS High School of Mathematics and Science",
+        "period": "2013 – 2019",
+        "current": false,
+        "kind": "Education",
+        "summary": "Specialised school focused on mathematics and science.",
+        "details": [],
+        "short": "NUS High",
+        "spans": [[2013,2019]],
+        "tools": []
       }
     ]
   }

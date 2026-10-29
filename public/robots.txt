@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://personalwebsite-theta-sand.vercel.app/sitemap.xml

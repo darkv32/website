@@ -1,14 +1,21 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { Fragment, useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import Link from 'next/link';
 import type { Role } from '@/lib/data';
+import { Reveal } from './reveal';
 import s from './field.module.css';
 import p from './pages.module.css';
 
 const toolKey = (tool: string) => tool.toLowerCase().replace(/[^a-z0-9]/g, '');
 
 const KINDS = ['All', 'Work', 'Education', 'Programme'] as const;
+
+/* the chart starts here; earlier stretches are clipped at the left edge */
+const CHART_START = 2018;
+
+/* stretches blocked out on the timeline, as [label, start, end] in decimal years */
+const BLOCKS = [['Army', 2020.25, 2022]] as const;
 
 /* "Now" as a decimal year for the timeline. The server snapshot is only used for hydration; the client then reads the real date. */
 const nowYear = () => {
@@ -84,7 +91,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
       const ey = tr.top + tr.height / 2 - sr.top;
       const dx = Math.max(40, ex - sx);
       path.setAttribute('d', `M${sx.toFixed(1)} ${sy.toFixed(1)} C${(sx + dx * 0.55).toFixed(1)} ${sy.toFixed(1)} ${(ex - dx * 0.45).toFixed(1)} ${ey.toFixed(1)} ${ex.toFixed(1)} ${ey.toFixed(1)}`);
-      arrow.style.opacity = tr.top > 76 && tr.top < innerHeight - 40 ? '1' : '0';
+      arrow.dataset.show = tr.top > 76 && tr.top < innerHeight - 40 ? '1' : '0';
     };
     const queue = () => {
       if (!queued) { queued = true; requestAnimationFrame(update); }
@@ -133,7 +140,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
 
   /* timeline geometry, in decimal years */
   const spans = roles.flatMap((r) => r.spans.map(([a, b]) => [a, b ?? now] as const));
-  const y0 = Math.floor(Math.min(...spans.map(([a]) => a)));
+  const y0 = CHART_START;
   const y1 = Math.ceil(Math.max(...spans.map(([, b]) => b), now));
   const pct = (y: number) => `${(((y - y0) / (y1 - y0)) * 100).toFixed(2)}%`;
   const axisYears = Array.from({ length: Math.ceil((y1 - y0) / 2) }, (_, i) => y0 + i * 2);
@@ -145,10 +152,10 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
         <svg ref={arrowRef} className={s.nowArrow} aria-hidden="true">
           <defs>
             <marker id="nowHead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-              <path d="M1 1 L9 5 L1 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+              <path className={s.arrowTip} d="M1 1 L9 5 L1 9" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
             </marker>
           </defs>
-          <path ref={pathRef} d="" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" markerEnd="url(#nowHead)" />
+          <path ref={pathRef} className={s.arrowLine} pathLength={1} d="" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" markerEnd="url(#nowHead)" />
         </svg>
         <aside className={s.side}>
           <Heading className={s.h2}>Experience</Heading>
@@ -195,7 +202,7 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
         </aside>
         <div>
           {asPage && (
-            <div className={p.gantt}>
+            <Reveal className={p.gantt}>
               <div className={p.gHead}>
                 <span className={s.label}>{y0} &rarr; now</span>
                 <span className={p.gRead} aria-live="polite">
@@ -203,6 +210,16 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                 </span>
               </div>
               <div className={p.gGrid}>
+                {BLOCKS.map(([label, a, b]) => (
+                  <i
+                    key={label}
+                    className={p.gBlock}
+                    style={{ left: `calc(var(--lw) + (100% - var(--lw)) * ${(a - y0) / (y1 - y0)})`, width: `calc((100% - var(--lw)) * ${(b - a) / (y1 - y0)})` }}
+                    aria-hidden="true"
+                  >
+                    <span>{label}</span>
+                  </i>
+                ))}
                 <span />
                 <div className={p.gAxis}>
                   {axisYears.map((y) => <span key={y} style={{ left: pct(y) }}>{y}</span>)}
@@ -211,14 +228,16 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                   const off = !kindOk(r) || !toolOk(r);
                   return (
                     <Fragment key={`${r.company}-${r.title}-${r.period}`}>
-                      <div className={`${p.gLab} ${off ? p.off : ''}`}>{r.short}</div>
+                      <div className={`${p.gLab} ${off ? p.off : ''}`} style={{ '--i': i } as CSSProperties}>{r.short}</div>
                       <div className={p.gTrack}>
-                        {r.spans.map(([a, b], k) => (
+                        {r.spans.map(([from, b], k) => {
+                          const a = Math.max(from, y0);
+                          return (
                           <button
                             key={k}
                             type="button"
                             className={[p.seg, spanClass(r.kind), hover === i ? p.on : '', off ? p.off : ''].filter(Boolean).join(' ')}
-                            style={{ left: pct(a), width: `${(((b ?? now) - a) / (y1 - y0)) * 100}%` }}
+                            style={{ left: pct(a), width: `${(((b ?? now) - a) / (y1 - y0)) * 100}%`, '--i': i } as CSSProperties}
                             aria-label={`${r.title}, ${r.company}, ${r.period}`}
                             onMouseEnter={() => setHover(i)}
                             onMouseLeave={() => setHover(-1)}
@@ -226,10 +245,11 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                             onBlur={() => setHover(-1)}
                             onClick={() => {
                               setOpen((prev) => (prev.includes(i) || !r.details.length ? prev : [...prev, i]));
-                              rowRefs.current[i]?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+                              rowRefs.current[i]?.scrollIntoView({ block: 'center' });
                             }}
                           />
-                        ))}
+                          );
+                        })}
                       </div>
                     </Fragment>
                   );
@@ -240,8 +260,9 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
                 <span><i />Work</span>
                 <span><i className={p.edu} />Education</span>
                 <span><i className={p.prog} />Programme</span>
+                <span><i className={p.army} />Army</span>
               </div>
-            </div>
+            </Reveal>
           )}
           <ol ref={listRef} className={s.xp}>
             {roles.map((role, i) => {

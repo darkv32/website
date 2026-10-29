@@ -3,20 +3,13 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Dices } from 'lucide-react';
+import type { BlogSummary } from '@/lib/data';
+import { Reveal } from './reveal';
 import s from './field.module.css';
 import p from './pages.module.css';
 
-export interface BlogBandPost {
-  slug: string;
-  title: string;
-  excerpt: string;
-  publishedAt: string;
-  category: string;
-  readTime: number;
-}
-
 interface BlogBandProps {
-  posts: BlogBandPost[];
+  posts: BlogSummary[];
   /** Show only the latest N posts and link to the full list. Omit to show everything. */
   limit?: number;
   /** The page's own h1 when this is the whole page; an h2 when it sits inside the front page. Also adds search, sort and an archive view. */
@@ -43,7 +36,7 @@ const pickOne = <T,>(list: T[]) => list[Math.floor(Math.random() * list.length)]
 const DOT_GAP = 1.5;
 
 /** Where each post sits on the time axis (0-100) and which row it stacks on, plus the year ticks. Pure, so server and client agree. */
-function layoutTimeline(posts: BlogBandPost[]) {
+function layoutTimeline(posts: BlogSummary[]) {
   const years = posts.map((post) => +post.publishedAt.slice(0, 4));
   const firstYear = Math.min(...years);
   const lastYear = Math.max(...years);
@@ -110,7 +103,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
   /* scroll to a card and flash it; if filters are hiding it, clear them first */
   const jumpTo = (slug: string) => {
     const go = () => {
-      document.getElementById(`post-${slug}`)?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+      document.getElementById(`post-${slug}`)?.scrollIntoView({ block: 'center' });
       setFlash('');
       requestAnimationFrame(() => setFlash(slug));
     };
@@ -124,8 +117,26 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
     jumpTo(pickOne(visible).slug);
   };
 
+  const chips = (
+    <>
+      {[['all', posts.length] as const, ...categories].map(([cat, n]) => (
+        <button
+          key={cat}
+          type="button"
+          className={s.chip}
+          aria-pressed={filter === cat}
+          onClick={() => { setFilter(cat); setAnimate(true); }}
+        >
+          {cat}
+          <span>{n}</span>
+        </button>
+      ))}
+    </>
+  );
+
   const timeline = asPage && posts.length ? layoutTimeline(posts) : null;
-  const tlPost = posts.find((post) => post.slug === tlHover);
+  const bySlug = new Map(posts.map((post) => [post.slug, post]));
+  const tlPost = bySlug.get(tlHover);
 
   return (
     <section id="blogs" className={`${s.band} ${s.bandBlog} ${s.sec} ${s.blogBand}`}>
@@ -136,7 +147,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
             <p>Writing on Bitcoin wallets, Android and what an internship is actually like.</p>
           </div>
           {timeline && (
-            <div className={p.tl}>
+            <Reveal className={p.tl}>
               <div className={p.tlHead}>
                 <span>Every post, by date</span>
                 <span className={p.tlRead} aria-live="polite">
@@ -145,14 +156,13 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
               </div>
               <div className={p.tlTrack} style={{ '--rows': timeline.rows } as CSSProperties}>
                 {timeline.dots.map((d) => {
-                  const post = posts.find((x) => x.slug === d.slug);
-                  if (!post) return null;
+                  const post = bySlug.get(d.slug)!;
                   return (
                     <button
                       key={d.slug}
                       type="button"
                       className={`${p.tlDot} ${visible.some((v) => v.slug === d.slug) ? '' : p.off}`}
-                      style={{ '--x': `${d.x.toFixed(2)}%`, '--row': d.row } as CSSProperties}
+                      style={{ '--x': `${d.x.toFixed(2)}%`, '--row': d.row, '--n': Math.round(d.x) } as CSSProperties}
                       aria-label={`${post.title}, ${post.publishedAt}`}
                       onMouseEnter={() => setTlHover(d.slug)}
                       onMouseLeave={() => setTlHover('')}
@@ -166,23 +176,10 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
               <div className={p.tlAxis} aria-hidden="true">
                 {timeline.ticks.map((t) => <span key={t.year} style={{ left: `${t.x.toFixed(2)}%` }}>{t.year}</span>)}
               </div>
-            </div>
+            </Reveal>
           )}
           {!asPage && (
-            <div className={s.chips} role="group" aria-label="Filter posts">
-              {[['all', posts.length] as const, ...categories].map(([cat, n]) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={s.chip}
-                  aria-pressed={filter === cat}
-                  onClick={() => { setFilter(cat); setAnimate(true); }}
-                >
-                  {cat}
-                  <span>{n}</span>
-                </button>
-              ))}
-            </div>
+            <div className={s.chips} role="group" aria-label="Filter posts">{chips}</div>
           )}
         </div>
 
@@ -226,20 +223,7 @@ export function BlogBand({ posts, limit, asPage = false }: BlogBandProps) {
                 </button>
               </div>
             </div>
-            <div className={`${s.chips} ${s.chipsWide}`} role="group" aria-label="Filter posts">
-              {[['all', posts.length] as const, ...categories].map(([cat, n]) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={s.chip}
-                  aria-pressed={filter === cat}
-                  onClick={() => { setFilter(cat); setAnimate(true); }}
-                >
-                  {cat}
-                  <span>{n}</span>
-                </button>
-              ))}
-            </div>
+            <div className={`${s.chips} ${s.chipsWide}`} role="group" aria-label="Filter posts">{chips}</div>
           </>
         )}
 

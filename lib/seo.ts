@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import type { BlogPost } from './data';
 import { SITE_CONFIG, getFullUrl } from './config';
 
@@ -6,26 +6,26 @@ export interface SEOConfig {
   title: string;
   description: string;
   keywords?: string[];
+  /** Absolute URL. Pages without one use the site's generated `opengraph-image`. */
   image?: string;
   url?: string;
   type?: 'website' | 'article';
   publishedTime?: string;
   modifiedTime?: string;
-  author?: string;
 }
 
 const { site, social } = SITE_CONFIG;
 const sameAs = [social.github, social.linkedin, social.twitter];
 
-export function generateMetadata(config: SEOConfig): Metadata {
+export function createMetadata(config: SEOConfig): Metadata {
   const fullUrl = config.url ? getFullUrl(config.url) : SITE_CONFIG.baseUrl;
-  const imageUrl = config.image ? getFullUrl(config.image) : getFullUrl('/og-image.jpg');
+  const images = config.image ? [{ url: config.image, width: 1200, height: 630, alt: config.title }] : undefined;
 
   return {
     title: config.title,
     description: config.description,
-    keywords: config.keywords || [...SITE_CONFIG.seo.defaultKeywords],
-    authors: [{ name: config.author || site.author }],
+    keywords: config.keywords ?? [...SITE_CONFIG.seo.defaultKeywords],
+    authors: [{ name: site.author }],
     creator: site.author,
     publisher: site.author,
     metadataBase: new URL(SITE_CONFIG.baseUrl),
@@ -33,20 +33,13 @@ export function generateMetadata(config: SEOConfig): Metadata {
       canonical: fullUrl,
     },
     openGraph: {
-      type: config.type || 'website',
+      type: config.type ?? 'website',
       locale: 'en_US',
       url: fullUrl,
       title: config.title,
       description: config.description,
       siteName: site.title,
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: config.title,
-        },
-      ],
+      images,
       publishedTime: config.publishedTime,
       modifiedTime: config.modifiedTime,
     },
@@ -55,7 +48,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: config.title,
       description: config.description,
       creator: social.twitterHandle,
-      images: [imageUrl],
+      images: config.image ? [config.image] : undefined,
     },
     robots: {
       index: true,
@@ -72,13 +65,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
       ? { google: SITE_CONFIG.seo.googleVerification }
       : undefined,
     icons: {
-      icon: [
-        { url: '/logo-white.png' },
-        { url: '/logo-white.png', sizes: '32x32', type: 'image/png' },
-      ],
-      apple: [
-        { url: '/logo-white.png', sizes: '180x180', type: 'image/png' },
-      ],
+      icon: '/logo-white.png',
+      apple: '/logo-white.png',
     },
   };
 }
@@ -118,7 +106,7 @@ export function generatePersonData() {
       addressLocality: site.location,
     },
     sameAs,
-    jobTitle: 'Software Engineer',
+    jobTitle: 'Senior Engineer',
     worksFor: {
       '@type': 'Organization',
       name: 'RFCOM Technologies',
@@ -144,7 +132,7 @@ export function generateArticleData(post: BlogPost) {
     image: post.featuredImage,
     author: {
       '@type': 'Person',
-      name: post.author.name,
+      name: site.author,
       url: SITE_CONFIG.baseUrl,
     },
     publisher: {

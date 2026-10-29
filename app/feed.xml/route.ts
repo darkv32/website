@@ -1,14 +1,18 @@
 import { getAllBlogPosts } from '@/lib/data';
 import { SITE_CONFIG, getFullUrl } from '@/lib/config';
 
+/* The feed only changes when a post does, so it is built once with the site instead of on every request. */
+export const dynamic = 'force-static';
+
 const escapeXml = (text: string) =>
   text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 export function GET() {
   const { site } = SITE_CONFIG;
-  const now = new Date().toUTCString();
+  const posts = getAllBlogPosts();
+  const latest = new Date(Math.max(...posts.map((post) => Date.parse(post.updatedAt)))).toUTCString();
 
-  const items = getAllBlogPosts()
+  const items = posts
     .map(
       (post) => `
     <item>
@@ -17,7 +21,7 @@ export function GET() {
       <link>${getFullUrl(`/blog/${post.slug}`)}</link>
       <guid>${getFullUrl(`/blog/${post.slug}`)}</guid>
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
-      <author>${site.email} (${escapeXml(post.author.name)})</author>
+      <author>${site.email} (${escapeXml(site.author)})</author>
       <category>${escapeXml(post.category)}</category>
       ${post.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('')}
     </item>`,
@@ -32,15 +36,15 @@ export function GET() {
     <link>${SITE_CONFIG.baseUrl}</link>
     <atom:link href="${getFullUrl('/feed.xml')}" rel="self" type="application/rss+xml" />
     <language>en-US</language>
-    <lastBuildDate>${now}</lastBuildDate>
-    <pubDate>${now}</pubDate>
+    <lastBuildDate>${latest}</lastBuildDate>
+    <pubDate>${latest}</pubDate>
     <ttl>60</ttl>${items}
   </channel>
 </rss>`;
 
   return new Response(rss, {
     headers: {
-      'Content-Type': 'application/xml',
+      'Content-Type': 'application/rss+xml; charset=utf-8',
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
     },
   });

@@ -5,20 +5,25 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   images: {
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    minimumCacheTTL: 60,
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.pexels.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    // The first format the browser accepts wins, so AVIF has to come before WebP to ever be served
+    formats: ['image/avif', 'image/webp'],
+    // Photos in /public never change under the same name, so there is no need to re-check them every minute
+    minimumCacheTTL: 60 * 60 * 24 * 7,
+    remotePatterns: [new URL('https://images.pexels.com/photos/**')],
   },
   poweredByHeader: false,
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+        ],
+      },
+    ];
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

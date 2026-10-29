@@ -10,39 +10,33 @@ import { formatDate, type BlogPost } from '@/lib/data';
 export function BlogPostCard({ post }: { post: BlogPost }) {
   return (
     <Card className="group hover:shadow-2xl hover:scale-[1.02] transition-all duration-75 border-2 border-primary/30 shadow-md overflow-hidden flex flex-col">
-      {post.featuredImage && (
-        <div className="aspect-video overflow-hidden relative">
-          <Image
-            src={
-              post.featuredImage.startsWith('https://images.pexels.com/')
-                ? `${post.featuredImage}${post.featuredImage.includes('?') ? '&' : '?'}auto=compress,format&w=600`
-                : post.featuredImage
-            }
-            alt={post.title}
-            fill
-            className="w-full h-full object-cover"
-            sizes="(max-width: 768px) 100vw, 33vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          {post.featured && (
-            <div className="absolute top-4 left-4">
-              <Badge className="bg-primary">Featured</Badge>
+      <div className="aspect-video overflow-hidden relative">
+        <Image
+          src={post.featuredImage}
+          alt={post.title}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 33vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+        {post.featured && (
+          <div className="absolute top-4 left-4">
+            <Badge className="bg-primary">Featured</Badge>
+          </div>
+        )}
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="flex items-center space-x-4 text-white text-sm">
+            <div className="flex items-center space-x-1">
+              <Calendar className="h-4 w-4" />
+              <span>{formatDate(post.publishedAt)}</span>
             </div>
-          )}
-          <div className="absolute bottom-4 left-4 right-4">
-            <div className="flex items-center space-x-4 text-white text-sm">
-              <div className="flex items-center space-x-1">
-                <Calendar className="h-4 w-4" />
-                <span>{formatDate(post.publishedAt)}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Clock className="h-4 w-4" />
-                <span>{post.readTime} mins</span>
-              </div>
+            <div className="flex items-center space-x-1">
+              <Clock className="h-4 w-4" />
+              <span>{post.readTime} mins</span>
             </div>
           </div>
         </div>
-      )}
+      </div>
       <div className="flex flex-col flex-1">
         <CardHeader className="min-h-[88px] flex flex-col justify-start">
           <CardTitle className="line-clamp-2 group-hover:text-primary transition-colors min-h-[48px]">

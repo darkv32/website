@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { toast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
+import { copyText } from '@/lib/clipboard';
 import { SITE_CONFIG } from '@/lib/config';
 import { Composer, TimeStrip } from './contact-extras';
 import s from './field.module.css';
@@ -24,7 +25,6 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
   const [greet, setGreet] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const hiRef = useRef<HTMLButtonElement>(null);
-  const addrRef = useRef<HTMLSpanElement>(null);
 
   /* The word "hi" drifts toward the cursor. */
   useEffect(() => {
@@ -48,21 +48,7 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
     };
   }, []);
 
-  const copy = () => {
-    const fallback = () => {
-      const el = addrRef.current;
-      if (el) {
-        const range = document.createRange();
-        range.selectNodeContents(el);
-        const sel = getSelection();
-        sel?.removeAllRanges();
-        sel?.addRange(range);
-      }
-      toast({ title: 'Press Ctrl+C to copy' });
-    };
-    if (!navigator.clipboard) return fallback();
-    navigator.clipboard.writeText(EMAIL).then(() => toast({ title: 'Email copied' }), fallback);
-  };
+  const copy = () => copyText(EMAIL, 'Email copied');
 
   const onHi = () => {
     if (asPage) setGreet((g) => (g + 1) % GREETINGS.length);
@@ -79,6 +65,7 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
   );
 
   return (
+    <>
     <section ref={sectionRef} id="contact" className={`${s.band} ${s.bandPaper} ${s.sec} ${s.contact}`}>
       <div className={s.in}>
         <div className={s.sayGrid}>
@@ -96,7 +83,7 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
           <div className={s.lines}>
             <button type="button" className={s.ln} onClick={copy}>
               <span className={s.k}>Email</span>
-              <span ref={addrRef} className={`${s.v} ${s.addr}`}>{EMAIL}</span>
+              <span className={`${s.v} ${s.addr}`}>{EMAIL}</span>
               <span className={s.ar}>COPY</span>
             </button>
             <a className={s.ln} href={GITHUB} target="_blank" rel="noopener noreferrer">
@@ -130,5 +117,8 @@ export function ContactBand({ asPage = false }: { asPage?: boolean }) {
         )}
       </div>
     </section>
+    {/* The only page content that raises toasts, so the toast code loads here and nowhere else. */}
+    <Toaster />
+    </>
   );
 }

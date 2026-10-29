@@ -3,6 +3,7 @@
 import { useState, useSyncExternalStore } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { copyText } from '@/lib/clipboard';
 import { SITE_CONFIG } from '@/lib/config';
 import { Reveal } from './reveal';
 import s from './field.module.css';
@@ -100,11 +101,7 @@ export function Composer() {
     location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     toast({ title: 'Opening your mail app' });
   };
-  const copyDraft = () => {
-    const text = `To: ${EMAIL}\nSubject: ${subject}\n\n${body}`;
-    if (!navigator.clipboard) return toast({ title: 'Could not copy' });
-    navigator.clipboard.writeText(text).then(() => toast({ title: 'Draft copied' }), () => toast({ title: 'Could not copy' }));
-  };
+  const copyDraft = () => copyText(`To: ${EMAIL}\nSubject: ${subject}\n\n${body}`, 'Draft copied');
 
   return (
     <Reveal className={p.compose}>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FileText, Github, Linkedin, ArrowUpRight } from 'lucide-react';
@@ -83,17 +83,17 @@ export function Hero({ page = false }: { page?: boolean }) {
       <div className={s.in}>
         <div className={s.heroGrid}>
           <div>
-            {page && <div className={`${s.label} ${p.eyebrow}`}>About &middot; 01 / 05</div>}
+            {page && <div className={`${s.label} ${p.eyebrow} ${s.enter}`} style={order(0)}>About &middot; 01 / 05</div>}
             <h1 className={s.name}>
-              <span>Tang</span>
-              <span className={s.l2}>Yetong</span>
+              <span className={s.mask}><span style={order(1)}>Tang</span></span>
+              <span className={`${s.mask} ${s.l2}`}><span style={order(2)}>Yetong</span></span>
             </h1>
-            <p className={s.lede}>Full stack developer that dabbles in data analytics.</p>
-            <p className={s.sub}>
-              Software engineer at RFCOM. Previously built scalable pipelines at Fivetran, digital services at GovTech, and
+            <p className={`${s.lede} ${s.enter}`} style={order(3)}>Full stack developer that dabbles in data analytics.</p>
+            <p className={`${s.sub} ${s.enter}`} style={order(4)}>
+              Senior engineer at RFCOM. Previously built scalable pipelines at Fivetran, digital services at GovTech, and
               contributed to the Bitcoin ecosystem.
             </p>
-            <div className={s.btnrow}>
+            <div className={`${s.btnrow} ${s.enter}`} style={order(5)}>
               <a className={`${s.b} ${s.primary}`} href="/resume.pdf" target="_blank" rel="noopener noreferrer">
                 <FileText />
                 Resume<span className={s.meta}>PDF</span>
@@ -110,7 +110,7 @@ export function Hero({ page = false }: { page?: boolean }) {
               </a>
             </div>
             {!page && (
-              <Link className={p.pageLink} href="/about">
+              <Link className={`${p.pageLink} ${s.enter}`} style={order(6)} href="/about">
                 More about me <span aria-hidden="true">&rarr;</span>
               </Link>
             )}
@@ -121,7 +121,7 @@ export function Hero({ page = false }: { page?: boolean }) {
             onMouseEnter={() => { pausedRef.current = true; }}
             onMouseLeave={() => { pausedRef.current = false; }}
           >
-            <div ref={frameRef} className={s.photoFrame} onClick={next}>
+            <div ref={frameRef} className={`${s.photoFrame} ${s.fadeIn}`} onClick={next}>
               {frames.map((f, i) => (
                 <Image
                   key={f.src}
@@ -130,12 +130,12 @@ export function Hero({ page = false }: { page?: boolean }) {
                   src={f.src}
                   alt={`Tang Yetong ${f.alt}`}
                   fill
-                  priority={i === 0}
+                  preload={i === 0}
                   sizes="(max-width: 860px) 340px, (max-width: 1200px) 380px, 630px"
                 />
               ))}
             </div>
-            <figcaption className={s.photoCap}>
+            <figcaption className={`${s.photoCap} ${s.fadeIn}`}>
               {page && (
                 <span className={p.photoWhere}>
                   <b>{String(current + 1).padStart(2, '0')}</b> / {String(frames.length).padStart(2, '0')} &middot; {frames[current].label}
@@ -167,6 +167,9 @@ export function Hero({ page = false }: { page?: boolean }) {
     </section>
   );
 }
+
+/** Sets the order an item arrives in during the hero's entrance. */
+const order = (i: number) => ({ '--i': i }) as CSSProperties;
 
 function clamp(v: number, a: number, b: number) {
   return Math.max(a, Math.min(b, v));

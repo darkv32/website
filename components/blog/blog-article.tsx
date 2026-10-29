@@ -1,18 +1,34 @@
-'use client';
-
-import { Children, createElement, isValidElement, useEffect, useRef, useState, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import { Children, createElement, isValidElement, type ComponentPropsWithoutRef, type ReactNode } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Clock, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, Github, Linkedin, Twitter } from 'lucide-react';
 import ReactMarkdown, { type Components, type ExtraProps } from 'react-markdown';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
+import kotlin from 'react-syntax-highlighter/dist/esm/languages/prism/kotlin';
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { SITE_CONFIG } from '@/lib/config';
 import { BlogPost, getRelatedBlogPosts, formatDate, formatReadTime } from '@/lib/data';
-import { BlogTableOfContents, slugify } from './blog-table-of-contents';
+import { extractHeadings, slugify } from '@/lib/headings';
+import { BlogTableOfContents } from './blog-table-of-contents';
 import { BlogPostCard } from './blog-post-card';
+import { ReadingProgress } from './reading-progress';
+
+/* Only the languages the posts use are registered. */
+SyntaxHighlighter.registerLanguage('bash', bash);
+SyntaxHighlighter.registerLanguage('kotlin', kotlin);
+
+const ARTICLE_ID = 'article';
+
+const { site, social } = SITE_CONFIG;
+const socialLinks = [
+  { href: social.twitter, label: 'Twitter', Icon: Twitter },
+  { href: social.linkedin, label: 'LinkedIn', Icon: Linkedin },
+  { href: social.github, label: 'GitHub', Icon: Github },
+];
 
 const textOf = (node: ReactNode): string =>
   Children.toArray(node)
@@ -34,7 +50,7 @@ const headingComponents = Object.fromEntries(
 const markdownComponents: Components = {
   ...headingComponents,
   code: ({ className, children }: ComponentPropsWithoutRef<'code'> & ExtraProps) => {
-    const match = /language-(\w+)/.exec(className || '');
+    const match = /language-(\w+)/.exec(className ?? '');
     if (!match) return <code className={className}>{children}</code>;
     return (
       <SyntaxHighlighter style={tomorrow as { [key: string]: React.CSSProperties }} language={match[1]} PreTag="div">
@@ -44,46 +60,26 @@ const markdownComponents: Components = {
   },
 };
 
-const initials = (name: string) => name.split(' ').map((n) => n[0]).join('');
+function Author({ size }: { size: number }) {
+  return (
+    <Image
+      src={site.avatar}
+      alt={site.author}
+      width={size}
+      height={size}
+      className="shrink-0 rounded-full object-cover object-top"
+      style={{ width: size, height: size }}
+    />
+  );
+}
 
+/** A blog post, rendered on the server: the markdown and its syntax highlighting never reach the browser. */
 export function BlogArticle({ post }: { post: BlogPost }) {
-  const [readingProgress, setReadingProgress] = useState(0);
-  const articleRef = useRef<HTMLElement>(null);
-
   const relatedPosts = getRelatedBlogPosts(post);
-
-  /* The bar fills as the article scrolls through the viewport. */
-  useEffect(() => {
-    let queued = false;
-    const update = () => {
-      queued = false;
-      const article = articleRef.current;
-      if (!article) return;
-      const rect = article.getBoundingClientRect();
-      setReadingProgress(Math.min(100, Math.max(0, ((innerHeight - rect.top) / rect.height) * 100)));
-    };
-    const queue = () => {
-      if (!queued) { queued = true; requestAnimationFrame(update); }
-    };
-    addEventListener('scroll', queue, { passive: true });
-    addEventListener('resize', queue);
-    queue();
-    return () => {
-      removeEventListener('scroll', queue);
-      removeEventListener('resize', queue);
-    };
-  }, []);
-
-  const { social } = post.author;
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="fixed top-0 left-0 right-0 h-1 bg-secondary z-50">
-        <div
-          className="h-full bg-primary transition-all duration-300"
-          style={{ width: `${readingProgress}%` }}
-        />
-      </div>
+      <ReadingProgress targetId={ARTICLE_ID} />
       <section className="relative pt-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
         <div className="container-width px-4 sm:px-6 lg:px-8 py-12">
           <Link href="/blog" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
@@ -111,13 +107,10 @@ export function BlogArticle({ post }: { post: BlogPost }) {
               {post.excerpt}
             </p>
             <div className="flex items-center justify-center space-x-4">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={post.author.avatar} alt={post.author.name} />
-                <AvatarFallback>{initials(post.author.name)}</AvatarFallback>
-              </Avatar>
+              <Author size={48} />
               <div className="text-left">
-                <div className="font-semibold">{post.author.name}</div>
-                <div className="text-muted-foreground text-sm">{post.author.bio}</div>
+                <div className="font-semibold">{site.author}</div>
+                <div className="text-muted-foreground text-sm">{site.bio}</div>
               </div>
             </div>
           </div>
@@ -128,11 +121,11 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
             <div className="lg:col-span-1">
               <div className="sticky top-24">
-                <BlogTableOfContents content={post.content} />
+                <BlogTableOfContents headings={extractHeadings(post.content)} />
               </div>
             </div>
             <div className="lg:col-span-3">
-              <article ref={articleRef} className="article-content">
+              <article id={ARTICLE_ID} className="article-content">
                 <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
               </article>
               <div className="mt-12 pt-8 border-t">
@@ -146,19 +139,12 @@ export function BlogArticle({ post }: { post: BlogPost }) {
               <Card className="mt-12 border-2 border-primary/30 shadow-md">
                 <CardContent className="p-8">
                   <div className="flex items-start space-x-6">
-                    <Avatar className="h-20 w-20">
-                      <AvatarImage src={post.author.avatar} alt={post.author.name} />
-                      <AvatarFallback>{initials(post.author.name)}</AvatarFallback>
-                    </Avatar>
+                    <Author size={80} />
                     <div className="flex-1">
-                      <h2 className="text-xl font-semibold mb-2">{post.author.name}</h2>
-                      <p className="text-muted-foreground mb-4">{post.author.bio}</p>
+                      <h2 className="text-xl font-semibold mb-2">{site.author}</h2>
+                      <p className="text-muted-foreground mb-4">{site.bio}</p>
                       <div className="flex flex-wrap gap-4">
-                        {[
-                          { href: social.twitter, label: 'Twitter', Icon: Twitter },
-                          { href: social.linkedin, label: 'LinkedIn', Icon: Linkedin },
-                          { href: social.github, label: 'GitHub', Icon: LinkIcon },
-                        ].map(({ href, label, Icon }) => (
+                        {socialLinks.map(({ href, label, Icon }) => (
                           <Button key={label} variant="outline" size="sm" asChild>
                             <a href={href} target="_blank" rel="noopener noreferrer">
                               <Icon className="h-4 w-4 mr-2" />

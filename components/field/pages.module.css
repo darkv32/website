@@ -3,8 +3,12 @@
    Hobbies (lake): a poster shelf, poppable bubbles and a tiny barracks. Contact (paper): a clock and a draft composer. */
 
 /* ---------- shared ---------- */
-.reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s cubic-bezier(.22, 1, .36, 1), transform .7s cubic-bezier(.22, 1, .36, 1); }
 .reveal.seen { opacity: 1; transform: none; }
+/* Lines inside a revealed block arrive one after another (--i is set on each). */
+.reveal.seen .facts > a { animation: factIn .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 60ms + 120ms); }
+@keyframes factIn { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .reveal.seen .facts > a { animation: none; } }
 .hint { font: 400 .72rem/1.4 var(--font-mono); letter-spacing: .04em; color: var(--f-muted); }
 .hint kbd { font: inherit; font-size: .66rem; padding: 0 5px; border: 1px solid var(--f-line2); border-radius: 3px; color: var(--f-muted); }
 @media (hover: none) { .hint { display: none; } }
@@ -78,10 +82,13 @@
 .seg.off, .gLab.off { opacity: .18; }
 .gNow { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--f-accent); pointer-events: none; z-index: 1; }
 .gNow::after { content: "NOW"; position: absolute; top: -2px; left: 4px; font: 500 .56rem/1 var(--font-mono); letter-spacing: .1em; color: var(--f-accent); }
+.gBlock { position: absolute; top: 22px; bottom: 0; pointer-events: none; border-inline: 1px dashed var(--f-line2); background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--f-muted) 22%, transparent) 0 1px, transparent 1px 7px); }
+.gBlock span { position: absolute; top: 4px; left: 6px; font: 500 .56rem/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--f-muted); }
 .gKey { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 12px; font: 400 .64rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--f-muted); }
 .gKey i { display: inline-block; width: 16px; height: 8px; margin-right: 6px; vertical-align: -1px; border: 1px solid var(--f-accent); background: var(--f-accent); }
 .gKey i.edu { background: repeating-linear-gradient(135deg, var(--f-accent) 0 2px, transparent 2px 5px); }
 .gKey i.prog { background: transparent; border-style: dashed; }
+.gKey i.army { border-color: var(--f-line2); background: repeating-linear-gradient(135deg, var(--f-muted) 0 1px, transparent 1px 4px); }
 @media (max-width: 560px) { .gGrid { --lw: 72px; } .gLab { font-size: .58rem; } .gantt { padding: 14px 12px; } }
 .noHits { padding: 40px 0; font: 400 .85rem/1.5 var(--font-mono); color: var(--f-muted); }
 
@@ -118,7 +125,8 @@
 .tlHead > span:first-child { font: 500 .66rem/1 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--f-tint-muted); }
 .tlRead { font: 400 .74rem/1.3 var(--font-mono); color: var(--f-tint-muted); min-height: 1.3em; text-align: right; }
 .tlRead b { color: var(--k-bg); font-weight: 600; }
-.tlTrack { position: relative; height: calc(var(--rows) * 18px + 10px); border-bottom: 1px solid var(--k-bg); }
+.tlTrack { position: relative; height: calc(var(--rows) * 18px + 10px); }
+.tlTrack::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--k-bg); transform-origin: 0 50%; }
 .tlDot { position: absolute; left: var(--x); bottom: calc(var(--row) * 18px + 4px); width: 12px; height: 12px; margin-left: -6px; padding: 0; border: 0; background: var(--k-bg); cursor: pointer; transition: background .15s, transform .15s, opacity .25s; }
 .tlDot::before { content: ""; position: absolute; inset: -8px; }
 .tlDot::after { content: ""; position: absolute; left: 5.5px; top: 12px; width: 1px; height: calc(var(--row) * 18px + 4px); background: var(--k-bg); opacity: .4; pointer-events: none; }
@@ -281,4 +289,25 @@
   .swap, .caret, .ground img, .toolOut li { animation: none; }
   .jelly, .jTent, .jetA, .jetB { animation: none; }
   .poster, .draft, .tlDot { transition: none; }
+}
+
+/* ---------- charts draw in the first time they scroll into view ---------- */
+/* Experience: the axis fades in, each role's bar grows from its start (--i is the row), then the NOW line drops in. */
+.reveal.seen .gAxis span { animation: chartFade .5s ease-out backwards .15s; }
+.reveal.seen .gLab { animation: chartFade .5s ease-out backwards; animation-delay: calc(var(--i, 0) * 70ms + 200ms); }
+.reveal.seen .seg { transform-origin: 0 50%; animation: barGrow .7s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms + 250ms); }
+.reveal.seen .gBlock { animation: blockWipe .9s cubic-bezier(.22, 1, .36, 1) backwards .5s; }
+.reveal.seen .gNow { transform-origin: 50% 0; animation: nowDrop .6s cubic-bezier(.22, 1, .36, 1) backwards 1s; }
+/* Blog: the baseline is drawn left to right and the squares pop in along it (--n is the position, 0-100). */
+.reveal.seen .tlTrack::after { animation: lineGrow 1s cubic-bezier(.22, 1, .36, 1) backwards .1s; }
+.reveal.seen .tlDot { animation: dotPop .45s cubic-bezier(.34, 1.56, .64, 1) backwards; animation-delay: calc(var(--n, 0) * 9ms + 200ms); }
+.reveal.seen .tlAxis span { animation: chartFade .5s ease-out backwards .5s; }
+@keyframes chartFade { from { opacity: 0; } }
+@keyframes barGrow { from { transform: scaleX(0); } }
+@keyframes blockWipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@keyframes nowDrop { from { transform: scaleY(0); opacity: 0; } }
+@keyframes lineGrow { from { transform: scaleX(0); } }
+@keyframes dotPop { from { opacity: 0; transform: scale(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .reveal.seen .gAxis span, .reveal.seen .gLab, .reveal.seen .seg, .reveal.seen .gBlock, .reveal.seen .gNow, .reveal.seen .tlTrack::after, .reveal.seen .tlDot, .reveal.seen .tlAxis span { animation: none; }
 }

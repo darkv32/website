@@ -13,11 +13,6 @@ export const SECTIONS = [
   { id: 'contact', name: 'Contact', key: 'c', href: '/contact' },
 ] as const;
 
-function scrollToSection(id: string) {
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-}
-
 /**
  * On the front page a link scrolls to its band; on every other page it goes to the section's own page.
  * `href` overrides the destination off the front page (the logo uses it to go home).
@@ -34,7 +29,7 @@ export function SectionLink({ id, href, onClick, ...props }: { id: string; href?
         onClick?.(e);
         if (onHome && !e.defaultPrevented) {
           e.preventDefault();
-          scrollToSection(id);
+          document.getElementById(id)?.scrollIntoView({ block: 'start' });
         }
       }}
     />

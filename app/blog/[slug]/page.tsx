@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { BlogArticle } from '@/components/blog/blog-article';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data';
-import { generateMetadata as generateSEOMetadata, generateArticleData } from '@/lib/seo';
+import { createMetadata, generateArticleData } from '@/lib/seo';
 import { StructuredData, BreadcrumbData } from '@/components/seo/structured-data';
 
 interface BlogPostPageProps {
@@ -11,42 +11,39 @@ interface BlogPostPageProps {
   }>;
 }
 
-export async function generateStaticParams() {
+/* Every post is prerendered at build time; any other slug is a 404 without rendering anything. */
+export const dynamicParams = false;
+
+export function generateStaticParams() {
   return getAllBlogPosts().map((post) => ({
     slug: post.slug,
   }));
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
+async function loadPost({ params }: BlogPostPageProps) {
   const { slug } = await params;
   const post = getBlogPostBySlug(slug);
+  if (!post) notFound();
+  return post;
+}
 
-  if (!post) {
-    return {
-      title: 'Post Not Found',
-    };
-  }
+export async function generateMetadata(props: BlogPostPageProps): Promise<Metadata> {
+  const post = await loadPost(props);
 
-  return generateSEOMetadata({
-    title: post.seo.metaTitle || post.title,
-    description: post.seo.metaDescription || post.excerpt,
+  return createMetadata({
+    title: post.seo.metaTitle,
+    description: post.seo.metaDescription,
     keywords: post.seo.keywords,
-    image: post.seo.ogImage || post.featuredImage,
+    image: post.featuredImage,
     url: `/blog/${post.slug}`,
     type: 'article',
     publishedTime: post.publishedAt,
     modifiedTime: post.updatedAt,
-    author: post.author.name,
   });
 }
 
-export default async function BlogPostPage({ params }: BlogPostPageProps) {
-  const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
-
-  if (!post) {
-    notFound();
-  }
+export default async function BlogPostPage(props: BlogPostPageProps) {
+  const post = await loadPost(props);
 
   const breadcrumbItems = [
     { name: 'Home', url: '/' },

@@ -1,11 +1,11 @@
 import { Hero } from '@/components/sections/hero';
 import { AboutBody } from '@/components/field/about-body';
-import { generateMetadata } from '@/lib/seo';
+import { createMetadata } from '@/lib/seo';
 import { getExperienceData } from '@/lib/data';
 
-export const metadata = generateMetadata({
+export const metadata = createMetadata({
   title: 'About - Tang Yetong',
-  description: 'Tang Yetong is a full stack developer in Singapore who dabbles in data analytics. Software engineer at RFCOM, previously at Fivetran, GovTech and the Bitcoin Dev Kit.',
+  description: 'Tang Yetong is a full stack developer in Singapore who dabbles in data analytics. Senior engineer at RFCOM, previously at Fivetran, GovTech and the Bitcoin Dev Kit.',
   url: '/about',
 });
 

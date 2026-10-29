@@ -21,6 +21,11 @@ interface Zergling {
   flashOn: boolean;
   face: number;
   off: number;
+  /** Seconds after load before this one starts running in from the right edge. */
+  delay: number;
+  /** True until it has run in and reached its spot. */
+  arriving: boolean;
+  shown: boolean;
 }
 
 interface HeroFieldProps {
@@ -184,7 +189,10 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
     const Z: Zergling[] = Array.from(critters.querySelectorAll<HTMLImageElement>('[data-zl]')).map((el, i) => ({
       el, i, x: 0, vx: 0, z: 0, vz: 0, w: 0, h: 0, phase: Math.random() * 6, cool: 1 + Math.random() * 1.5,
       flee: 0, fleeT: 0, hitT: 0, flashOn: false, face: 1, off: [-72, 0, 72][i] ?? 0,
+      delay: 0.3 + i * 0.2, arriving: !reduce, shown: false,
     }));
+    /* The marine slides in from the left and the zerglings run in from the right, timed from the first frame. */
+    let t0 = -1;
     const M = { x: 0, w: 0, h: 0, a: 0, recoil: 0 };
     const homeX = (z: Zergling) => Math.max(70, HW - 64 - z.i * 84);
 
@@ -195,8 +203,8 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
       Z.forEach((z) => {
         z.w = z.el.offsetWidth;
         z.h = z.el.offsetHeight;
-        if (first) z.x = homeX(z);
-        z.x = clamp(z.x, z.w / 2, HW - z.w / 2);
+        if (first) z.x = z.arriving ? HW + z.w : homeX(z);
+        if (!z.arriving) z.x = clamp(z.x, z.w / 2, HW - z.w / 2);
       });
       M.w = marine!.offsetWidth;
       M.h = marine!.offsetHeight;
@@ -217,22 +225,26 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
 
     function stepCritters(dt: number, t: number) {
       if (!HW) return;
+      if (t0 < 0) t0 = t;
+      const age = t - t0;
       const inHero = ptr.in && !reduce;
       Z.forEach((z) => {
         let desired: number;
         if (z.hitT > 0) z.hitT = Math.max(0, z.hitT - dt);
         if (z.fleeT > 0) {
           z.fleeT -= dt;
+          z.arriving = false;
           desired = z.flee * 430;
         } else {
           const target = inHero ? clamp(ptr.x + z.off, z.w / 2, HW - z.w / 2) : homeX(z);
           const dx = target - z.x;
-          const max = inHero ? 300 : 120;
+          const max = z.arriving ? 380 : inHero ? 300 : 120;
           desired = Math.abs(dx) < 6 ? 0 : clamp(dx * 3.2, -max, max);
+          if (z.arriving && Math.abs(dx) < 6) z.arriving = false;
         }
-        if (reduce) desired = 0;
+        if (reduce || (z.arriving && age < z.delay)) desired = 0;
         z.vx += (desired - z.vx) * Math.min(1, dt * 9);
-        z.x = clamp(z.x + z.vx * dt, z.w / 2, HW - z.w / 2);
+        z.x = clamp(z.x + z.vx * dt, z.w / 2, z.arriving ? HW + z.w : HW - z.w / 2);
         if (Math.abs(z.vx) > 25) z.face = z.vx > 0 ? -1 : 1;
         const running = Math.abs(z.vx) > 25 && z.z <= 0.01;
         if (running) z.phase += dt * Math.abs(z.vx) * 0.05;
@@ -252,13 +264,17 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
         const flash = z.hitT > 0.22;
         if (flash !== z.flashOn) { z.flashOn = flash; z.el.classList.toggle(s.flash, flash); }
         z.el.style.transform = 'translate3d(' + (z.x - z.w / 2 + shake).toFixed(1) + 'px,' + (HH - z.h - z.z - hop).toFixed(1) + 'px,0) scale(' + (z.face * sx).toFixed(3) + ',' + sy.toFixed(3) + ')';
+        if (!z.shown) { z.shown = true; z.el.style.opacity = '1'; }
       });
       const mu = muzzle();
       let ang = -MUZZLE.rest;
       if (inHero && ptr.x - mu.x > 40) ang = clamp(Math.atan2(ptr.y - mu.y, ptr.x - mu.x), -0.6, 0.6) - MUZZLE.rest;
       M.a = lerp(M.a, ang, 1 - Math.exp(-dt * 8));
       M.recoil *= Math.exp(-dt * 14);
-      marine!.style.transform = 'translate3d(' + (M.x - M.w / 2 - M.recoil).toFixed(1) + 'px,' + (HH - M.h).toFixed(1) + 'px,0) rotate(' + M.a.toFixed(3) + 'rad) scaleX(-1)';
+      const enter = reduce ? 1 : clamp((age - 0.1) / 0.8, 0, 1);
+      if (enter < 1 || marine!.style.opacity !== '1') marine!.style.opacity = enter.toFixed(2);
+      const slide = (1 - enter) ** 3 * (M.w + 60);
+      marine!.style.transform = 'translate3d(' + (M.x - M.w / 2 - M.recoil - slide).toFixed(1) + 'px,' + (HH - M.h).toFixed(1) + 'px,0) rotate(' + M.a.toFixed(3) + 'rad) scaleX(-1)';
     }
 
     function mk(tag: string, cls: string, attrs: Record<string, string | number>, life: number) {

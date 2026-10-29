@@ -6,9 +6,8 @@ import { Analytics } from '@vercel/analytics/react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Navigation } from '@/components/navigation';
 import { Footer } from '@/components/footer';
-import { Toaster } from '@/components/ui/toaster';
 import { StructuredData } from '@/components/seo/structured-data';
-import { generateMetadata, generateOrganizationData, generatePersonData, generateWebsiteData } from '@/lib/seo';
+import { createMetadata, generateOrganizationData, generatePersonData, generateWebsiteData } from '@/lib/seo';
 import { SITE_CONFIG } from '@/lib/config';
 
 const display = Bricolage_Grotesque({
@@ -29,7 +28,7 @@ const mono = JetBrains_Mono({
   variable: '--font-mono',
 });
 
-export const metadata = generateMetadata({
+export const metadata = createMetadata({
   title: SITE_CONFIG.site.title,
   description: SITE_CONFIG.site.description,
   type: 'website',
@@ -46,9 +45,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <head>
-        <link rel="manifest" href="/manifest.json" />
         <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/feed.xml" />
         <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
       </head>
@@ -61,7 +59,6 @@ export default function RootLayout({
             </main>
             <Footer />
           </div>
-          <Toaster />
         </ThemeProvider>
 
         <StructuredData data={generateWebsiteData()} />

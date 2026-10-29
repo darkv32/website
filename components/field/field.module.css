@@ -15,7 +15,7 @@
 .hud { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--f-bg) 84%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--f-line); color: var(--f-fg); }
 .hud .in { display: flex; align-items: center; gap: 8px 28px; min-height: 56px; flex-wrap: wrap; position: relative; }
 .logo { color: inherit; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -.03em; text-decoration: none; }
-.hud nav { display: flex; gap: 2px; }
+.hud nav { position: relative; display: flex; gap: 2px; }
 .hud nav a { display: inline-flex; align-items: baseline; gap: 8px; padding: 8px 12px; color: var(--f-muted); text-decoration: none; font-size: .9rem; transition: color .15s; }
 .hud nav a:hover, .hud nav a.on { color: var(--f-fg); }
 .hud nav a.on { box-shadow: inset 0 -2px 0 var(--f-accent); }
@@ -36,11 +36,12 @@
 
 /* ---------- buttons ---------- */
 .btnrow { display: flex; flex-wrap: wrap; gap: 10px; }
-.b { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 16px 0 14px; border: 1px solid var(--f-line2); background: transparent; color: var(--f-fg); font: 500 .92rem/1 var(--font-body); text-decoration: none; cursor: pointer; transition: border-color .15s, background .15s, color .15s; }
+.b { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 16px 0 14px; border: 1px solid var(--f-line2); background: transparent; color: var(--f-fg); font: 500 .92rem/1 var(--font-body); text-decoration: none; cursor: pointer; transition: border-color .15s, background .15s, color .15s, transform .18s cubic-bezier(.22, 1, .36, 1); }
 .b svg { width: 18px; height: 18px; flex: none; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 .b .ext { width: 14px; height: 14px; margin-left: 2px; opacity: .5; transition: transform .18s, opacity .18s; }
 .b .meta { font: 500 .62rem/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; padding: 3px 6px; border: 1px solid currentColor; opacity: .6; }
-.b:hover { border-color: var(--f-accent); background: color-mix(in srgb, var(--f-accent) 12%, transparent); }
+.b:hover { border-color: var(--f-accent); background: color-mix(in srgb, var(--f-accent) 12%, transparent); transform: translateY(-2px); }
+.b:active { transform: translateY(0) scale(.97); }
 .b:hover .ext { opacity: 1; transform: translate(2px, -2px); }
 .b.primary { background: var(--f-fg); border-color: var(--f-fg); color: var(--f-bg); }
 .b.primary:hover { background: var(--f-accent); border-color: var(--f-accent); color: var(--f-accent-ink); }
@@ -77,7 +78,7 @@
 
 /* marine and zerglings on the hero floor */
 .critters { position: absolute; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; }
-.critters img { position: absolute; left: 0; top: 0; height: auto; will-change: transform; max-width: none; user-select: none; -webkit-user-select: none; }
+.critters img { position: absolute; left: 0; top: 0; opacity: 0; height: auto; will-change: transform; max-width: none; user-select: none; -webkit-user-select: none; }
 .zl { transform-origin: 50% 100%; }
 .zl.flash { filter: brightness(2.6) saturate(.25); }
 .z0 { width: 70px; } .z1 { width: 64px; } .z2 { width: 56px; }
@@ -116,7 +117,14 @@
 .nowCard b { font: 600 1.1rem/1.2 var(--font-display); letter-spacing: -.02em; }
 .nowCard .onCo { color: var(--f-accent); }
 /* an arrow from the Right now card to the current role's line */
-.nowArrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--f-accent); z-index: 2; transition: opacity .25s; }
+.nowArrow { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; color: var(--f-accent); z-index: 2; opacity: 0; transition: opacity .25s; }
+/* each time the arrow comes into view its line is drawn from the card to the role (pathLength is 1), then the head fades in */
+.nowArrow[data-show="1"] { opacity: 1; }
+.arrowLine { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .25s; }
+.nowArrow[data-show="1"] .arrowLine { stroke-dashoffset: 0; transition: stroke-dashoffset 1s cubic-bezier(.22, 1, .36, 1) .15s; }
+.arrowTip { opacity: 0; transition: opacity .15s; }
+.nowArrow[data-show="1"] .arrowTip { opacity: 1; transition: opacity .3s .85s; }
+@media (prefers-reduced-motion: reduce) { .arrowLine, .nowArrow[data-show="1"] .arrowLine { stroke-dashoffset: 0; transition: none; } .arrowTip, .nowArrow[data-show="1"] .arrowTip { opacity: 1; transition: none; } }
 @media (max-width: 900px) { .split { grid-template-columns: minmax(0, 1fr); } .side { position: static; } .nowArrow { display: none; } }
 
 .row { display: grid; grid-template-columns: 170px minmax(0, 1fr) minmax(0, 240px); gap: 8px 32px; align-items: start; }
@@ -278,4 +286,30 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fan .p, .xp li.row, .moreXp, .post, .post.pop, .post.flash, .photoFrame img, .b, .hi { transition: none; animation: none; }
+}
+
+/* ---------- motion ---------- */
+/* One easing curve for everything. Only transform and opacity move, and every sequence ends at the normal resting state. */
+.hud { animation: hudIn .6s cubic-bezier(.22, 1, .36, 1) backwards; }
+.hud nav a { animation: enterUp .6s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(120ms + var(--i, 0) * 45ms); }
+.hud nav[data-ink] a.on { box-shadow: none; }
+.ink { position: absolute; left: 0; bottom: 0; height: 2px; width: var(--w, 0px); background: var(--f-accent); transform: translateX(var(--x, 0px)); opacity: 0; pointer-events: none; }
+.ink[data-ready="true"] { transition: transform .32s cubic-bezier(.22, 1, .36, 1), width .32s cubic-bezier(.22, 1, .36, 1), opacity .2s; }
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--f-accent); transform-origin: 0 50%; transform: scaleX(var(--p, 0)); pointer-events: none; }
+
+/* Hero: items arrive in turn (--i is the order); each name line slides up out of a mask; the photo fades in. */
+.enter { animation: enterUp .64s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 70ms); }
+.name .mask { display: block; overflow: hidden; padding-block: .1em .12em; margin-block: -.1em -.12em; }
+.name .mask > span { animation: enterMask .82s cubic-bezier(.22, 1, .36, 1) backwards; animation-delay: calc(var(--i, 0) * 90ms); }
+.fadeIn { animation: enterFade 1s ease-out backwards; animation-delay: .24s; }
+
+@keyframes hudIn { from { transform: translateY(-100%); opacity: 0; } }
+@keyframes enterUp { from { opacity: 0; transform: translateY(14px); } }
+@keyframes enterMask { from { transform: translateY(105%); } }
+@keyframes enterFade { from { opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hud, .hud nav a, .enter, .name .mask > span, .fadeIn { animation: none; }
+  .ink[data-ready="true"] { transition: none; }
+  .b, .b:hover, .b:active { transform: none; }
 }

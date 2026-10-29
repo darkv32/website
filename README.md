@@ -10,7 +10,7 @@ Live site: https://personalwebsite-theta-sand.vercel.app
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS 3
 - **UI Components**: Radix UI primitives
-- **Icons**: Lucide React, React Icons
+- **Icons**: Lucide React
 - **Content**: JSON data files + Markdown rendering (`react-markdown`)
 - **Deployment**: Vercel
 
@@ -47,7 +47,7 @@ bun run dev
 
 The front page carries every section as a band on `/`, and the footer links scroll between them. Each section also has a page of its own, in the same colours: `/about`, `/experience`, `/blog` (with `/blog/[slug]` for articles), `/hobbies` and `/contact`. The nav tabs always go to those pages, and the tab for the page you are on is highlighted.
 
-- `lib/config.ts` - Base URL, author details, social links, SEO keywords
+- `lib/config.ts` - Base URL, author details, social links, SEO keywords. `robots.txt`, the web manifest and the default share image are generated from it
 - `data/site-data.json` - Experience timeline
 - `data/blog-data.json` - Blog posts (Markdown content)
 - `components/sections/hero.tsx` - Hero copy and photos
@@ -56,7 +56,7 @@ The front page carries every section as a band on `/`, and the footer links scro
 
 ### Styling
 
-The front page is styled by `components/field/field.module.css`; the extra pieces on the section pages are in `components/field/pages.module.css`. Blog articles use Tailwind with the CSS variables in `app/globals.css` (configured in `tailwind.config.ts`); the rendered Markdown is styled by `.article-content` there.
+The front page is styled by `components/field/field.module.css`; the extra pieces on the section pages are in `components/field/pages.module.css`. Blog articles use Tailwind with the CSS variables in `app/globals.css` (configured in `tailwind.config.ts`); the rendered Markdown is styled by `.article-content` there. Articles are rendered on the server, so the Markdown and syntax-highlighting code never reaches the browser. Only `bash` and `kotlin` are registered for highlighting; add any new language in `components/blog/blog-article.tsx`.
 
 ### Components
 
@@ -69,7 +69,7 @@ The front page is styled by `components/field/field.module.css`; the extra piece
 
 The site is deployed on Vercel. Pushing to `main` triggers a deploy once the repository is connected to a Vercel project.
 
-If you change the domain, update `baseUrl` in `lib/config.ts` and the `Sitemap:` line in `public/robots.txt`.
+If you change the domain, update `baseUrl` in `lib/config.ts`; the sitemap, robots, feed and share-image URLs all follow it.
 
 ## 🔧 Scripts
 
