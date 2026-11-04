@@ -79,17 +79,20 @@ export function ExperienceBand({ roles, asPage = false }: { roles: Role[]; asPag
     if (!title) return;
 
     const update = () => {
-      const r = list.getBoundingClientRect();
+      /* Every measurement comes first and every write after, so the browser lays the page out once per frame instead of again after each write. */
       const line = innerHeight * 0.62;
-      list.style.setProperty('--p', clamp((line - r.top) / r.height, 0, 1).toFixed(3));
+      const r = list.getBoundingClientRect();
       const next = rowRefs.current.map((li) => !!li && li.getBoundingClientRect().top + 32 < line);
+      const wide = innerWidth > 900;
+      const sr = wide ? split.getBoundingClientRect() : null;
+      const cr = wide ? card.getBoundingClientRect() : null;
+      const rr = wide ? row.getBoundingClientRect() : null;
+      const tr = wide ? title.getBoundingClientRect() : null;
+
+      list.style.setProperty('--p', clamp((line - r.top) / r.height, 0, 1).toFixed(3));
       setReached((prev) => (prev.length === next.length && prev.every((v, i) => v === next[i]) ? prev : next));
 
-      if (innerWidth <= 900) return;
-      const sr = split.getBoundingClientRect();
-      const cr = card.getBoundingClientRect();
-      const rr = row.getBoundingClientRect();
-      const tr = title.getBoundingClientRect();
+      if (!sr || !cr || !rr || !tr) return;
       const sx = cr.right - sr.left + 8;
       const sy = cr.top + cr.height / 2 - sr.top;
       const ex = rr.left - sr.left - 8;

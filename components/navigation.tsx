@@ -67,11 +67,21 @@ export function Navigation() {
   useEffect(() => {
     const bar = barRef.current;
     if (!bar) return;
-    const { stop } = watchScroll(() => {
-      const max = document.documentElement.scrollHeight - innerHeight;
+    /* The page height only changes when the body is resized, so it is measured then and not on every scroll frame, where it would force a layout. */
+    let docHeight = document.documentElement.scrollHeight;
+    const { queue, stop } = watchScroll(() => {
+      const max = docHeight - innerHeight;
       bar.style.setProperty('--p', String(max > 4 ? clamp(scrollY / max, 0, 1) : 0));
     });
-    return stop;
+    const ro = new ResizeObserver(() => {
+      docHeight = document.documentElement.scrollHeight;
+      queue();
+    });
+    ro.observe(document.body);
+    return () => {
+      ro.disconnect();
+      stop();
+    };
   }, [pathname]);
 
   /* Each tab also answers to a single key. */

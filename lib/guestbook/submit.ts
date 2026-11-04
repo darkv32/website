@@ -23,7 +23,17 @@ export async function submit(body: unknown, ip: string, userAgent: string, heade
   const ipHash = hashIp(ip);
   const now = Date.now();
 
-  const posts = await recentPosts(ipHash, now - DAY);
+  /* None of these reads depends on another, so they go out together instead of one round trip after the other.
+     The answers are still weighed in the same order as before: the rate limit first, then the queue, repeats, the reply target, and last the rush breaker. */
+  const needsRush = !m.flag && !reviewAll();
+  const [posts, queued, duplicate, replyOk, published] = await Promise.all([
+    recentPosts(ipHash, now - DAY),
+    queueSize(),
+    isDuplicate(ipHash, m.message, now - DAY),
+    m.replyTo ? approvedExists(m.replyTo) : true,
+    needsRush ? publishedSince(now - HOUR) : 0,
+  ]);
+
   const lastHour = posts.filter((t) => t > now - HOUR);
   if (lastHour.length >= LIMITS.perHour) {
     return { ok: false, status: 429, error: 'You are posting too fast. Try again later.', retryAfter: Math.ceil((lastHour[0] + HOUR - now) / 1000) };
@@ -32,15 +42,15 @@ export async function submit(body: unknown, ip: string, userAgent: string, heade
     return { ok: false, status: 429, error: 'That is the limit for today. Try again tomorrow.', retryAfter: Math.ceil((posts[0] + DAY - now) / 1000) };
   }
 
-  if ((await queueSize()) >= LIMITS.queue) {
+  if (queued >= LIMITS.queue) {
     return { ok: false, status: 503, error: 'The guestbook has a lot waiting for review right now. Try again later.', retryAfter: 3600 };
   }
 
-  if (await isDuplicate(ipHash, m.message, now - DAY)) {
+  if (duplicate) {
     return { ok: false, status: 409, error: 'You already sent that message.' };
   }
 
-  if (m.replyTo && !(await approvedExists(m.replyTo))) {
+  if (!replyOk) {
     return { ok: false, status: 422, error: 'That message does not exist, or it is not public.', field: 'replyTo' };
   }
 
@@ -48,7 +58,7 @@ export async function submit(body: unknown, ip: string, userAgent: string, heade
   let flagReason = m.flag;
   if (m.flag) status = 'held';
   else if (reviewAll()) status = 'pending';
-  else if ((await publishedSince(now - HOUR)) >= LIMITS.autoPerHour) {
+  else if (published >= LIMITS.autoPerHour) {
     status = 'held';
     flagReason = 'arrived while auto-publishing was paused for a busy hour';
   }

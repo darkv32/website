@@ -29,9 +29,22 @@ export function Hero({ page = false }: { page?: boolean }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const pausedRef = useRef(false);
   const [current, setCurrent] = useState(0);
+  /* Only the first photo is in the page at first. The rest are added once the page has loaded, so they never compete with it for bandwidth. */
+  const [warm, setWarm] = useState(false);
 
   const next = useCallback(() => setCurrent((i) => (i + 1) % frames.length), []);
   const prev = useCallback(() => setCurrent((i) => (i - 1 + frames.length) % frames.length), []);
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+    const go = () => { timer = setTimeout(() => setWarm(true), 1000); };
+    if (document.readyState === 'complete') go();
+    else addEventListener('load', go, { once: true });
+    return () => {
+      clearTimeout(timer);
+      removeEventListener('load', go);
+    };
+  }, []);
 
   /* Auto-advance. Depending on `current` restarts the timer whenever a tick is clicked. */
   useEffect(() => {
@@ -100,7 +113,7 @@ export function Hero({ page = false }: { page?: boolean }) {
             onMouseLeave={() => { pausedRef.current = false; }}
           >
             <div ref={frameRef} className={`${s.photoFrame} ${s.fadeIn}`} onClick={next}>
-              {frames.map((f, i) => (
+              {frames.map((f, i) => (warm || i === 0 || i === current) && (
                 <Image
                   key={f.src}
                   className={i === current ? s.on : undefined}
@@ -109,7 +122,7 @@ export function Hero({ page = false }: { page?: boolean }) {
                   alt={`Tang Yetong ${f.alt}`}
                   fill
                   preload={i === 0}
-                  /* Every photo is stacked in view, so none counts as lazy; keep the hidden ones from competing with the first. */
+                  /* The photos are stacked in view, so none counts as lazy; keep the later ones from competing with the first. */
                   fetchPriority={i === 0 ? undefined : 'low'}
                   sizes="(max-width: 860px) 340px, (max-width: 1200px) 380px, 630px"
                 />

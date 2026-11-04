@@ -13,7 +13,12 @@ const nextConfig = {
     return [{ source: '/favicon.ico', destination: '/icon', permanent: false }];
   },
   async headers() {
+    /* Files in /public are served with no cache lifetime by default, so a returning visitor asks again for each one. Pictures and sprites rarely change, so a day is kept
+       and a stale copy is served for a week while the new one is fetched. The CSS reads /field/terran.png directly, which is why this matters for more than the photos. */
+    const assetCache = { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' };
     return [
+      { source: '/field/:path*', headers: [assetCache] },
+      { source: '/portrait/:path*', headers: [assetCache] },
       {
         source: '/:path*',
         headers: [

@@ -6,7 +6,7 @@ import ReactMarkdown, { type Components, type ExtraProps } from 'react-markdown'
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/esm/languages/prism/bash';
 import kotlin from 'react-syntax-highlighter/dist/esm/languages/prism/kotlin';
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import tomorrow from 'react-syntax-highlighter/dist/esm/styles/prism/tomorrow';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

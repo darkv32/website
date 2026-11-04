@@ -1,6 +1,6 @@
 import { NextResponse, type NextFetchEvent, type NextRequest } from 'next/server';
 import { bucketPath, classify } from '@/lib/guestbook/agents';
-import { isLive, recordVisit } from '@/lib/guestbook/db';
+import { isLive } from '@/lib/guestbook/env';
 import { getAllBlogPosts } from '@/lib/data';
 
 /* Notes which AI crawlers and agents read the site, by what they call themselves. It touches nothing else: an ordinary visitor's request is classified, found to be a browser, and passed straight through.
@@ -38,14 +38,18 @@ export function proxy(request: NextRequest, event: NextFetchEvent) {
   if (method === 'GET' || method === 'HEAD') {
     const who = classify(headers.get('user-agent'));
     if (who && isLive() && !repeat(`${method} ${request.nextUrl.pathname} ${headers.get('user-agent')}`) && allowed()) {
+      const visit = {
+        day: new Date().toISOString().slice(0, 10),
+        agent: who.name,
+        kind: who.kind,
+        path: bucketPath(request.nextUrl.pathname, slugs),
+        userAgent: headers.get('user-agent') ?? '',
+      };
+      /* The database client is loaded here, for crawlers only, so an ordinary visitor's request never pays for it. */
       event.waitUntil(
-        recordVisit({
-          day: new Date().toISOString().slice(0, 10),
-          agent: who.name,
-          kind: who.kind,
-          path: bucketPath(request.nextUrl.pathname, slugs),
-          userAgent: headers.get('user-agent') ?? '',
-        }).catch((err) => console.error('guestbook: could not record a visit', err)),
+        import('@/lib/guestbook/db')
+          .then(({ recordVisit }) => recordVisit(visit))
+          .catch((err) => console.error('guestbook: could not record a visit', err)),
       );
     }
   }

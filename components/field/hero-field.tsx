@@ -169,6 +169,8 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
     }
 
     function onPointerMove(e: PointerEvent) {
+      /* This listens on the whole window, so it must cost nothing while the hero is scrolled out of view. */
+      if (!heroVisible) return;
       const r = hero!.getBoundingClientRect();
       const was = ptr.in;
       ptr.in = e.clientY >= r.top && e.clientY <= r.bottom && e.clientX >= r.left && e.clientX <= r.right;
@@ -344,7 +346,10 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
 
     function sizeAll() { sizeContours(); sizeCritters(); }
 
-    const io = new IntersectionObserver((en) => { heroVisible = en[0].isIntersecting; }, { threshold: 0 });
+    const io = new IntersectionObserver((en) => {
+      heroVisible = en[0].isIntersecting;
+      if (!heroVisible) ptr.in = false; // no stale cursor when the hero scrolls back in
+    }, { threshold: 0 });
     io.observe(hero);
     const ro = new ResizeObserver(sizeAll);
     ro.observe(hero);

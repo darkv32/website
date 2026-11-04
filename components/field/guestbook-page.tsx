@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties } from 'react';
 import { ArrowRight, Check, Copy } from 'lucide-react';
 import { clsx } from 'clsx';
 import { getFullUrl } from '@/lib/config';
@@ -109,7 +109,7 @@ export function GuestbookPage({ initial, live, degraded = false }: Props) {
     return roots.flatMap((r) => [r, ...entries.filter((e) => e !== r && rootOf(e) === r)]);
   }, [entries, byId]);
 
-  const shown = ordered.filter((e) => filter === 'all' || e.kind === filter);
+  const shown = useMemo(() => ordered.filter((e) => filter === 'all' || e.kind === filter), [ordered, filter]);
   const parent = replyTo ? byId[replyTo] : undefined;
   const empty = !msg.trim();
   const tally = live ? approved : entries;
@@ -204,11 +204,12 @@ export function GuestbookPage({ initial, live, degraded = false }: Props) {
     setTimeout(() => areaRef.current?.focus(), 0);
   };
 
-  const reply = (id: string) => {
+  /* Stable, so the message list below can skip rendering while a visitor types. */
+  const reply = useCallback((id: string) => {
     setMode('human');
     setReplyTo(id);
     areaRef.current?.focus({ preventScroll: false });
-  };
+  }, []);
 
   const copy = () => {
     navigator.clipboard?.writeText(CURL).then(() => {
@@ -256,37 +257,7 @@ export function GuestbookPage({ initial, live, degraded = false }: Props) {
 
             {degraded && <p className={p.gbNote} role="status">The messages could not be loaded just now. Reload in a minute.</p>}
 
-            <ol className={p.gbFeed} aria-live="polite">
-              {shown.map((e, i) => {
-                const to = e.replyTo ? byId[e.replyTo] : undefined;
-                const agent = e.kind === 'agent';
-                return (
-                  <li
-                    key={e.id}
-                    id={`gb-${e.id}`}
-                    data-gb=""
-                    style={{ '--i': i % 4 } as CSSProperties}
-                    className={clsx(p.gbRow, agent ? p.gbAgentRow : p.gbHumanRow, to && p.gbReply, e.flagged && p.gbFlag, e.pending && p.gbPending)}
-                  >
-                    <Avatar entry={e} />
-                    <article className={p.gbCard}>
-                      <header className={p.gbHead}>
-                        <b>{e.name}</b>
-                        <span className={clsx(p.gbTag, agent && p.gbTagAgent)}>{agent ? `agent · ${e.agent}` : 'human'}</span>
-                        <time dateTime={new Date(e.createdAt).toISOString()}>{when.format(new Date(e.createdAt))} UTC</time>
-                      </header>
-                      {to && <div className={p.gbTo}>↳ replying to {to.name}</div>}
-                      {/* always plain text: never markup, never links */}
-                      <p>{e.message}</p>
-                      {e.flagged && <div className={p.gbNote}>Held back: this reads like an instruction aimed at other agents. It is shown as text and nothing more.</div>}
-                      {e.pending && <div className={p.gbNote}>Held back for review. Only you can see this for now.</div>}
-                      {!e.flagged && !e.pending && <button type="button" className={p.gbRe} onClick={() => reply(e.id)}>Reply</button>}
-                    </article>
-                  </li>
-                );
-              })}
-              {shown.length === 0 && <li className={p.gbEmpty}>{entries.length === 0 ? 'No messages yet. Be the first to say hi.' : 'Nobody here yet.'}</li>}
-            </ol>
+            <Feed shown={shown} byId={byId} empty={entries.length === 0} onReply={reply} />
           </div>
 
           <aside className={p.gbSide}>
@@ -355,6 +326,51 @@ export function GuestbookPage({ initial, live, degraded = false }: Props) {
     </section>
   );
 }
+
+interface FeedProps {
+  shown: Entry[];
+  byId: Record<string, Entry>;
+  /** True when there are no messages at all, as opposed to none under the current filter. */
+  empty: boolean;
+  onReply: (id: string) => void;
+}
+
+/** The message list. It only re-renders when the messages, the filter or the reply handler change, not on every keystroke in the form beside it. */
+const Feed = memo(function Feed({ shown, byId, empty, onReply }: FeedProps) {
+  return (
+    <ol className={p.gbFeed} aria-live="polite">
+      {shown.map((e, i) => {
+        const to = e.replyTo ? byId[e.replyTo] : undefined;
+        const agent = e.kind === 'agent';
+        return (
+          <li
+            key={e.id}
+            id={`gb-${e.id}`}
+            data-gb=""
+            style={{ '--i': i % 4 } as CSSProperties}
+            className={clsx(p.gbRow, agent ? p.gbAgentRow : p.gbHumanRow, to && p.gbReply, e.flagged && p.gbFlag, e.pending && p.gbPending)}
+          >
+            <Avatar entry={e} />
+            <article className={p.gbCard}>
+              <header className={p.gbHead}>
+                <b>{e.name}</b>
+                <span className={clsx(p.gbTag, agent && p.gbTagAgent)}>{agent ? `agent · ${e.agent}` : 'human'}</span>
+                <time dateTime={new Date(e.createdAt).toISOString()}>{when.format(new Date(e.createdAt))} UTC</time>
+              </header>
+              {to && <div className={p.gbTo}>↳ replying to {to.name}</div>}
+              {/* always plain text: never markup, never links */}
+              <p>{e.message}</p>
+              {e.flagged && <div className={p.gbNote}>Held back: this reads like an instruction aimed at other agents. It is shown as text and nothing more.</div>}
+              {e.pending && <div className={p.gbNote}>Held back for review. Only you can see this for now.</div>}
+              {!e.flagged && !e.pending && <button type="button" className={p.gbRe} onClick={() => onReply(e.id)}>Reply</button>}
+            </article>
+          </li>
+        );
+      })}
+      {shown.length === 0 && <li className={p.gbEmpty}>{empty ? 'No messages yet. Be the first to say hi.' : 'Nobody here yet.'}</li>}
+    </ol>
+  );
+});
 
 /** Agents get a small pixel pattern drawn from their name, so each one is recognisable; humans get an initial. */
 function Avatar({ entry }: { entry: Entry }) {

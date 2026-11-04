@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent as ReactPointerEvent, type RefObject } from 'react';
 import Image from 'next/image';
 import { prefersReducedMotion } from '@/lib/dom';
 import s from './field.module.css';
@@ -120,6 +120,29 @@ function Barracks() {
   );
 }
 
+interface BubbleLayerProps {
+  hostRef: RefObject<HTMLDivElement | null>;
+  bubbles: Bubble[];
+  bursts: Burst[];
+  onPop: (e: ReactPointerEvent<HTMLElement>, b: Bubble) => void;
+}
+
+/** The floating bubbles and the splashes from popped ones. Its own memoized component, so hovering a poster (which changes the caption below) does not re-render two dozen animated elements. */
+const BubbleLayer = memo(function BubbleLayer({ hostRef, bubbles, bursts, onPop }: BubbleLayerProps) {
+  return (
+    <div ref={hostRef} className={`${s.bubbles} ${p.popBubbles}`} aria-hidden="true">
+      {bubbles.map((b) => <i key={b.id} style={b.style} onPointerDown={(e) => onPop(e, b)} />)}
+      {bursts.map((b) => (
+        <div key={b.id} className={p.burst} style={{ left: b.x, top: b.y, '--r': `${b.r.toFixed(0)}px` } as CSSProperties}>
+          <span className={p.ring} />
+          <span className={`${p.ring} ${p.two}`} />
+          {b.drops.map((d, i) => <span key={i} className={p.dr} style={d.style} />)}
+        </div>
+      ))}
+    </div>
+  );
+});
+
 export function HobbiesPage() {
   const sectionRef = useRef<HTMLElement>(null);
   const bubblesRef = useRef<HTMLDivElement>(null);
@@ -162,7 +185,7 @@ export function HobbiesPage() {
     }
   }, [raw]);
 
-  const pop = (e: ReactPointerEvent<HTMLElement>, b: Bubble) => {
+  const pop = useCallback((e: ReactPointerEvent<HTMLElement>, b: Bubble) => {
     e.stopPropagation();
     const host = bubblesRef.current;
     if (!host) return;
@@ -191,7 +214,7 @@ export function HobbiesPage() {
     }
     /* a fresh bubble starts its climb from the bottom */
     later(() => setBubbles((prev) => [...prev, makeBubble(nextId.current++, Math.random)]), 600);
-  };
+  }, [later]);
 
   /* ---------- shelf ---------- */
   const move = (from: number, to: number) => {
@@ -207,16 +230,7 @@ export function HobbiesPage() {
 
   return (
     <section ref={sectionRef} id="off" className={`${s.band} ${s.bandDeep} ${s.sec} ${p.bandPage}`}>
-      <div ref={bubblesRef} className={`${s.bubbles} ${p.popBubbles}`} aria-hidden="true">
-        {bubbles.map((b) => <i key={b.id} style={b.style} onPointerDown={(e) => pop(e, b)} />)}
-        {bursts.map((b) => (
-          <div key={b.id} className={p.burst} style={{ left: b.x, top: b.y, '--r': `${b.r.toFixed(0)}px` } as CSSProperties}>
-            <span className={p.ring} />
-            <span className={`${p.ring} ${p.two}`} />
-            {b.drops.map((d, i) => <span key={i} className={p.dr} style={d.style} />)}
-          </div>
-        ))}
-      </div>
+      <BubbleLayer hostRef={bubblesRef} bubbles={bubbles} bursts={bursts} onPop={pop} />
       <button type="button" className={p.jelly} aria-label="Jellyfish. Click to make it pulse." onClick={() => setJelly((n) => n + 1)}>
         <svg className={jelly ? (jelly % 2 ? p.jetA : p.jetB) : undefined} viewBox="0 0 90 130" aria-hidden="true" focusable="false">
           <path className={p.jTent} d="M26 62 C20 82 32 92 24 116" />
