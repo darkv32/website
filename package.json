@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "guestbook": "bun scripts/guestbook.ts",
+    "indexnow": "bun scripts/indexnow.ts",
     "analyze": "cross-env ANALYZE=true next build --webpack"
   },
   "dependencies": {

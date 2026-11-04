@@ -6,14 +6,14 @@ import { isLive } from '@/lib/guestbook/env';
 export default function sitemap(): MetadataRoute.Sitemap {
   // The front page carries every section; each section also has a page of its own
   const posts = getAllBlogPosts();
-  // The only date the site knows is when a post last changed, so only the blog index gets one
+  // The only date the site knows is when a post last changed. The front page lists the latest posts and the blog index lists them all, so those two follow it
   const blogUpdated = new Date(Math.max(...posts.map((post) => Date.parse(post.updatedAt))));
 
   // The guestbook only joins once it has a database; before that it shows sample messages and is kept out of search
   const paths = ['', '/about', '/experience', '/blog', '/hobbies', '/contact', ...(isLive() ? ['/guestbook'] : [])];
   const staticPages = paths.map((path) => ({
     url: path ? getFullUrl(path) : SITE_CONFIG.baseUrl,
-    lastModified: path === '/blog' ? blogUpdated : undefined,
+    lastModified: path === '' || path === '/blog' ? blogUpdated : undefined,
   }));
 
   const blogPages = posts.map((post) => ({

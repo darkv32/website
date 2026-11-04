@@ -44,6 +44,9 @@ export function MediaServerPost() {
 
       <H2 id="the-stack">What I&apos;m actually building</H2>
       <p>
+        If you haven&apos;t met the term: an arr stack is a set of self-hosted apps, most of them named Something-arr, that find, download and organise movies and TV shows for a media server. Radarr handles movies, Sonarr handles TV, Prowlarr manages the indexers, and Jellyfin plays the result.
+      </p>
+      <p>
         The setup itself looked pretty straightforward. One Raspberry Pi runs all of the software, and the movies and series sit on an external hard drive. I&apos;d say it&apos;s straightforward even with nine pieces that fit together, because each one has a pretty simple purpose:
       </p>
       <div className={styles.roles}>

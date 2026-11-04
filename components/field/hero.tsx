@@ -76,7 +76,7 @@ export function Hero({ page = false }: { page?: boolean }) {
           <div>
             {page && <div className={`${s.label} ${p.eyebrow} ${s.enter}`} style={order(0)}>About &middot; 01 / 05</div>}
             <h1 className={s.name}>
-              <span className={s.mask}><span style={order(1)}>Tang</span></span>
+              <span className={s.mask}><span style={order(1)}>Tang</span></span>{' '}
               <span className={`${s.mask} ${s.l2}`}><span style={order(2)}>Yetong</span></span>
             </h1>
             <p className={`${s.lede} ${s.enter}`} style={order(3)}>Full stack developer that dabbles in data analytics.</p>

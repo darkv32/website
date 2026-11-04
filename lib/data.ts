@@ -34,6 +34,8 @@ export interface BlogPost {
     metaTitle: string;
     metaDescription: string;
     keywords: string[];
+    /** Software, products or topics the post is about; they become `about` in the structured data. */
+    about?: string[];
   };
 }
 

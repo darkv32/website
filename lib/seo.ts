@@ -13,6 +13,8 @@ export interface SEOConfig {
   /** Article only: the category and tags, which become `article:section` and `article:tag`. */
   section?: string;
   tags?: string[];
+  /** A plain-markdown copy of the page, advertised as an alternate for agents and tools that prefer it. */
+  markdownUrl?: string;
 }
 
 const { site, social, blog } = SITE_CONFIG;
@@ -36,7 +38,10 @@ export function createMetadata(config: SEOConfig): Metadata {
     metadataBase: new URL(SITE_CONFIG.baseUrl),
     alternates: {
       canonical: fullUrl,
-      types: { 'application/rss+xml': [{ url: getFullUrl('/feed.xml'), title: `${site.name} - RSS feed` }] },
+      types: {
+        'application/rss+xml': [{ url: getFullUrl('/feed.xml'), title: `${site.name} - RSS feed` }],
+        ...(config.markdownUrl ? { 'text/markdown': [{ url: config.markdownUrl, title: `${config.title} (markdown)` }] } : {}),
+      },
     },
     openGraph: {
       type: config.type ?? 'website',
@@ -71,9 +76,13 @@ export function createMetadata(config: SEOConfig): Metadata {
         'max-snippet': -1,
       },
     },
-    verification: SITE_CONFIG.seo.googleVerification
-      ? { google: SITE_CONFIG.seo.googleVerification }
-      : undefined,
+    verification:
+      SITE_CONFIG.seo.googleVerification || SITE_CONFIG.seo.bingVerification
+        ? {
+            ...(SITE_CONFIG.seo.googleVerification ? { google: SITE_CONFIG.seo.googleVerification } : {}),
+            ...(SITE_CONFIG.seo.bingVerification ? { other: { 'msvalidate.01': SITE_CONFIG.seo.bingVerification } } : {}),
+          }
+        : undefined,
   };
 }
 
@@ -124,6 +133,11 @@ function personNode(): Node {
       'Kotlin',
       'SQL',
       'Bitcoin Development',
+      'Homelab',
+      'Self-hosting',
+      'Docker',
+      'Raspberry Pi',
+      'Jellyfin',
     ],
   };
 }
@@ -199,14 +213,22 @@ export function generateBlogData() {
 export function generateArticleData(post: BlogPost) {
   const url = getFullUrl(`/blog/${post.slug}`);
   const author = { '@id': PERSON_ID, '@type': 'Person', name: site.author, url: SITE_CONFIG.baseUrl };
+  const image = getFullUrl(`/blog/${post.slug}/opengraph-image`);
 
   return graph(
     {
       '@type': 'BlogPosting',
       '@id': `${url}#article`,
+      url,
+      name: post.title,
       headline: post.title,
-      description: post.excerpt,
-      image: getFullUrl(`/blog/${post.slug}/opengraph-image`),
+      /* A headline is read in full by some consumers; the page's own title and description say what it is about in search terms */
+      alternativeHeadline: post.excerpt,
+      description: post.seo.metaDescription,
+      image: { '@type': 'ImageObject', url: image, width: 1200, height: 630 },
+      thumbnailUrl: image,
+      isAccessibleForFree: true,
+      ...(post.seo.about?.length ? { about: post.seo.about.map((name) => ({ '@type': 'Thing', name })) } : {}),
       author,
       publisher: author,
       datePublished: post.publishedAt,

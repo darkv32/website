@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { BlogArticle } from '@/components/blog/blog-article';
 import { getBlogPostBySlug, getAllBlogPosts } from '@/lib/data';
 import { createMetadata, generateArticleData } from '@/lib/seo';
+import { getFullUrl } from '@/lib/config';
+import { postMarkdownPath } from '@/lib/post-text';
 import { StructuredData } from '@/components/seo/structured-data';
 
 interface BlogPostPageProps {
@@ -40,6 +42,7 @@ export async function generateMetadata(props: BlogPostPageProps): Promise<Metada
     modifiedTime: post.updatedAt,
     section: post.category,
     tags: post.tags,
+    markdownUrl: getFullUrl(postMarkdownPath(post.slug)),
   });
 }
 

@@ -1,11 +1,18 @@
 import { SITE_CONFIG, getFullUrl } from '@/lib/config';
+import { getAllBlogPosts } from '@/lib/data';
+import { postMarkdownPath } from '@/lib/post-text';
 import { LIMITS } from '@/lib/guestbook/types';
 
-/* A plain-text map of the site for language models and the agents they run in (https://llmstxt.org). Built from the same config the rest of the site uses. */
+/* A plain-text map of the site for language models and the agents they run in (https://llmstxt.org). Built from the same config and post data the rest of the site uses. */
 export const dynamic = 'force-static';
 
 export function GET() {
   const { site, social } = SITE_CONFIG;
+  const posts = getAllBlogPosts();
+  const postLines = posts
+    .map((post) => `- [${post.title}](${getFullUrl(postMarkdownPath(post.slug))}): ${post.seo.metaDescription}`)
+    .join('\n');
+
   const body = `# ${site.name}
 
 > ${site.description}
@@ -20,6 +27,17 @@ ${site.name} is based in ${site.location}. ${site.bio}
 - [Hobbies](${getFullUrl('/hobbies')}): anime and StarCraft II
 - [Contact](${getFullUrl('/contact')}): email, GitHub and LinkedIn
 - [Resume](${getFullUrl('/resume.pdf')}): a PDF
+
+## Blog posts
+
+Each link is the post as plain markdown. The same post, with its interactive demos, is at ${getFullUrl('/blog/<slug>')}, and asking for that address with \`Accept: text/markdown\` returns the markdown too.
+
+${postLines}
+
+## Optional
+
+- [Full text of every post](${getFullUrl('/llms-full.txt')}): all of the blog in one file
+- [Sitemap](${getFullUrl('/sitemap.xml')})
 
 ## Elsewhere
 

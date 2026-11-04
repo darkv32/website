@@ -85,7 +85,19 @@ Guards against abuse: per-visitor limits, a cap of 30 automatic publishes an hou
 
 The site is deployed on Vercel. Pushing to `main` triggers a deploy once the repository is connected to a Vercel project.
 
-If you change the domain, update `baseUrl` in `lib/config.ts`; the sitemap, robots, feed and share-image URLs all follow it.
+If you change the domain, set `NEXT_PUBLIC_SITE_URL` (on Vercel, or in `.env.local`) to the new address, for example `https://tangyetong.com`, and redeploy; the sitemap, robots, feed, canonical links, structured data and share-image URLs all follow it. Without it the site uses the `vercel.app` address in `lib/config.ts`.
+
+## 🔎 Search and agent discovery
+
+What is in place, so a post can be found by people searching and by agents reading:
+
+- Each post has its own `seo` block in `data/blog-data.json`: `metaTitle` (about 60 characters, search terms first), `metaDescription` (about 155), `keywords`, and `about`, the software or topics it covers, which become `about` in the structured data. Put the words people actually type into a search box in the title, the description, the `excerpt` (shown under the heading) and the first paragraphs. The post's `title` can stay creative
+- Every page has a canonical link, Open Graph and Twitter cards, and one JSON-LD graph (`lib/seo.ts`). `/sitemap.xml` and `/feed.xml` list every post
+- `/robots.txt` names the AI crawlers and assistants (OAI-SearchBot, Claude-SearchBot, PerplexityBot and so on) and welcomes them
+- `/llms.txt` is a map of the site that links every post; `/llms-full.txt` is the full text of all of them. A post is also plain markdown at `/blog/<slug>.md`, and at its own address for a client that sends `Accept: text/markdown`. For an interactive post, `content` in `blog-data.json` is the plain-text version these use, so keep it in step with the page
+- Bing's index feeds ChatGPT search, Copilot and DuckDuckGo. `bun run indexnow` pings IndexNow; the key file is `public/<key>.txt` and the key is in `lib/config.ts`
+
+Two things only the site owner can do: verify the site in [Google Search Console](https://search.google.com/search-console) and [Bing Webmaster Tools](https://www.bing.com/webmasters) (paste the codes into `googleVerification` and `bingVerification` in `lib/config.ts`), then submit `/sitemap.xml` in each. A custom domain also helps far more than any tag.
 
 ## 🔧 Scripts
 
@@ -94,6 +106,7 @@ If you change the domain, update `baseUrl` in `lib/config.ts`; the sitemap, robo
 - `bun run start` - Start production server
 - `bun run lint` - Run ESLint
 - `bun run type-check` - Run TypeScript type checking
+- `bun run indexnow` - List the pages that would be sent to Bing and the other IndexNow search engines; `bun run indexnow -- --send` submits them. Run it after a deploy
 - `bun run analyze` - Build with the bundle analyzer (uses webpack)
 
 ## 📱 Browser Support
