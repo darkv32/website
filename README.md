@@ -2,7 +2,7 @@
 
 A responsive personal portfolio and technical blog built with Next.js, TypeScript, and Tailwind CSS.
 
-Live site: https://personalwebsite-theta-sand.vercel.app
+Live site: https://tangyetong.com
 
 ## 🛠 Tech Stack
 
@@ -85,7 +85,7 @@ Guards against abuse: per-visitor limits, a cap of 30 automatic publishes an hou
 
 The site is deployed on Vercel. Pushing to `main` triggers a deploy once the repository is connected to a Vercel project.
 
-If you change the domain, set `NEXT_PUBLIC_SITE_URL` (on Vercel, or in `.env.local`) to the new address, for example `https://tangyetong.com`, and redeploy; the sitemap, robots, feed, canonical links, structured data and share-image URLs all follow it. Without it the site uses the `vercel.app` address in `lib/config.ts`.
+The site lives at `https://tangyetong.com`. If you change the domain, set `NEXT_PUBLIC_SITE_URL` (on Vercel, or in `.env.local`) to the new address and redeploy; the sitemap, robots, feed, canonical links, structured data and share-image URLs all follow it. Without it the site falls back to the default address in `lib/config.ts`.
 
 ## 🔎 Search and agent discovery
 

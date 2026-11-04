@@ -1,7 +1,7 @@
 // Site configuration constants
 /* The site's public address. Set NEXT_PUBLIC_SITE_URL (on Vercel, or in .env.local) to move to a custom domain without touching code;
    the sitemap, robots, feed, canonical links, share images and structured data all follow it. */
-const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://personalwebsite-theta-sand.vercel.app').replace(/\/+$/, '');
+const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL?.trim() || 'https://tangyetong.com').replace(/\/+$/, '');
 
 export const SITE_CONFIG = {
   // Base URL for the site
