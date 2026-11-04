@@ -17,12 +17,15 @@ import { BlogTableOfContents } from './blog-table-of-contents';
 import { BlogPostCard } from './blog-post-card';
 import { ReadingProgress } from './reading-progress';
 import { INTERACTIVE_BODIES } from './interactive-bodies';
+import styles from './blog-article.module.css';
 
 /* Only the languages the posts use are registered. */
 SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('kotlin', kotlin);
 
 const ARTICLE_ID = 'article';
+/** One width and gutter for every section of the page, so the hero, body and related posts line up and the gutters shrink on small screens. */
+const WRAP = 'mx-auto w-full max-w-6xl px-5 sm:px-8 lg:px-10';
 
 const { site, social } = SITE_CONFIG;
 const socialLinks = [
@@ -80,99 +83,96 @@ export function BlogArticle({ post }: { post: BlogPost }) {
   const interactive = INTERACTIVE_BODIES[post.slug];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className={`min-h-screen ${styles.page}`}>
+      <div className={styles.bg} aria-hidden="true" />
       <ReadingProgress targetId={ARTICLE_ID} />
-      <section className="relative pt-20 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5">
-        <div className="container-width px-4 sm:px-6 lg:px-8 py-12">
-          <Link href="/blog" className="inline-flex items-center space-x-2 text-muted-foreground hover:text-primary transition-colors mb-8">
-            <ArrowLeft className="h-4 w-4" />
-            <span>Back to Blog</span>
-          </Link>
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="flex items-center justify-center space-x-4 mb-6">
-              <Badge variant="secondary">{post.category}</Badge>
-              <div className="flex items-center space-x-4 text-muted-foreground text-sm">
-                <div className="flex items-center space-x-1">
-                  <Calendar className="h-4 w-4" />
-                  <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
-                </div>
-                <div className="flex items-center space-x-1">
-                  <Clock className="h-4 w-4" />
-                  <span>{formatReadTime(post.readTime)}</span>
-                </div>
-              </div>
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
-              {post.title}
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-              {post.excerpt}
-            </p>
-            <div className="flex items-center justify-center space-x-4">
-              <Author size={48} />
-              <div className="text-left">
-                <div className="font-semibold">{site.author}</div>
-                <div className="text-muted-foreground text-sm">{site.bio}</div>
-              </div>
+      {/* The nav is sticky, not fixed, so the page needs no top offset of its own. */}
+      <header className={`${WRAP} pt-8 pb-10 sm:pt-12 sm:pb-14`}>
+        <Link
+          href="/blog"
+          className="group inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3.5 py-1.5 text-sm font-medium text-muted-foreground backdrop-blur transition-colors hover:border-primary hover:text-primary"
+        >
+          <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+          Back to Blog
+        </Link>
+        <div className="mt-8 max-w-3xl sm:mt-10">
+          <div className="mb-5 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+            <Badge variant="default">{post.category}</Badge>
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar className="h-4 w-4" aria-hidden="true" />
+              <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="h-4 w-4" aria-hidden="true" />
+              {formatReadTime(post.readTime)}
+            </span>
+          </div>
+          <h1 className="font-display text-3xl font-bold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+            {post.title}
+          </h1>
+          <p className="mt-5 text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            {post.excerpt}
+          </p>
+          <div className="mt-8 flex items-center gap-4 border-t pt-6">
+            <Author size={48} />
+            <div className="min-w-0">
+              <div className="font-semibold">{site.author}</div>
+              <div className="text-sm text-muted-foreground">{site.bio}</div>
             </div>
           </div>
         </div>
-      </section>
-      <section className="py-4">
-        <div className="container-width px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
-            <div className="lg:col-span-1">
-              <div className="sticky top-24">
-                <BlogTableOfContents headings={interactive?.headings ?? extractHeadings(post.content)} />
+      </header>
+      <section className="pb-16 sm:pb-24">
+        <div className={`${WRAP} grid grid-cols-1 gap-10 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-14`}>
+          <aside>
+            <div className="sticky top-24">
+              <BlogTableOfContents headings={interactive?.headings ?? extractHeadings(post.content)} />
+            </div>
+          </aside>
+          <div className="min-w-0">
+            <article id={ARTICLE_ID} className="article-content">
+              {interactive ? <interactive.Body /> : <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>}
+            </article>
+            <div className="mt-12 pt-8 border-t">
+              <h2 className="text-lg font-semibold mb-4">Tags</h2>
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">{tag}</Badge>
+                ))}
               </div>
             </div>
-            <div className="lg:col-span-3">
-              <article id={ARTICLE_ID} className="article-content">
-                {interactive ? <interactive.Body /> : <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>}
-              </article>
-              <div className="mt-12 pt-8 border-t">
-                <h2 className="text-lg font-semibold mb-4">Tags</h2>
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary">{tag}</Badge>
-                  ))}
-                </div>
-              </div>
-              <Card className="mt-12 border-2 border-primary/30 shadow-md">
-                <CardContent className="p-8">
-                  <div className="flex items-start space-x-6">
-                    <Author size={80} />
-                    <div className="flex-1">
-                      <h2 className="text-xl font-semibold mb-2">{site.author}</h2>
-                      <p className="text-muted-foreground mb-4">{site.bio}</p>
-                      <div className="flex flex-wrap gap-4">
-                        {socialLinks.map(({ href, label, Icon }) => (
-                          <Button key={label} variant="outline" size="sm" asChild>
-                            <a href={href} target="_blank" rel="noopener noreferrer">
-                              <Icon className="h-4 w-4 mr-2" />
-                              {label}
-                            </a>
-                          </Button>
-                        ))}
-                      </div>
+            <Card className="mt-12 border-2 border-primary/30 shadow-md">
+              <CardContent className="p-5 sm:p-8">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
+                  <Author size={80} />
+                  <div className="flex-1">
+                    <h2 className="text-xl font-semibold mb-2">{site.author}</h2>
+                    <p className="text-muted-foreground mb-4">{site.bio}</p>
+                    <div className="flex flex-wrap gap-3">
+                      {socialLinks.map(({ href, label, Icon }) => (
+                        <Button key={label} variant="outline" size="sm" asChild>
+                          <a href={href} target="_blank" rel="noopener noreferrer">
+                            <Icon className="h-4 w-4 mr-2" />
+                            {label}
+                          </a>
+                        </Button>
+                      ))}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
       {relatedPosts.length > 0 && (
-        <section className="py-20 bg-secondary/20">
-          <div className="container-width px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-12">Related Articles</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {relatedPosts.map((relatedPost) => (
-                  <BlogPostCard key={relatedPost.id} post={relatedPost} />
-                ))}
-              </div>
+        <section className="border-t bg-secondary/40 py-14 backdrop-blur-sm sm:py-20">
+          <div className={WRAP}>
+            <h2 className="mb-8 text-2xl font-bold sm:mb-12 sm:text-3xl">Related Articles</h2>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 lg:gap-8">
+              {relatedPosts.map((relatedPost) => (
+                <BlogPostCard key={relatedPost.id} post={relatedPost} />
+              ))}
             </div>
           </div>
         </section>
