@@ -16,6 +16,7 @@ import { extractHeadings, slugify } from '@/lib/headings';
 import { BlogTableOfContents } from './blog-table-of-contents';
 import { BlogPostCard } from './blog-post-card';
 import { ReadingProgress } from './reading-progress';
+import { INTERACTIVE_BODIES } from './interactive-bodies';
 
 /* Only the languages the posts use are registered. */
 SyntaxHighlighter.registerLanguage('bash', bash);
@@ -76,6 +77,7 @@ function Author({ size }: { size: number }) {
 /** A blog post, rendered on the server: the markdown and its syntax highlighting never reach the browser. */
 export function BlogArticle({ post }: { post: BlogPost }) {
   const relatedPosts = getRelatedBlogPosts(post);
+  const interactive = INTERACTIVE_BODIES[post.slug];
 
   return (
     <div className="min-h-screen bg-background">
@@ -121,12 +123,12 @@ export function BlogArticle({ post }: { post: BlogPost }) {
           <div className="max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-12">
             <div className="lg:col-span-1">
               <div className="sticky top-24">
-                <BlogTableOfContents headings={extractHeadings(post.content)} />
+                <BlogTableOfContents headings={interactive?.headings ?? extractHeadings(post.content)} />
               </div>
             </div>
             <div className="lg:col-span-3">
               <article id={ARTICLE_ID} className="article-content">
-                <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>
+                {interactive ? <interactive.Body /> : <ReactMarkdown components={markdownComponents}>{post.content}</ReactMarkdown>}
               </article>
               <div className="mt-12 pt-8 border-t">
                 <h2 className="text-lg font-semibold mb-4">Tags</h2>

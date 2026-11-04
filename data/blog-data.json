@@ -1,6 +1,26 @@
 {
   "posts": [
     {
+      "id": "12",
+      "slug": "raspberry-pi-media-server",
+      "title": "Jellyfin: Avoiding subscriptions like the plague",
+      "excerpt": "Setting up a free streaming stack on a Raspberry Pi 5 8GB + 1TB external hard drive",
+      "content": "A few weeks ago, I got tired of constantly asking my girlfriend to bring her iPad over to my house just to watch shows and movies. I have a TV at home, and constantly using the iPad never felt right.\n\nI've never had a Netflix subscription, because I never knew if I could make it worth it. Would I really watch at least $20 of shows every month?\n\nThen I stumbled onto some YouTube Shorts about setting up an *arr stack (Radarr, Sonarr, Jellyfin and friends), and it piqued my interest. It didn't look difficult or complicated, and it sounded like a fun weekend project.\n\nThis post is how I set it up, in the order that worked for me, with bits you can click on as you read.\n\n## What I'm actually building\n\nOne Raspberry Pi runs all of the software, and the movies and series sit on an external hard drive. Nine pieces fit together: Jellyfin (the media player), Seerr (the request website), qBittorrent (downloads the files), Radarr (movies), Sonarr (TV shows), Prowlarr (indexers), Bazarr (subtitles), FlareSolverr (gets Prowlarr past anti-bot checks) and Maintainerr (auto-deletes old media).\n\n## Why isn't this just one plug-and-play app?\n\nNine containers is a lot of moving parts for \"watch a movie\". It makes sense when you think about it: each app does exactly one job, and they talk to each other through plain web addresses and API keys.\n\nThe upside is the flexibility to swap, update or switch off any single piece without touching the rest. You will feel the downside while setting everything up, though: more things to set up and keep updated. Debugging can also be a hassle.\n\n## Picking the Pi, and everything else I needed\n\nI went with the Raspberry Pi 5 8GB. The whole shopping list came to S$314.31, using a spare 1TB external hard drive I already had. It took about a week for everything to arrive, since some of the parts came from London.\n\n## Setting it up, step by step\n\nThe core components are quite linear: flash the Pi, install Docker, mount the drive, launch the stack, then connect qBittorrent, Radarr, Sonarr, Prowlarr and Jellyfin. The optional apps (Seerr, Bazarr, FlareSolverr and Maintainerr) come in any time.\n\n## My compose file, with your pick of containers\n\nThis is my stack written as a docker-compose file, with a builder that checks whether each container has what it depends on.\n\n## Why every app mounts the same /data\n\nRadarr and Sonarr don't copy a finished download into the library, they hardlink it: one file on disk, two names. That only works if both names live on the same mount.\n\n## Getting the apps to talk to each other\n\nEvery connection screen asks for a host. The containers all share one Docker network, so the most reliable way is to use the container name. A reserved IP address for the Pi works as well.\n\n## Things that usually go wrong\n\nNearly every problem I had comes down to a wrong address, a wrong path or a missing permission.\n\n## Day to day\n\nDay to day it's just: open Seerr, request something, wait. All of the TVs have the Jellyfin TV app installed, and can stream pretty smoothly most of the time. Pretty good convenience overall, and I think it's pretty worth it.\n\nI only use this for content I'm legally entitled to download.",
+      "featuredImage": "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+      "publishedAt": "2026-10-29",
+      "updatedAt": "2026-11-04",
+      "category": "homelab",
+      "tags": ["Raspberry Pi", "Docker", "Jellyfin", "Homelab"],
+      "readTime": 14,
+      "featured": false,
+      "status": "published",
+      "seo": {
+        "metaTitle": "Jellyfin on a Raspberry Pi 5: Avoiding Subscriptions - Tang Yetong",
+        "metaDescription": "How I set up Jellyfin, Radarr, Sonarr and friends on a Raspberry Pi 5 with Docker, so I can stream shows and movies on my TV without another subscription.",
+        "keywords": ["Jellyfin", "Raspberry Pi 5", "Docker", "Radarr", "Sonarr", "Homelab", "Media Server"]
+      }
+    },
+    {
       "id": "1",
       "slug": "cs2103-individual-project",
       "title": "CS2103 Individual Project",
