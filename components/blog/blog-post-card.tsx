@@ -13,7 +13,7 @@ export function BlogPostCard({ post }: { post: BlogPost }) {
       <div className="aspect-video overflow-hidden relative">
         <Image
           src={post.featuredImage}
-          alt=""
+          alt={`Featured image for ${post.title}`}
           fill
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 33vw"

@@ -383,10 +383,10 @@ export function HeroField({ heroRef, frameRef }: HeroFieldProps) {
     <>
       <canvas ref={canvasRef} className={s.contours} aria-hidden="true" />
       <div ref={crittersRef} className={s.critters} aria-hidden="true">
-        <Image className={`${s.zl} ${s.z0}`} data-zl="" src="/field/z1.png" alt="" width={260} height={230} draggable={false} />
-        <Image className={`${s.zl} ${s.z1}`} data-zl="" src="/field/z2.png" alt="" width={260} height={241} draggable={false} />
-        <Image className={`${s.zl} ${s.z2}`} data-zl="" src="/field/z3.png" alt="" width={260} height={336} draggable={false} />
-        <Image ref={marineRef} className={s.marine} src="/field/marine.png" alt="" width={420} height={435} draggable={false} />
+        <Image className={`${s.zl} ${s.z0}`} data-zl="" src="/field/z1.png" alt="Pink critter sprite" width={260} height={230} draggable={false} />
+        <Image className={`${s.zl} ${s.z1}`} data-zl="" src="/field/z2.png" alt="Pink critter sprite" width={260} height={241} draggable={false} />
+        <Image className={`${s.zl} ${s.z2}`} data-zl="" src="/field/z3.png" alt="Pink critter sprite" width={260} height={336} draggable={false} />
+        <Image ref={marineRef} className={s.marine} src="/field/marine.png" alt="A marine sprite" width={420} height={435} draggable={false} />
       </div>
       <svg ref={shotsRef} className={s.shots} aria-hidden="true" />
     </>
