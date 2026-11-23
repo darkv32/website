@@ -1,6 +1,52 @@
 {
   "posts": [
     {
+      "id": "14",
+      "slug": "jellyfin-stutter-heavy-processing-raspberry-pi",
+      "title": "Jellyfin stutters: Heavy processing",
+      "excerpt": "A follow-up to my transcoding post: Jellyfin stuttered on direct play too. The Pi's CPU was at 90%+ because qBittorrent and Bazarr were working through four seasons of a show at once.",
+      "content": "In my last blog about [transcoding](/blog/jellyfin-stutter-transcoding-raspberry-pi), the stutter came down to the Pi converting a 4K Dolby Vision file it couldn't keep up with. Then it stuttered again, and this time nothing was being transcoded.\n\n## Direct play, and still stuttering\n\nBy now I knew where to look first, so I opened the Jellyfin dashboard while it was stuttering. The session said \"Direct playing\". Nothing was being converted, the TV understood every part of the file and the Pi was just sending it over.\n\nThat ruled out everything from the last post. If the formats were fine and it still stuttered, then something else was keeping the Pi from sending the file fast enough.\n\n## Look at the CPU\n\nSo I SSHed into the Pi and looked at what it was doing. The CPU usage was sitting at 90% or more, which is a lot for a Pi that is supposed to be just playing a file. If your stack runs in Docker, this shows which container is busy:\n\n```bash\ndocker stats --no-stream\n```\n\nWhat I checked, in order:\n\n- **Jellyfin session:** \"Direct playing\", so nothing was being converted. Ruled out.\n- **CPU usage over SSH:** 90%+ busy, so the Pi was overloaded. The problem.\n- **The busy apps:** Bazarr and qBittorrent, working through four seasons of Tulsa King at once. The cause.\n\n## Who was using it\n\nAfter digging around, it was Bazarr and qBittorrent. Seerr had been instructed to request a show with four seasons, Tulsa King, and had all of it queued up, and both of them were churning through all of it at once.\n\nSeerr hadn't done anything wrong. The person who requested the show wanted all the seasons, so it asked for all four.\n\nEverything in the stack lives on the same Pi, with the same four cores. qBittorrent is busy for as long as it has many active torrents, and Bazarr is busy for as long as it has a pile of episodes to look at. Jellyfin only needed a small share to direct play one file, but when two apps take most of the CPU, that share gets squeezed.\n\n## The fix: one torrent at a time\n\nI limited qBittorrent to one active torrent. The rest of the season now waits in the queue and gets worked on one after another, so there is much less going on at any moment. While playing a movie or show, the CPU is back to around 20 to 30%, and the stutter is gone.\n\nIn qBittorrent this is in the options, under BitTorrent and then Torrent Queueing. Set the maximum active torrents to 1. The labels might differ a little on your version.\n\nIt does mean a whole show takes longer to arrive, since the episodes are no longer downloading side by side.\n\n## Watching it without SSH\n\nThis is the second time a stutter turned out to be the Pi working too hard, so a graph is easier than SSHing in every time. Beszel, the monitoring dashboard from the [last post](/blog/jellyfin-stutter-transcoding-raspberry-pi), shows the CPU chart too. Picking 12 or 24 hours shows what happened last night.",
+      "featuredImage": "https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg",
+      "publishedAt": "2026-11-23",
+      "updatedAt": "2026-11-23",
+      "category": "homelab",
+      "tags": [
+        "Jellyfin",
+        "qBittorrent",
+        "Bazarr",
+        "Sonarr",
+        "Raspberry Pi",
+        "Beszel",
+        "Self-hosted",
+        "Homelab"
+      ],
+      "readTime": 4,
+      "featured": false,
+      "status": "published",
+      "seo": {
+        "metaTitle": "Jellyfin Stuttering on Direct Play: Pi at 90% CPU - Tang Yetong",
+        "metaDescription": "Jellyfin stuttered even on direct play: the Raspberry Pi's CPU was at 90%+ from qBittorrent and Bazarr. Limiting qBittorrent to one active torrent fixed it.",
+        "keywords": [
+          "Jellyfin stuttering",
+          "Jellyfin direct play stutter",
+          "Raspberry Pi high CPU",
+          "qBittorrent active torrents",
+          "qBittorrent torrent queueing",
+          "Bazarr",
+          "Sonarr",
+          "Beszel",
+          "Homelab"
+        ],
+        "about": [
+          "Jellyfin",
+          "qBittorrent",
+          "Bazarr",
+          "Raspberry Pi 5",
+          "Beszel"
+        ]
+      }
+    },
+    {
       "id": "13",
       "slug": "jellyfin-stutter-transcoding-raspberry-pi",
       "title": "Jellyfin stutters: Transcoding",

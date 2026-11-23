@@ -4,7 +4,7 @@ import styles from './transcoding.module.css';
 
 type Tone = 'plain' | 'ok' | 'warn' | 'bad';
 
-interface Step {
+export interface Step {
   kicker: string;
   title: string;
   text: string;
@@ -12,7 +12,7 @@ interface Step {
 }
 
 /** A row of boxes with arrows between them. */
-function Steps({ steps }: { steps: Step[] }) {
+export function Steps({ steps }: { steps: Step[] }) {
   return (
     <div className={styles.chain}>
       {steps.map((step, i) => (

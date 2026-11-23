@@ -2,6 +2,7 @@ import type { ComponentType } from 'react';
 import type { Heading } from '@/lib/headings';
 import { MEDIA_SERVER_HEADINGS, MediaServerPost } from './media-server/post';
 import { TRANSCODING_HEADINGS, TranscodingPost } from './jellyfin-transcoding/post';
+import { HEAVY_PROCESSING_HEADINGS, HeavyProcessingPost } from './jellyfin-heavy-processing/post';
 
 interface InteractiveBody {
   Body: ComponentType;
@@ -13,4 +14,5 @@ interface InteractiveBody {
 export const INTERACTIVE_BODIES: Record<string, InteractiveBody> = {
   'raspberry-pi-media-server': { Body: MediaServerPost, headings: MEDIA_SERVER_HEADINGS },
   'jellyfin-stutter-transcoding-raspberry-pi': { Body: TranscodingPost, headings: TRANSCODING_HEADINGS },
+  'jellyfin-stutter-heavy-processing-raspberry-pi': { Body: HeavyProcessingPost, headings: HEAVY_PROCESSING_HEADINGS },
 };
