@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import type { Heading } from '@/lib/headings';
 import { MEDIA_SERVER_HEADINGS, MediaServerPost } from './media-server/post';
+import { TRANSCODING_HEADINGS, TranscodingPost } from './jellyfin-transcoding/post';
 
 interface InteractiveBody {
   Body: ComponentType;
@@ -11,4 +12,5 @@ interface InteractiveBody {
 /** Posts whose body is built from components, with demos you can click, instead of markdown. The post's `content` in blog-data.json is a plain-text version for the feed and search engines. */
 export const INTERACTIVE_BODIES: Record<string, InteractiveBody> = {
   'raspberry-pi-media-server': { Body: MediaServerPost, headings: MEDIA_SERVER_HEADINGS },
+  'jellyfin-stutter-transcoding-raspberry-pi': { Body: TranscodingPost, headings: TRANSCODING_HEADINGS },
 };

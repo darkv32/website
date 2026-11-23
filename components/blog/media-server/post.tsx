@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import type { Heading } from '@/lib/headings';
 import { Alternatives } from './alternatives';
 import { CodeBlock } from './copy-button';
@@ -119,7 +120,7 @@ export function MediaServerPost() {
       </p>
       <div className={styles.try}><CodeBlock text={UPDATE_COMMANDS} /></div>
       <p>
-        Now, all of the TVs have the Jellyfin TV app installed, and can stream pretty smoothly most of the time. There are some slight issues like transcoding, since the Pi can&apos;t transcode on its own, but those are outside the scope of this blog.
+        Now, all of the TVs have the Jellyfin TV app installed, and can stream pretty smoothly most of the time. There are some slight issues like transcoding, since the Pi can&apos;t transcode on its own, but those are outside the scope of this blog. I cover them in <Link href="/blog/jellyfin-stutter-transcoding-raspberry-pi">Jellyfin stutters: Transcoding</Link>.
       </p>
       <p>Pretty good convenience overall, and I think it&apos;s pretty worth it 👍</p>
       <p className={styles.legal}>I only use this for content I&apos;m legally entitled to download. 👍</p>
