@@ -1,0 +1,513 @@
+/* Styles for the card holder post: the manual from the artifact, moved onto the site's colours.
+   .manual maps the artifact's tokens (--bg, --surface, --tan, ...) onto the site's --f-* palette, and the diagram and animation rules from the artifact follow below.
+   Rules that restyle prose elements start with .manual so they win over the article's own prose styles. */
+
+.manual {
+  --bg: var(--f-bg);
+  --surface: var(--f-bg2);
+  --fg: var(--f-fg);
+  --muted: var(--f-muted);
+  --line: var(--f-line2);
+  --accent: var(--f-accent);
+  --accent-soft: color-mix(in srgb, var(--f-accent) 14%, var(--f-bg));
+  --tan: #9a5a22;
+  --tan-soft: color-mix(in srgb, var(--tan) 13%, var(--f-bg));
+  --warn: #a8391a;
+  --warn-soft: color-mix(in srgb, var(--warn) 11%, var(--f-bg));
+  --display: var(--font-display), 'Segoe UI', system-ui, sans-serif;
+  --body: var(--font-body), 'Segoe UI', system-ui, sans-serif;
+  --mono: var(--font-mono), ui-monospace, Consolas, monospace;
+  min-width: 0;
+}
+:global(.dark) .manual { --tan: #dc9e63; --warn: #f0906d; }
+
+/* ---------- top of the post ---------- */
+.hero { display: grid; gap: 20px; align-items: start; }
+.hero-text { display: grid; gap: 14px; min-width: 0; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px; }
+.fact { font: 500 .8rem var(--mono); padding: 4px 10px; border: 1px solid var(--line); background: var(--surface); border-radius: 4px; }
+.fact b { color: var(--tan); font-weight: 500; }
+@media (min-width: 680px) { .hero { grid-template-columns: 280px minmax(0, 1fr); gap: 28px; } }
+
+/* ---------- steps ---------- */
+.steps-area { display: grid; gap: 3.5rem; }
+.step { min-width: 0; }
+.step-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.manual .step-head h2 { margin: 0; scroll-margin-top: 11rem; }
+.n { color: var(--tan); margin-right: .45em; font-variant-numeric: tabular-nums; }
+.tick { display: inline-flex; align-items: center; gap: 8px; padding: 4px 0; font: 500 .72rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+.tick input { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+.tick[data-on="true"] { color: var(--accent); }
+
+.step-body { display: grid; gap: 12px; margin-top: 14px; min-width: 0; font-size: 1rem; line-height: 1.7; }
+.manual .step-body p.goal { color: var(--muted); max-width: 64ch; }
+.manual .step-body ol, .manual .step-body ul { margin: 0; padding-left: 1.5rem; display: grid; gap: .6rem; }
+.manual .step-body li + li { margin-top: 0; }
+.manual .step-body ol > li::marker { color: var(--tan); font-family: var(--mono); font-weight: 500; font-size: .9em; }
+.manual .step-body ol.sub { list-style: lower-alpha; gap: .3rem; margin-top: .4rem; padding-left: 1.4rem; }
+.manual .step-body ol.sub > li::marker { font-size: .85em; }
+.manual .step-body h3 { margin: .5rem 0 0; font-size: 1.3rem; color: var(--tan); scroll-margin-top: 11rem; }
+
+/* ---------- the stitch thread: build progress ---------- */
+.thread-wrap { --thread: #9a6232; position: sticky; top: var(--nav-h, 3.6rem); z-index: 20; margin-bottom: 1.75rem; padding: 10px 0 6px; background: hsl(var(--background) / .88); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+:global(.dark) .thread-wrap { --thread: #d49a62; }
+.thread-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; font: 500 .7rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.thread-top b { color: var(--fg); font-weight: 600; }
+.thread-clear { margin-left: 10px; padding: 0; background: none; border: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--accent); text-decoration: underline; cursor: pointer; }
+.thread { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 2px; }
+.t-group { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.t-stitches { position: relative; display: flex; }
+.t-stitches::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed var(--line); }
+.t-stitch { position: relative; flex: 1 1 0; min-width: 24px; height: 30px; padding: 0; background: transparent; border: 0; cursor: pointer; }
+.t-stitch::before { content: ''; position: absolute; left: 50%; top: 50%; width: 5px; height: 16px; border-radius: 2px; background: var(--line); transform: translate(-50%, -50%) skewX(-22deg); transition: background-color .2s, height .2s; }
+.t-stitch:hover::before { background: var(--muted); }
+.t-stitch.sewn::before { background: var(--thread); }
+.t-stitch.now::before { height: 26px; background: var(--accent); }
+.t-label { font: 500 .6rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+@media (max-width: 640px) { .t-label { display: none; } .thread { gap: 0 8px; } }
+
+/* ---------- my photos ---------- */
+.photos { display: grid; gap: 10px; margin-top: 6px; }
+.photos-label { font: 500 .7rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--tan); }
+.photos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px; }
+.photo { margin: 0; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.photo-frame { position: relative; aspect-ratio: 3 / 4; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+.photo-frame img { object-fit: cover; }
+.photo figcaption { font-size: .85rem; line-height: 1.5; color: var(--muted); }
+
+/* ---------- callouts, boxes, tags ---------- */
+.callout { background: var(--tan-soft); border: 1px solid color-mix(in srgb, var(--tan) 40%, transparent); padding: 12px 14px; border-radius: 8px; font-size: .95rem; line-height: 1.6; }
+.callout.warn { border-color: color-mix(in srgb, var(--warn) 45%, transparent); background: var(--warn-soft); }
+.callout strong { font-weight: 600; }
+.note { color: var(--muted); font-size: .95rem; max-width: 65ch; }
+.meta { font-size: .8rem; color: var(--muted); }
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.split .box { display: grid; gap: 6px; align-content: start; padding: 12px 14px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; }
+.manual .split h3 { margin: 0; font-size: 1.3rem; line-height: 1.1; }
+.manual .split ul { margin: 0; padding-left: 1.1rem; font-size: .95rem; }
+.split p { font-size: .9rem; color: var(--muted); }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: .8rem; font-weight: 500; padding: 2px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.manual a.tag { text-decoration: none; color: var(--accent); }
+.manual a.tag:hover { text-decoration: underline; opacity: 1; }
+.tag.tools { background: transparent; border: 1px solid var(--line); color: var(--muted); font-weight: 400; }
+.phase { margin-top: 14px; font: 500 .75rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+dl.fixes { margin: 0; display: grid; gap: 12px; }
+dl.fixes dt { font-weight: 600; }
+dl.fixes dd { margin: 2px 0 0; color: var(--muted); font-size: .95rem; }
+.guides { display: grid; gap: 10px; }
+.guide { display: grid; gap: 4px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.manual a.guide { text-decoration: none; color: var(--fg); }
+.guide:hover { border-color: var(--accent); }
+.guide .g-name { font-weight: 600; color: var(--accent); }
+.guide .g-use { font-size: .9rem; color: var(--muted); }
+
+/* ---------- the cut list ---------- */
+.cut-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 390px); grid-template-rows: auto 1fr; grid-template-areas: "table fig" "cap fig"; gap: 16px 24px; align-items: start; }
+.cut-table { grid-area: table; min-width: 0; }
+.cut-fig { grid-area: fig; min-width: 0; }
+.cut-cap { grid-area: cap; min-width: 0; font-size: .95rem; line-height: 1.65; }
+.cut-cap p { margin: 0; color: var(--muted); }
+.cut-cap b { color: var(--fg); font-weight: 600; }
+@media (max-width: 720px) { .cut-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "table" "fig" "cap"; } }
+table.cuts { width: 100%; border-collapse: collapse; font-size: .95rem; }
+table.cuts th, table.cuts td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+table.cuts th { font: 500 .75rem var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+table.cuts td.num { font: .9rem var(--mono); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.table-scroll { overflow-x: auto; }
+svg.layout text { font-family: var(--mono); }
+
+/* ---------- dark mode: highlights need a light colour ---------- */
+:global(.dark) .manual .a11gloss, :global(.dark) .manual .a11dab { fill: var(--fg); fill-opacity: .6; }
+:global(.dark) .manual svg.d .hl, :global(.dark) .manual svg.d .glossl { stroke: var(--fg); stroke-opacity: .6; }
+
+@media (prefers-reduced-motion: reduce) { .t-stitch::before { transition: none; } }
+
+/* ===================== diagrams and animations, from the artifact ===================== */
+/* Generated from the artifact's diagram and animation rules. */
+figure.fig { margin: 0; display: grid; gap: 8px; padding: 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; min-width: 0; }
+figure.fig figcaption { font-size: 14px; line-height: 1.5; color: var(--muted); max-width: 64ch; }
+figure.fig figcaption b { color: var(--fg); font-weight: 600; }
+.fig-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+svg.d { width: 100%; height: auto; display: block; }
+svg.d text { font-family: var(--mono); font-size: 12px; fill: var(--fg); }
+svg.d .sub { font-size: 10.5px; fill: var(--muted); }
+svg.d .h { font-weight: 600; }
+svg.d .ok { fill: var(--accent); }
+svg.d .no { fill: var(--warn); }
+svg.d .tn { fill: var(--tan); }
+svg.d .mid { text-anchor: middle; }
+svg.d .end { text-anchor: end; }
+svg.d .big { font-size: 52px; font-family: var(--display); font-weight: 700; }
+svg.d .lf { fill: var(--tan-soft); stroke: var(--tan); stroke-width: 1.5; }
+svg.d .lf2 { fill: var(--surface); stroke: var(--tan); stroke-width: 1.5; }
+svg.d .steel { fill: var(--line); stroke: var(--muted); stroke-width: 1.5; }
+svg.d .wood { fill: var(--tan); fill-opacity: 0.28; stroke: var(--tan); stroke-width: 1.5; }
+svg.d .stone { fill: var(--line); stroke: var(--muted); stroke-width: 1.2; }
+svg.d .tape { fill: var(--tan-soft); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 4 3; }
+svg.d .ln { fill: none; stroke: var(--fg); stroke-width: 1.5; }
+svg.d .thin { fill: none; stroke: var(--muted); stroke-width: 1; }
+svg.d .dash { fill: none; stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 5 3; }
+svg.d .dots { fill: none; stroke: var(--tan); stroke-width: 1.4; stroke-dasharray: 1.5 3.5; stroke-linecap: round; }
+svg.d .gl { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+svg.d .bd { fill: none; stroke: var(--warn); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+svg.d .tl { fill: none; stroke: var(--tan); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+svg.d .rm { fill: var(--warn-soft); stroke: var(--warn); stroke-width: 1.2; stroke-dasharray: 3 2; }
+svg.d .ghost { fill: none; stroke: var(--warn); stroke-width: 1.4; stroke-dasharray: 3 2; }
+svg.d .hole { fill: var(--bg); stroke: var(--fg); stroke-width: 1.2; }
+svg.d .hole-new { fill: none; stroke: var(--accent); stroke-width: 1.4; stroke-dasharray: 2.5 2; }
+svg.d .gap { fill: var(--bg); stroke: none; }
+svg.d .gapl { fill: none; stroke: var(--tan); stroke-width: 1.5; }
+svg.d .tooth { fill: var(--accent); stroke: var(--accent); stroke-width: 1.5; }
+svg.d .needle { fill: none; stroke: var(--muted); stroke-width: 3; stroke-linecap: round; }
+.fig-row svg.d { max-width: 260px; margin-inline: auto; }
+.a13A,.a13B,.a13C{stroke-dasharray:1 1;stroke-dashoffset:0}
+svg.d .a13n{font-size:10.5px;font-weight:600}
+@keyframes a13A{0%,4%{stroke-dashoffset:1;opacity:1}22%,96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a13B{0%,28%{stroke-dashoffset:1;opacity:1}46%,96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a13C{0%,52%{stroke-dashoffset:1;opacity:1}70%,96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a13A{animation:a13A 12s linear infinite}
+figure.fig.play .a13B{animation:a13B 12s linear infinite}
+figure.fig.play .a13C{animation:a13C 12s linear infinite}
+@keyframes a13h1{0%,21%{opacity:0}23%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a13h2{0%,45%{opacity:0}47%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a13h3{0%,69%{opacity:0}71%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a13h1{animation:a13h1 12s linear infinite}
+figure.fig.play .a13h2{animation:a13h2 12s linear infinite}
+figure.fig.play .a13h3{animation:a13h3 12s linear infinite}
+@keyframes a13c1{0%,0%{opacity:0}1%,25%{opacity:1}27%,100%{opacity:0}}
+@keyframes a13c2{0%,26%{opacity:0}28%,49%{opacity:1}51%,100%{opacity:0}}
+@keyframes a13c3{0%,50%{opacity:0}52%,73%{opacity:1}75%,100%{opacity:0}}
+@keyframes a13c4{0%,74%{opacity:0}76%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a13c1{animation:a13c1 12s linear infinite}
+figure.fig.play .a13c2{animation:a13c2 12s linear infinite}
+figure.fig.play .a13c3{animation:a13c3 12s linear infinite}
+figure.fig.play .a13c4{animation:a13c4 12s linear infinite}
+p.done { font-size: 15px; background: var(--accent-soft); padding: 10px 12px; border-radius: 6px; }
+p.done strong { color: var(--accent); font-weight: 600; }
+details.gloss { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 0 14px; }
+details.gloss summary { cursor: pointer; padding: 12px 0; font-weight: 600; color: var(--accent); }
+details.gloss dl { margin: 0; padding: 0 0 12px; display: grid; gap: 10px; }
+details.gloss dt { font-weight: 600; font-size: 15px; }
+details.gloss dd { margin: 1px 0 0; color: var(--muted); font-size: 14.5px; }
+@media (max-width: 420px) { svg.d text { font-size: 13px; } svg.d .sub { font-size: 11.5px; } }
+.ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.ctl .anim-tag { margin-right: auto; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tan); }
+.ctl button { font: inherit; font-size: 13px; line-height: 1; min-height: 32px; padding: 0 12px; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+.ctl button:hover { border-color: var(--accent); color: var(--accent); }
+figure.fig.hold * { animation-play-state: paused !important; }
+svg.d .cap { fill: var(--accent); font-weight: 600; font-size: 12px; opacity: 0; }
+svg.d .cap.on { opacity: 1; }
+svg.d .tr { transform-box: fill-box; }
+.a2imp { fill: var(--tan); opacity: 0; }
+.a2l2 { opacity: 0; }
+.a4bev { fill: var(--tan); fill-opacity: 0.38; transform-box: fill-box; transform-origin: 50% 100%; }
+.a4tool { transform: translateY(34px); }
+.a5ms { }
+.a5cl { opacity: 0; }
+.a6arc { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; opacity: 0; }
+.a6cut { fill: var(--bg); stroke: none; opacity: 0; }
+.a7line { stroke-dasharray: 1 1; stroke-dashoffset: 0.317; }
+.a11dab { fill: var(--surface); stroke: var(--muted); stroke-width: 1; opacity: 0; }
+svg.d .hl { fill: none; stroke: var(--surface); stroke-width: 2.5; stroke-linecap: round; }
+.a11slide { transform: translateX(160px); }
+.a11dull { fill: var(--muted); fill-opacity: 0.25; transform-box: fill-box; transform-origin: 100% 50%; transform: scaleX(0); }
+.a11gloss { fill: var(--surface); transform-box: fill-box; transform-origin: 0 50%; }
+.a9ch { transform-box: fill-box; transform-origin: 50% 50%; }
+@keyframes a2mallet{0%,10%{transform:translateY(0)}22%{transform:translateY(25px)}28%{transform:translateY(29px)}38%,100%{transform:translateY(0)}}
+@keyframes a2stamp{0%,21%{transform:translateY(0)}25%,44%{transform:translateY(4px)}60%,88%{transform:translateY(-36px)}96%,100%{transform:translateY(0)}}
+@keyframes a2imp{0%,22%{opacity:0}26%,90%{opacity:1}97%,100%{opacity:0}}
+@keyframes a2l1{0%,4%{opacity:0}8%,40%{opacity:1}46%,100%{opacity:0}}
+@keyframes a2l2{0%,46%{opacity:0}52%,90%{opacity:1}96%,100%{opacity:0}}
+figure.fig.play .a2mallet{animation:a2mallet 6s ease-in-out infinite;}
+figure.fig.play .a2stamp{animation:a2stamp 6s ease-in-out infinite;}
+figure.fig.play .a2imp{animation:a2imp 6s linear infinite;}
+figure.fig.play .a2l1{animation:a2l1 6s linear infinite;}
+figure.fig.play .a2l2{animation:a2l2 6s linear infinite;}
+@keyframes a3tape{0%{opacity:0;transform:translateY(-6px)}8%,84%{opacity:1;transform:translateY(0)}90%,100%{opacity:0;transform:translateY(-6px)}}
+@keyframes a3dot{0%,16%{opacity:0;transform:translateY(-10px)}20%,92%{opacity:1;transform:translateY(0)}98%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a3dot{animation:a3dot 9s ease-in-out infinite;}
+@keyframes a3z{0%,32%{opacity:0;transform:translateY(-10px)}36%,92%{opacity:1;transform:translateY(0)}98%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a3z{animation:a3z 9s ease-in-out infinite;}
+@keyframes a3y{0%,48%{opacity:0;transform:translateY(-10px)}52%,92%{opacity:1;transform:translateY(0)}98%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a3y{animation:a3y 9s ease-in-out infinite;}
+figure.fig.play .a3tape{animation:a3tape 9s ease-in-out infinite;}
+@keyframes a3c1{0%,3%{opacity:0}4%,14%{opacity:1}16%,100%{opacity:0}}
+figure.fig.play .a3c1{animation:a3c1 9s linear infinite;}
+@keyframes a3c2{0%,16%{opacity:0}18%,30%{opacity:1}32%,100%{opacity:0}}
+figure.fig.play .a3c2{animation:a3c2 9s linear infinite;}
+@keyframes a3c3{0%,32%{opacity:0}34%,46%{opacity:1}48%,100%{opacity:0}}
+figure.fig.play .a3c3{animation:a3c3 9s linear infinite;}
+@keyframes a3c4{0%,48%{opacity:0}50%,62%{opacity:1}64%,100%{opacity:0}}
+figure.fig.play .a3c4{animation:a3c4 9s linear infinite;}
+@keyframes a3c5{0%,64%{opacity:0}66%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a3c5{animation:a3c5 9s linear infinite;}
+@keyframes a4tool{0%,6%{transform:translateY(180px);opacity:0}9%{transform:translateY(180px);opacity:1}66%{transform:translateY(34px);opacity:1}72%{transform:translateY(34px);opacity:0}100%{transform:translateY(34px);opacity:0}}
+@keyframes a4bev{0%,9%{transform:scaleY(0);opacity:1}66%,94%{transform:scaleY(1);opacity:1}99%,100%{transform:scaleY(1);opacity:0}}
+figure.fig.play .a4tool{animation:a4tool 8s linear infinite;}
+figure.fig.play .a4bev{animation:a4bev 8s linear infinite;}
+@keyframes a4c1{0%,2%{opacity:0}3%,9%{opacity:1}11%,100%{opacity:0}}
+figure.fig.play .a4c1{animation:a4c1 8s linear infinite;}
+@keyframes a4c2{0%,11%{opacity:0}12%,68%{opacity:1}70%,100%{opacity:0}}
+figure.fig.play .a4c2{animation:a4c2 8s linear infinite;}
+@keyframes a4c3{0%,70%{opacity:0}72%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a4c3{animation:a4c3 8s linear infinite;}
+@keyframes a5pl{0%,1%{stroke-dashoffset:1;opacity:0}1%{stroke-dashoffset:1;opacity:1}9%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a5pl{animation:a5pl 14s linear infinite;stroke-dasharray:1 1;}
+@keyframes a5ms{0%,8%{opacity:0}12%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a5ms{animation:a5ms 14s linear infinite;}
+@keyframes a5pt{0%,8%{opacity:0;transform:translateY(-26px)}16%{opacity:1;transform:translateY(-6px)}24%,34%{opacity:1;transform:translateY(0)}40%,52%{opacity:0.3;transform:translateY(-26px)}60%,94%{opacity:1;transform:translateY(0)}99%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a5pt{animation:a5pt 14s ease-in-out infinite;}
+@keyframes a5pb{0%,8%{opacity:0;transform:translateY(26px)}16%{opacity:1;transform:translateY(6px)}24%,34%{opacity:1;transform:translateY(0)}40%,52%{opacity:0.3;transform:translateY(26px)}60%,94%{opacity:1;transform:translateY(0)}99%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a5pb{animation:a5pb 14s ease-in-out infinite;}
+@keyframes a5bd{0%,40%{opacity:0}48%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a5bd{animation:a5bd 14s linear infinite;}
+@keyframes a5cl{0%,64%{opacity:0;transform:translateY(-8px)}70%,94%{opacity:1;transform:translateY(0)}99%,100%{opacity:0;transform:translateY(0)}}
+figure.fig.play .a5cl{animation:a5cl 14s ease-in-out infinite;}
+@keyframes a5c1{0%,0%{opacity:0}1%,12%{opacity:1}14%,100%{opacity:0}}
+figure.fig.play .a5c1{animation:a5c1 14s linear infinite;}
+@keyframes a5c2{0%,14%{opacity:0}16%,36%{opacity:1}38%,100%{opacity:0}}
+figure.fig.play .a5c2{animation:a5c2 14s linear infinite;}
+@keyframes a5c3{0%,38%{opacity:0}40%,52%{opacity:1}54%,100%{opacity:0}}
+figure.fig.play .a5c3{animation:a5c3 14s linear infinite;}
+@keyframes a5c4{0%,52%{opacity:0}54%,66%{opacity:1}68%,100%{opacity:0}}
+figure.fig.play .a5c4{animation:a5c4 14s linear infinite;}
+@keyframes a5c5{0%,66%{opacity:0}68%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a5c5{animation:a5c5 14s linear infinite;}
+@keyframes a6coin{0%{opacity:0}10%,94%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a6coin{animation:a6coin 10s linear infinite;}
+@keyframes a6waste{0%{opacity:0;transform:translate(0,0)}8%,60%{opacity:1;transform:translate(0,0)}70%,100%{opacity:0;transform:translate(14px,-10px)}}
+figure.fig.play .a6waste{animation:a6waste 10s ease-in-out infinite;}
+@keyframes a6cut{0%,62%{opacity:0}68%,94%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a6cut{animation:a6cut 10s linear infinite;}
+@keyframes a6s1{0%,20%{stroke-dashoffset:1;opacity:0}20%{stroke-dashoffset:1;opacity:1}32%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a6s1{animation:a6s1 10s linear infinite;stroke-dasharray:1 1;}
+@keyframes a6s2{0%,34%{stroke-dashoffset:1;opacity:0}34%{stroke-dashoffset:1;opacity:1}46%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a6s2{animation:a6s2 10s linear infinite;stroke-dasharray:1 1;}
+@keyframes a6s3{0%,48%{stroke-dashoffset:1;opacity:0}48%{stroke-dashoffset:1;opacity:1}60%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a6s3{animation:a6s3 10s linear infinite;stroke-dasharray:1 1;}
+@keyframes a6segs{0%,76%{opacity:1}88%,94%{opacity:0.25}99%,100%{opacity:1}}
+figure.fig.play .a6segs{animation:a6segs 10s linear infinite;}
+@keyframes a6arc{0%,76%{opacity:0}88%,94%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a6arc{animation:a6arc 10s linear infinite;}
+@keyframes a6t1{0%,0%{opacity:0.35}2%,18%{opacity:1}22%,100%{opacity:0.35}}
+figure.fig.play .a6t1{animation:a6t1 10s linear infinite;}
+@keyframes a6t2{0%,18%{opacity:0.35}22%,60%{opacity:1}66%,100%{opacity:0.35}}
+figure.fig.play .a6t2{animation:a6t2 10s linear infinite;}
+@keyframes a6t3{0%,62%{opacity:0.35}68%,94%{opacity:1}99%,100%{opacity:0.35}}
+figure.fig.play .a6t3{animation:a6t3 10s linear infinite;}
+@keyframes a7tool{0%,6%{transform:translateX(-194px);opacity:0}9%{transform:translateX(-194px);opacity:1}66%{transform:translateX(90px);opacity:1}72%,100%{transform:translateX(90px);opacity:0}}
+figure.fig.play .a7tool{animation:a7tool 7s linear infinite;}
+@keyframes a7line{0%,9%{stroke-dashoffset:1;opacity:1}66%,94%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a7line{animation:a7line 7s linear infinite;}
+@keyframes a8f1{0%,4%{opacity:0}6%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8f1{animation:a8f1 10s linear infinite;}
+@keyframes a8f2{0%,12%{opacity:0}14%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8f2{animation:a8f2 10s linear infinite;}
+@keyframes a8f3{0%,20%{opacity:0}22%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8f3{animation:a8f3 10s linear infinite;}
+@keyframes a8f4{0%,28%{opacity:0}30%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8f4{animation:a8f4 10s linear infinite;}
+@keyframes a8b1{0%,46%{opacity:0}48%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8b1{animation:a8b1 10s linear infinite;}
+@keyframes a8b2{0%,54%{opacity:0}56%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8b2{animation:a8b2 10s linear infinite;}
+@keyframes a8b3{0%,62%{opacity:0}64%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8b3{animation:a8b3 10s linear infinite;}
+@keyframes a8b4{0%,70%{opacity:0}72%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a8b4{animation:a8b4 10s linear infinite;}
+@keyframes a8lf{0%,44%{opacity:1}50%,94%{opacity:0.35}99%,100%{opacity:1}}
+@keyframes a8lb{0%,40%{opacity:0.35}46%,94%{opacity:1}99%,100%{opacity:0.35}}
+figure.fig.play .a8lf{animation:a8lf 10s linear infinite;}
+figure.fig.play .a8lb{animation:a8lb 10s linear infinite;}
+@keyframes a9ch{0%,8%{transform:translateX(-120px) scale(1.06);opacity:0.6}14%,18%{transform:translateX(-120px) scale(1);opacity:1}24%{transform:translateX(-120px) scale(1.06);opacity:0.6}38%{transform:translateX(0) scale(1.06);opacity:0.6}44%,50%{transform:translateX(0) scale(1);opacity:1}56%,94%{transform:translateX(0) scale(1.06);opacity:0.6}99%,100%{transform:translateX(0) scale(1.06);opacity:0}}
+figure.fig.play .a9ch{animation:a9ch 10s ease-in-out infinite;}
+@keyframes a9h1{0%,13%{opacity:0}15%,95%{opacity:1}99%,100%{opacity:0}}
+@keyframes a9h2{0%,43%{opacity:0}45%,95%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a9h1{animation:a9h1 10s linear infinite;}
+figure.fig.play .a9h2{animation:a9h2 10s linear infinite;}
+@keyframes a9b1{0%,14%{opacity:0}18%,95%{opacity:1}99%,100%{opacity:0}}
+@keyframes a9b2{0%,44%{opacity:0}48%,95%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a9b1{animation:a9b1 10s linear infinite;}
+figure.fig.play .a9b2{animation:a9b2 10s linear infinite;}
+@keyframes a9c1{0%,4%{opacity:0}6%,24%{opacity:1}26%,100%{opacity:0}}
+figure.fig.play .a9c1{animation:a9c1 10s linear infinite;}
+@keyframes a9c2{0%,26%{opacity:0}28%,42%{opacity:1}44%,100%{opacity:0}}
+figure.fig.play .a9c2{animation:a9c2 10s linear infinite;}
+@keyframes a9c3{0%,44%{opacity:0}46%,62%{opacity:1}64%,100%{opacity:0}}
+figure.fig.play .a9c3{animation:a9c3 10s linear infinite;}
+@keyframes a9c4{0%,64%{opacity:0}66%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a9c4{animation:a9c4 10s linear infinite;}
+@keyframes a10f1{0%{opacity:0.3}3%,97%{opacity:1}100%{opacity:0.3}}
+@keyframes a10f2{0%,31%{opacity:0.3}34%,97%{opacity:1}100%{opacity:0.3}}
+@keyframes a10f3{0%,64%{opacity:0.3}67%,97%{opacity:1}100%{opacity:0.3}}
+figure.fig.play .a10f1{animation:a10f1 12s linear infinite;}
+figure.fig.play .a10f2{animation:a10f2 12s linear infinite;}
+figure.fig.play .a10f3{animation:a10f3 12s linear infinite;}
+@keyframes a10t1{0%,4%{stroke-dashoffset:1;opacity:0}4%{stroke-dashoffset:1;opacity:1}20%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a10g1{0%,4%{stroke-dashoffset:1;opacity:0}4%{stroke-dashoffset:1;opacity:1}20%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a10g2{0%,36%{stroke-dashoffset:1;opacity:0}36%{stroke-dashoffset:1;opacity:1}54%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a10t3{0%,70%{stroke-dashoffset:1;opacity:0}70%{stroke-dashoffset:1;opacity:1}88%{stroke-dashoffset:0;opacity:1}96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a10t1{animation:a10t1 12s linear infinite;stroke-dasharray:1 1;}
+figure.fig.play .a10g1{animation:a10g1 12s linear infinite;stroke-dasharray:1 1;}
+figure.fig.play .a10g2{animation:a10g2 12s linear infinite;stroke-dasharray:1 1;}
+figure.fig.play .a10t3{animation:a10t3 12s linear infinite;stroke-dasharray:1 1;}
+@keyframes a10n1{0%,18%{opacity:0}24%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a10n2{0%,52%{opacity:0}58%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a10n3{0%,86%{opacity:0}92%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a10s2{0%,32%{opacity:0}35%,96%{opacity:1}99%,100%{opacity:0}}
+@keyframes a10s3{0%,65%{opacity:0}68%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a10n1{animation:a10n1 12s linear infinite;}
+figure.fig.play .a10n2{animation:a10n2 12s linear infinite;}
+figure.fig.play .a10n3{animation:a10n3 12s linear infinite;}
+figure.fig.play .a10s2{animation:a10s2 12s linear infinite;}
+figure.fig.play .a10s3{animation:a10s3 12s linear infinite;}
+@keyframes a11slide{0%,10%{transform:translateX(0);opacity:0}12%{transform:translateX(0);opacity:1}70%{transform:translateX(320px);opacity:1}76%,100%{transform:translateX(320px);opacity:0}}
+figure.fig.play .a11slide{animation:a11slide 9s linear infinite;}
+@keyframes a11rub{0%{transform:translateX(-14px)}100%{transform:translateX(14px)}}
+figure.fig.play .a11rub{animation:a11rub .45s ease-in-out infinite alternate}
+@keyframes a11dull{0%,12%{transform:scaleX(1);opacity:1}70%,94%{transform:scaleX(0);opacity:1}99%,100%{transform:scaleX(0);opacity:0}}
+@keyframes a11gloss{0%,12%{transform:scaleX(0);opacity:1}70%,94%{transform:scaleX(1);opacity:1}99%,100%{transform:scaleX(1);opacity:0}}
+figure.fig.play .a11dull{animation:a11dull 9s linear infinite;}
+figure.fig.play .a11gloss{animation:a11gloss 9s linear infinite;}
+@keyframes a11d1{0%,1%{opacity:0}4%,19%{opacity:1}23%,100%{opacity:0}}
+figure.fig.play .a11d1{animation:a11d1 9s linear infinite;}
+@keyframes a11d2{0%,1%{opacity:0}4%,39%{opacity:1}43%,100%{opacity:0}}
+figure.fig.play .a11d2{animation:a11d2 9s linear infinite;}
+@keyframes a11d3{0%,1%{opacity:0}4%,58%{opacity:1}62%,100%{opacity:0}}
+figure.fig.play .a11d3{animation:a11d3 9s linear infinite;}
+@keyframes a11c1{0%,1%{opacity:0}2%,10%{opacity:1}12%,100%{opacity:0}}
+figure.fig.play .a11c1{animation:a11c1 9s linear infinite;}
+@keyframes a11c2{0%,12%{opacity:0}13%,68%{opacity:1}70%,100%{opacity:0}}
+figure.fig.play .a11c2{animation:a11c2 9s linear infinite;}
+@keyframes a11c3{0%,70%{opacity:0}72%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a11c3{animation:a11c3 9s linear infinite;}
+svg.d .foldl { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 9 3 2 3; }
+svg.d .paper { fill: var(--surface); stroke: var(--muted); stroke-width: 1; }
+.a6cutl { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+.a6stp { transform-box: fill-box; transform-origin: 0 50%; }
+.a6dot { transform-box: fill-box; transform-origin: 50% 50%; }
+.a12up { transform-box: view-box; transform-origin: 200px 148px; transform: rotate(-180deg); }
+svg.d .a12arc { fill: none; stroke: var(--tan); stroke-width: 6; }
+p.prac { margin: 0; padding: 9px 12px; background: var(--tan-soft); border: 1px solid color-mix(in srgb, var(--tan) 40%, transparent); border-radius: 8px; font-size: 15px; max-width: 64ch; }
+p.prac.fwd { background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+@keyframes a6k{0%,6%{transform:translateY(-70px)}18%{transform:translateY(0)}26%{transform:translateY(-34px)}38%{transform:translateY(0)}46%{transform:translateY(-34px)}58%{transform:translateY(0)}68%,100%{transform:translateY(-70px)}}
+figure.fig.play .a6k{animation:a6k 10s ease-in-out infinite;}
+@keyframes a6cutl{0%,10%{stroke-dashoffset:1}18%,28%{stroke-dashoffset:0.67}38%,48%{stroke-dashoffset:0.34}58%,96%{stroke-dashoffset:0}99%,100%{stroke-dashoffset:0;opacity:0}}
+figure.fig.play .a6cutl{animation:a6cutl 10s linear infinite;stroke-dasharray:1 1;}
+@keyframes a6ov{0%,68%{transform:translateX(0);opacity:1}86%,98%{transform:translateX(26px);opacity:0}100%{transform:translateX(0);opacity:1}}
+figure.fig.play .a6ov{animation:a6ov 10s ease-in infinite;}
+@keyframes a6ka1{0%,0%{opacity:0}1%,16%{opacity:1}19%,100%{opacity:0}}
+figure.fig.play .a6ka1{animation:a6ka1 10s linear infinite;}
+@keyframes a6ka2{0%,18%{opacity:0}20%,64%{opacity:1}67%,100%{opacity:0}}
+figure.fig.play .a6ka2{animation:a6ka2 10s linear infinite;}
+@keyframes a6ka3{0%,68%{opacity:0}70%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a6ka3{animation:a6ka3 10s linear infinite;}
+@keyframes a6stp{0%,14%{transform:scaleX(1);opacity:1}64%,96%{transform:scaleX(0);opacity:1}99%,100%{transform:scaleX(0);opacity:0}}
+figure.fig.play .a6stp{animation:a6stp 9s linear infinite;}
+@keyframes a6file{0%,14%{transform:translateX(0)}64%,96%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+figure.fig.play .a6file{animation:a6file 9s linear infinite;}
+figure.fig.play .a6dot{animation:a6dot .5s ease-in-out infinite alternate}
+@keyframes a6dot{0%{transform:scale(0.55)}100%{transform:scale(1.3)}}
+@keyframes a6pts{0%,12%{opacity:1}64%,98%{opacity:0}100%{opacity:1}}
+figure.fig.play .a6pts{animation:a6pts 9s linear infinite;}
+@keyframes a6fa{0%,8%{opacity:0}12%,58%{opacity:1}66%,100%{opacity:0}}
+figure.fig.play .a6fa{animation:a6fa 9s linear infinite;}
+@keyframes a6sm1{0%,0%{opacity:0}1%,28%{opacity:1}32%,100%{opacity:0}}
+figure.fig.play .a6sm1{animation:a6sm1 9s linear infinite;}
+@keyframes a6sm2{0%,30%{opacity:0}34%,66%{opacity:1}70%,100%{opacity:0}}
+figure.fig.play .a6sm2{animation:a6sm2 9s linear infinite;}
+@keyframes a6sm3{0%,68%{opacity:0}72%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a6sm3{animation:a6sm3 9s linear infinite;}
+@keyframes a12up{0%,14%{transform:rotate(0deg);opacity:1}50%,96%{transform:rotate(-180deg);opacity:1}99%,100%{transform:rotate(-180deg);opacity:0}}
+figure.fig.play .a12up{animation:a12up 10s ease-in-out infinite;}
+@keyframes a12arc{0%,30%{opacity:0}42%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a12arc{animation:a12arc 10s linear infinite;}
+@keyframes a12cl{0%,56%{opacity:0}62%,96%{opacity:1}99%,100%{opacity:0}}
+figure.fig.play .a12cl{animation:a12cl 10s linear infinite;}
+@keyframes a12c1{0%,2%{opacity:0}3%,12%{opacity:1}14%,100%{opacity:0}}
+figure.fig.play .a12c1{animation:a12c1 10s linear infinite;}
+@keyframes a12c2{0%,14%{opacity:0}16%,50%{opacity:1}54%,100%{opacity:0}}
+figure.fig.play .a12c2{animation:a12c2 10s linear infinite;}
+@keyframes a12c3{0%,54%{opacity:0}56%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a12c3{animation:a12c3 10s linear infinite;}
+.a10A, .a10B { stroke-dasharray: 1 1; stroke-dashoffset: 0; }
+.a10nA, .a10nB { offset-rotate: auto; offset-distance: 100%; opacity: 0; }
+.a10nA { offset-path: path('M88 118 H188 V82 H288 V118'); }
+.a10nB { offset-path: path('M92 82 H192 V118 H292 V82'); }
+.a10p1, .a10p2 { opacity: 0; }
+svg.d .a10c5 { opacity: 1; }
+@keyframes a10A{0%,6%{stroke-dashoffset:1;opacity:1}19%,40%{stroke-dashoffset:0.5;opacity:1}53%,96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a10B{0%,19%{stroke-dashoffset:1;opacity:1}31%,53%{stroke-dashoffset:0.5;opacity:1}65%,96%{stroke-dashoffset:0;opacity:1}99%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes a10nA{0%,6%{offset-distance:0%}19%,40%{offset-distance:50%}53%,100%{offset-distance:100%}}
+@keyframes a10nB{0%,19%{offset-distance:0%}31%,53%{offset-distance:50%}65%,100%{offset-distance:100%}}
+@keyframes a10oA{0%{opacity:0}4%,32%{opacity:1}34%,38%{opacity:0}40%,66%{opacity:1}68%,100%{opacity:0}}
+@keyframes a10oB{0%,15%{opacity:0}17%,32%{opacity:1}34%,50%{opacity:0}52%,66%{opacity:1}68%,100%{opacity:0}}
+figure.fig.play .a10A{animation:a10A 16s linear infinite}
+figure.fig.play .a10B{animation:a10B 16s linear infinite}
+figure.fig.play .a10nA{animation:a10nA 16s linear infinite,a10oA 16s linear infinite}
+figure.fig.play .a10nB{animation:a10nB 16s linear infinite,a10oB 16s linear infinite}
+@keyframes a10p1{0%,31%{opacity:0}34%,40%{opacity:1}43%,100%{opacity:0}}
+@keyframes a10p2{0%,65%{opacity:0}68%,74%{opacity:1}77%,100%{opacity:0}}
+figure.fig.play .a10p1{animation:a10p1 16s linear infinite;}
+figure.fig.play .a10p2{animation:a10p2 16s linear infinite;}
+@keyframes a10c1{0%,0%{opacity:0}1%,18%{opacity:1}20%,100%{opacity:0}}
+figure.fig.play .a10c1{animation:a10c1 16s linear infinite;}
+@keyframes a10c2{0%,19%{opacity:0}20%,30%{opacity:1}32%,100%{opacity:0}}
+figure.fig.play .a10c2{animation:a10c2 16s linear infinite;}
+@keyframes a10c3{0%,31%{opacity:0}33%,40%{opacity:1}42%,100%{opacity:0}}
+figure.fig.play .a10c3{animation:a10c3 16s linear infinite;}
+@keyframes a10c4{0%,40%{opacity:0}42%,64%{opacity:1}66%,100%{opacity:0}}
+figure.fig.play .a10c4{animation:a10c4 16s linear infinite;}
+@keyframes a10c5{0%,66%{opacity:0}68%,94%{opacity:1}97%,100%{opacity:0}}
+figure.fig.play .a10c5{animation:a10c5 16s linear infinite;}
+figure.fig.state::before { content: "What you should have now"; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tan); }
+svg.d .zy { font-size: 11px; font-weight: 700; text-anchor: middle; }
+svg.d .oil { fill: var(--tan); fill-opacity: 0.42; }
+svg.d .holes { fill: none; stroke: var(--fg); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 0.1 5.1; }
+svg.d .stitch { fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-dasharray: 3.6 1.6; }
+svg.d .bev { fill: none; stroke: var(--tan); stroke-width: 2.4; }
+svg.d .glossl { fill: none; stroke: var(--surface); stroke-width: 1.3; }
+svg.d .cardr { fill: var(--surface); stroke: var(--muted); stroke-width: 1.2; }
+svg.d .tm { fill: none; stroke: var(--muted); stroke-width: 2.4; stroke-linecap: round; }
+
+/* the recessed stitching cards */
+
+      .rcard { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 16px 16px 16px 14px; display: grid; gap: 10px; }
+      .rcard h3 { margin: 0; font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1.1; }
+      .rcard h3 .n { color: var(--tan); margin-right: 6px; }
+      .rcard ol { margin: 0; padding-left: 24px; display: grid; gap: 9px; }
+      .rcard ol > li { padding-left: 2px; }
+      .rcard ol > li::marker { color: var(--tan); font-family: var(--mono); font-weight: 500; font-size: 14px; }
+      .rcard p { font-size: 15px; }
+      .src { font-size: 13px; color: var(--muted); }
+    
+
+/* rhythm between the blocks of the post: the article only spaces its direct children */
+.manual > * + * { margin-top: 1.25rem; }
+
+/* ---------- the pieces diagram: stages you click through ---------- */
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { min-height: 34px; padding: 0 12px; font: inherit; font-size: .85rem; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; transition: border-color .15s, background-color .15s; }
+.seg button:hover { border-color: var(--accent); }
+.seg button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.pz { opacity: 0; pointer-events: none; transition: opacity .35s ease; }
+.pz[data-on="true"] { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .pz, .seg button { transition: none; } }
+.manual .cut-cap ul { margin: .4rem 0 0; padding-left: 1.2rem; color: var(--muted); }
+.manual .cut-cap li + li { margin-top: .15rem; }
+
+/* ---------- steps written as phases of single-line actions ---------- */
+.manual .step-body ul.do { margin: 0; padding-left: 0; list-style: none; display: grid; gap: .65rem; }
+.manual .step-body ul.do > li { position: relative; padding-left: 1.4rem; }
+.manual .step-body ul.do > li::before { content: ''; position: absolute; left: .25rem; top: .72em; width: .4rem; height: .4rem; background: var(--tan); transform: rotate(45deg); }
+.callout .do { margin-top: .5rem; }
+.callout > strong:first-child { display: block; font: 600 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--tan); }
+
+/* a phase is a card with a tinted title band across the top: lettered badge, bigger title, the actions below */
+.manual .step-body { counter-reset: ph; }
+.ph { counter-increment: ph; min-width: 0; overflow: hidden; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.manual .step-body .ph-title { display: flex; align-items: center; gap: 10px; margin: 0; padding: 10px 16px; font: 700 1.2rem/1.2 var(--display); letter-spacing: -.01em; color: var(--fg); background: var(--tan-soft); border-bottom: 1px solid var(--line); scroll-margin-top: 11rem; }
+.manual .step-body .ph-title::before { content: counter(ph, upper-alpha); flex: none; display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--tan); color: var(--bg); font: 700 .85rem var(--mono); }
+.ph-body { display: grid; gap: 12px; padding: 14px 16px 16px; }
+.ph .callout { border: 1px dashed var(--tan); border-radius: 8px; }

@@ -3,6 +3,7 @@ import type { Heading } from '@/lib/headings';
 import { MEDIA_SERVER_HEADINGS, MediaServerPost } from './media-server/post';
 import { TRANSCODING_HEADINGS, TranscodingPost } from './jellyfin-transcoding/post';
 import { HEAVY_PROCESSING_HEADINGS, HeavyProcessingPost } from './jellyfin-heavy-processing/post';
+import { CARD_HOLDER_HEADINGS, CardHolderPost } from './card-holder/post';
 
 interface InteractiveBody {
   Body: ComponentType;
@@ -15,4 +16,5 @@ export const INTERACTIVE_BODIES: Record<string, InteractiveBody> = {
   'raspberry-pi-media-server': { Body: MediaServerPost, headings: MEDIA_SERVER_HEADINGS },
   'jellyfin-stutter-transcoding-raspberry-pi': { Body: TranscodingPost, headings: TRANSCODING_HEADINGS },
   'jellyfin-stutter-heavy-processing-raspberry-pi': { Body: HeavyProcessingPost, headings: HEAVY_PROCESSING_HEADINGS },
+  'card-holder': { Body: CardHolderPost, headings: CARD_HOLDER_HEADINGS },
 };
